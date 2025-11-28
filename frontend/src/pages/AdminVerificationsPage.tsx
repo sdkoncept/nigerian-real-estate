@@ -122,15 +122,25 @@ export default function AdminVerificationsPage() {
       const verification = verifications.find((v) => v.id === verificationId);
       if (verification) {
         if (verification.entity_type === 'agent') {
-          await supabase
+          const { error: agentUpdateError } = await supabase
             .from('agents')
             .update({ verification_status: 'verified' })
             .eq('id', verification.entity_id);
+          
+          if (agentUpdateError) {
+            console.error('Error updating agent verification status:', agentUpdateError);
+            throw agentUpdateError;
+          }
         } else if (verification.entity_type === 'property') {
-          await supabase
+          const { error: propertyUpdateError } = await supabase
             .from('properties')
             .update({ verification_status: 'verified' })
             .eq('id', verification.entity_id);
+          
+          if (propertyUpdateError) {
+            console.error('Error updating property verification status:', propertyUpdateError);
+            throw propertyUpdateError;
+          }
         }
       }
 
@@ -174,15 +184,25 @@ export default function AdminVerificationsPage() {
       const verification = verifications.find((v) => v.id === verificationId);
       if (verification) {
         if (verification.entity_type === 'agent') {
-          await supabase
+          const { error: agentUpdateError } = await supabase
             .from('agents')
             .update({ verification_status: 'rejected' })
             .eq('id', verification.entity_id);
+          
+          if (agentUpdateError) {
+            console.error('Error updating agent verification status:', agentUpdateError);
+            throw agentUpdateError;
+          }
         } else if (verification.entity_type === 'property') {
-          await supabase
+          const { error: propertyUpdateError } = await supabase
             .from('properties')
             .update({ verification_status: 'rejected' })
             .eq('id', verification.entity_id);
+          
+          if (propertyUpdateError) {
+            console.error('Error updating property verification status:', propertyUpdateError);
+            throw propertyUpdateError;
+          }
         }
       }
 

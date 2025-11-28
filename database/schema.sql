@@ -231,6 +231,17 @@ CREATE POLICY "Agents can update their own record"
   ON public.agents FOR UPDATE
   USING (auth.uid() = user_id);
 
+DROP POLICY IF EXISTS "Admins can update any agent record" ON public.agents;
+CREATE POLICY "Admins can update any agent record"
+  ON public.agents FOR UPDATE
+  USING (
+    EXISTS (
+      SELECT 1 FROM public.profiles
+      WHERE profiles.id = auth.uid()
+      AND profiles.user_type = 'admin'
+    )
+  );
+
 -- Properties policies
 DROP POLICY IF EXISTS "Properties are publicly readable" ON public.properties;
 CREATE POLICY "Properties are publicly readable"
