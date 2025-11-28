@@ -13,6 +13,7 @@ git push origin main
 2. **Sign in** with GitHub
 3. **Import:** `sdkoncept/nigerian-real-estate`
 4. **Configure:**
+   - **Project Name:** `nigerian-real-estate` (lowercase - valid!)
    - **Root Directory:** `frontend` ⚠️ **CRITICAL**
    - **Framework:** Vite (auto-detected)
    - **Build Command:** `npm run build` (auto)
