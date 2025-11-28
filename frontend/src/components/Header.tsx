@@ -58,6 +58,12 @@ export default function Header() {
             >
               About
             </Link>
+            <Link
+              to="/pricing"
+              className="text-gray-700 hover:text-primary-600 font-medium transition-colors"
+            >
+              Pricing
+            </Link>
 
             {/* User Menu */}
             {user ? (
@@ -197,6 +203,13 @@ export default function Header() {
                 onClick={() => setIsMenuOpen(false)}
               >
                 About
+              </Link>
+              <Link
+                to="/pricing"
+                className="px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                Pricing
               </Link>
               {user ? (
                 <>

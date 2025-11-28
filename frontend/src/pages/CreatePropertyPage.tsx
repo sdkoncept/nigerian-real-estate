@@ -30,6 +30,7 @@ export default function CreatePropertyPage() {
     year_built: '',
     features: '',
     amenities: '',
+    is_featured: false,
   });
 
   const handleInputChange = (field: string, value: string) => {
@@ -104,7 +105,7 @@ export default function CreatePropertyPage() {
         .filter(a => a.length > 0);
 
       // Create property
-      const { error: insertError } = await supabase
+      const { data: propertyData, error: insertError } = await supabase
         .from('properties')
         .insert({
           title: formData.title,
@@ -128,12 +129,19 @@ export default function CreatePropertyPage() {
           created_by: user.id,
           verification_status: 'pending',
           is_active: true,
+          is_featured: formData.is_featured || false,
         })
         .select()
         .single();
 
       if (insertError) {
-        throw new Error(insertError.message);
+        throw insertError;
+      }
+
+      // If featured listing was selected, prompt for payment
+      if (formData.is_featured && propertyData) {
+        // TODO: Integrate Paystack payment for featured listing
+        alert('Featured listing selected! Payment integration coming soon. Your property will be featured after payment confirmation.');
       }
 
       // Success - redirect to property detail or dashboard
@@ -436,6 +444,44 @@ export default function CreatePropertyPage() {
                       rows={3}
                       placeholder="WiFi, AC, Parking, Elevator"
                     />
+                  </div>
+                </div>
+              </div>
+
+              {/* Featured Listing Option */}
+              <div className="bg-gradient-to-r from-yellow-50 to-orange-50 border-2 border-yellow-200 rounded-lg p-6">
+                <div className="flex items-start justify-between">
+                  <div className="flex-1">
+                    <h3 className="text-lg font-bold text-gray-900 mb-2 flex items-center">
+                      ⭐ Featured Listing
+                    </h3>
+                    <p className="text-gray-700 mb-2">
+                      Make your property stand out with featured placement at the top of search results
+                    </p>
+                    <ul className="text-sm text-gray-600 space-y-1 mb-4">
+                      <li>✓ Top placement in search results</li>
+                      <li>✓ Highlighted with special badge</li>
+                      <li>✓ 3x more views on average</li>
+                      <li>✓ Priority in property listings</li>
+                    </ul>
+                    <div className="flex items-center gap-2">
+                      <span className="text-2xl font-bold text-primary-600">₦2,000</span>
+                      <span className="text-gray-600">per month</span>
+                    </div>
+                  </div>
+                  <div className="ml-4">
+                    <label className="flex items-center cursor-pointer">
+                      <input
+                        type="checkbox"
+                        checked={formData.is_featured || false}
+                        onChange={(e) => handleInputChange('is_featured', e.target.checked.toString())}
+                        className="w-6 h-6 text-primary-600 rounded focus:ring-primary-500"
+                      />
+                      <span className="ml-2 text-sm font-semibold text-gray-700">Make Featured</span>
+                    </label>
+                    <p className="text-xs text-gray-500 mt-2 text-center">
+                      Payment required after listing
+                    </p>
                   </div>
                 </div>
               </div>

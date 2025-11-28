@@ -19,6 +19,7 @@ import AdminUsersPage from './pages/AdminUsersPage'
 import AdminVerificationsPage from './pages/AdminVerificationsPage'
 import AdminReportsPage from './pages/AdminReportsPage'
 import AdminSettingsPage from './pages/AdminSettingsPage'
+import PricingPage from './pages/PricingPage'
 
 function App() {
   const { user, loading } = useAuth()
@@ -64,6 +65,14 @@ function App() {
         element={
           <ProtectedRoute>
             <AboutPage />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/pricing"
+        element={
+          <ProtectedRoute>
+            <PricingPage />
           </ProtectedRoute>
         }
       />
