@@ -74,7 +74,7 @@ export default function AgentDashboard() {
       }
 
       // Get agent profile - only query if user is an agent
-      const { data: agentData, error: agentError } = await supabase
+      let { data: agentData, error: agentError } = await supabase
         .from('agents')
         .select('*')
         .eq('user_id', user.id)
@@ -82,12 +82,32 @@ export default function AgentDashboard() {
 
       if (agentError && agentError.code !== 'PGRST116') {
         console.error('Error loading agent profile:', agentError);
-      } else if (agentData) {
-        setAgentProfile(agentData);
       }
 
-      // Get verification submissions
+      // If no agent profile exists, create one automatically
+      if (!agentData && !agentError) {
+        const { data: newAgentData, error: createError } = await supabase
+          .from('agents')
+          .insert({
+            user_id: user.id,
+            verification_status: 'pending',
+            is_active: true,
+          })
+          .select()
+          .single();
+
+        if (createError) {
+          console.error('Error creating agent profile:', createError);
+        } else if (newAgentData) {
+          agentData = newAgentData;
+        }
+      }
+
+      // Set agent profile if we have one
       if (agentData) {
+        setAgentProfile(agentData);
+
+        // Get verification submissions for this agent
         const { data: verifications, error: verifyError } = await supabase
           .from('verifications')
           .select('*')
@@ -278,21 +298,12 @@ export default function AgentDashboard() {
     );
   }
 
-  if (!agentProfile) {
+  // Show loading state while agent profile is being created/loaded
+  if (loading || !agentProfile) {
     return (
       <Layout>
-        <div className="min-h-screen bg-gray-50">
-          <div className="container mx-auto px-4 py-12">
-            <div className="max-w-2xl mx-auto bg-white rounded-lg shadow-md p-8 text-center">
-              <h1 className="text-2xl font-bold text-gray-900 mb-4">Agent Profile Not Found</h1>
-              <p className="text-gray-600 mb-6">
-                You need to complete your agent profile before you can submit verification documents.
-              </p>
-              <p className="text-sm text-gray-500">
-                Please contact support or complete your profile setup.
-              </p>
-            </div>
-          </div>
+        <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600"></div>
         </div>
       </Layout>
     );
