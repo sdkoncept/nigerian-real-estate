@@ -1,66 +1,50 @@
-# Fix: Invalid Characters in Vercel Project Name
+# Vercel Project Name Rules
 
-## Problem
-Vercel project names can only contain:
-- Letters (a-z, A-Z)
-- Digits (0-9)
-- Underscores (_)
-- **Cannot start with a digit**
+## Valid Project Name Rules
+Vercel project names must:
+- Be **lowercase** only
+- Be up to **100 characters** long
+- Can include: letters, digits, `.`, `_`, `-`
+- **Cannot contain** the sequence `---` (three consecutive hyphens)
+- Cannot start with a digit
 
-Your repository name `nigerian-real-estate` contains hyphens (-) which are not allowed.
+Your repository name `nigerian-real-estate` is **valid** ✅
 
 ## Solution
 
-### Option 1: Use Valid Name in Vercel Dashboard (Recommended)
+### Use Your Repository Name (Recommended)
 
 When deploying in Vercel Dashboard:
 
 1. **Import your repository** as usual
-2. **In the "Project Name" field**, change it to:
-   ```
-   nigerian_real_estate
-   ```
-   (Replace hyphens with underscores)
-
-3. **Root Directory:** `frontend`
+2. **Project Name:** `nigerian-real-estate` ✅ (This is valid!)
+3. **Root Directory:** `frontend` ⚠️ **IMPORTANT**
 4. **Continue with deployment**
 
-### Option 2: Let Vercel Auto-Generate Name
-
-1. **Import repository**
-2. **Leave project name empty** - Vercel will auto-generate a valid name
-3. **You can rename it later** in Settings → General → Project Name
-
-### Option 3: Use Different Name
-
-Use a name like:
-- `nigerianrealestate`
-- `nigerian_real_estate_platform`
-- `nre_platform`
-- `realestate_ng`
-
-## Valid Project Names Examples
+### Valid Project Names Examples
 
 ✅ **Valid:**
-- `nigerian_real_estate`
-- `nigerianRealEstate`
-- `nigerian_real_estate_platform`
-- `real_estate_ng`
+- `nigerian-real-estate` ✅
+- `nigerian_real_estate` ✅
+- `nigerian.real.estate` ✅
+- `nigerianrealestate` ✅
+- `nigerian-real-estate-platform` ✅
 
 ❌ **Invalid:**
-- `nigerian-real-estate` (contains hyphens)
+- `Nigerian-Real-Estate` (contains uppercase)
 - `123project` (starts with digit)
-- `project-name` (contains hyphen)
+- `project---name` (contains three consecutive hyphens)
 - `project name` (contains space)
 
 ## Quick Fix
 
 **In Vercel Dashboard:**
-1. When importing, set **Project Name** to: `nigerian_real_estate`
-2. Set **Root Directory** to: `frontend`
-3. Deploy!
+1. When importing, set **Project Name** to: `nigerian-real-estate` (lowercase, with hyphens - this is valid!)
+2. Set **Root Directory** to: `frontend` ⚠️ **CRITICAL**
+3. Add environment variables
+4. Deploy!
 
 ---
 
-**The repository name can stay as `nigerian-real-estate` on GitHub. Only the Vercel project name needs to be valid.**
+**Your repository name `nigerian-real-estate` is perfectly valid for Vercel! Just make sure it's lowercase.**
 

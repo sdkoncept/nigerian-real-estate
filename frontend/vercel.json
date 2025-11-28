@@ -1,5 +1,5 @@
 {
-  "name": "nigerian_real_estate",
+  "name": "nigerian-real-estate",
   "buildCommand": "npm run build",
   "outputDirectory": "dist",
   "devCommand": "npm run dev",
