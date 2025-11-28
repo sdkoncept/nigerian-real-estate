@@ -258,6 +258,17 @@ CREATE POLICY "Users can update their own properties"
   ON public.properties FOR UPDATE
   USING (auth.uid() = created_by);
 
+DROP POLICY IF EXISTS "Admins can update any property" ON public.properties;
+CREATE POLICY "Admins can update any property"
+  ON public.properties FOR UPDATE
+  USING (
+    EXISTS (
+      SELECT 1 FROM public.profiles
+      WHERE profiles.id = auth.uid()
+      AND profiles.user_type = 'admin'
+    )
+  );
+
 DROP POLICY IF EXISTS "Users can delete their own properties" ON public.properties;
 CREATE POLICY "Users can delete their own properties"
   ON public.properties FOR DELETE
