@@ -17,8 +17,7 @@ CREATE TABLE IF NOT EXISTS public.subscriptions (
   expires_at TIMESTAMP WITH TIME ZONE,
   features JSONB DEFAULT '{}', -- Store plan features
   created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
-  updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
-  UNIQUE(user_id, status) WHERE status = 'active'
+  updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 
 -- ============================================
@@ -58,6 +57,11 @@ CREATE TABLE IF NOT EXISTS public.featured_listings (
 -- ============================================
 CREATE INDEX IF NOT EXISTS idx_subscriptions_user ON public.subscriptions(user_id);
 CREATE INDEX IF NOT EXISTS idx_subscriptions_status ON public.subscriptions(status);
+
+-- Partial unique index: Only one active subscription per user
+CREATE UNIQUE INDEX IF NOT EXISTS idx_subscriptions_user_active 
+  ON public.subscriptions(user_id) 
+  WHERE status = 'active';
 CREATE INDEX IF NOT EXISTS idx_payments_user ON public.payments(user_id);
 CREATE INDEX IF NOT EXISTS idx_payments_reference ON public.payments(payment_reference);
 CREATE INDEX IF NOT EXISTS idx_payments_status ON public.payments(status);
