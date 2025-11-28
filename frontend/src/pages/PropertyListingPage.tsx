@@ -1,16 +1,70 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import PropertyCard from '../components/PropertyCard';
 import type { Property } from '../components/PropertyCard';
 import { sampleProperties } from '../data/sampleProperties';
 import Layout from '../components/Layout';
+import { supabase } from '../lib/supabase';
 
 export default function PropertyListingPage() {
-  const [properties] = useState<Property[]>(sampleProperties);
+  const [properties, setProperties] = useState<Property[]>([]);
+  const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedType, setSelectedType] = useState<string>('all');
   const [selectedListingType, setSelectedListingType] = useState<string>('all');
   const [selectedState, setSelectedState] = useState<string>('all');
   const [sortBy, setSortBy] = useState<string>('newest');
+
+  useEffect(() => {
+    loadProperties();
+  }, []);
+
+  const loadProperties = async () => {
+    try {
+      setLoading(true);
+      // Fetch active properties from database
+      const { data, error } = await supabase
+        .from('properties')
+        .select('*')
+        .eq('is_active', true)
+        .order('created_at', { ascending: false });
+
+      if (error) {
+        console.error('Error loading properties:', error);
+        // Fallback to sample properties if database query fails
+        setProperties(sampleProperties);
+      } else if (data && data.length > 0) {
+        // Transform database properties to Property type
+        const transformedProperties: Property[] = data.map((p: any) => ({
+          id: p.id,
+          title: p.title,
+          description: p.description,
+          price: parseFloat(p.price),
+          currency: p.currency || 'NGN',
+          property_type: p.property_type,
+          listing_type: p.listing_type,
+          location: p.location,
+          state: p.state,
+          city: p.city,
+          bedrooms: p.bedrooms,
+          bathrooms: p.bathrooms,
+          sqm: p.sqm ? parseFloat(p.sqm) : undefined,
+          images: p.images || [],
+          is_featured: p.is_featured || false,
+          verification_status: p.verification_status || 'pending',
+        }));
+        setProperties(transformedProperties);
+      } else {
+        // No properties in database, use sample data
+        setProperties(sampleProperties);
+      }
+    } catch (error) {
+      console.error('Error loading properties:', error);
+      // Fallback to sample properties on error
+      setProperties(sampleProperties);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   // Get unique states for filter
   const states = Array.from(new Set(properties.map(p => p.state))).sort();
@@ -41,6 +95,16 @@ export default function PropertyListingPage() {
         return 0;
     }
   });
+
+  if (loading) {
+    return (
+      <Layout>
+        <div className="bg-gray-50 min-h-screen flex items-center justify-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600"></div>
+        </div>
+      </Layout>
+    );
+  }
 
   return (
     <Layout>
