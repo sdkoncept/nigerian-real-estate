@@ -1,0 +1,92 @@
+import 'dotenv/config';
+import express, { Request, Response } from 'express';
+import cors from 'cors';
+import {
+  securityHeaders,
+  apiLimiter,
+  corsOptions,
+  requestId,
+  sanitizeBody,
+} from './middleware/security.js';
+
+// Import routes
+import adminRoutes from './routes/admin.js';
+import reportsRoutes from './routes/reports.js';
+import paymentsRoutes from './routes/payments.js';
+import verificationRoutes from './routes/verification.js';
+import agentRoutes from './routes/agent.js';
+
+const app = express();
+const PORT = process.env.PORT || 5000;
+
+// Security middleware (apply first)
+app.use(securityHeaders);
+app.use(requestId);
+app.use(cors(corsOptions));
+app.use(express.json({ limit: '10mb' }));
+app.use(express.urlencoded({ extended: true, limit: '10mb' }));
+app.use(sanitizeBody);
+
+// Rate limiting
+app.use('/api/', apiLimiter);
+
+// Health check (no rate limiting)
+app.get('/api/health', (req: Request, res: Response) => {
+  res.json({
+    status: 'ok',
+    message: 'Nigerian Real Estate Platform API is running!',
+    timestamp: new Date().toISOString(),
+    version: '1.0.0',
+  });
+});
+
+// Root route
+app.get('/', (req: Request, res: Response) => {
+  res.json({
+    message: 'Welcome to Nigerian Real Estate Platform API',
+    version: '1.0.0',
+    endpoints: {
+      health: '/api/health',
+      admin: '/api/admin',
+      reports: '/api/reports',
+      payments: '/api/payments',
+      verification: '/api/verification',
+      agent: '/api/agent',
+    },
+  });
+});
+
+// API Routes
+app.use('/api/admin', adminRoutes);
+app.use('/api/reports', reportsRoutes);
+app.use('/api/payments', paymentsRoutes);
+app.use('/api/verification', verificationRoutes);
+app.use('/api/agent', agentRoutes);
+
+// 404 handler
+app.use((req: Request, res: Response) => {
+  res.status(404).json({
+    error: 'Not Found',
+    message: `Route ${req.method} ${req.path} not found`,
+  });
+});
+
+// Error handler
+app.use((err: any, req: Request, res: Response, next: any) => {
+  console.error('Error:', err);
+  res.status(err.status || 500).json({
+    error: err.message || 'Internal Server Error',
+    ...(process.env.NODE_ENV === 'development' && { stack: err.stack }),
+  });
+});
+
+// Start server
+app.listen(PORT, () => {
+  console.log(`🚀 Server running on http://localhost:${PORT}`);
+  console.log(`📡 API Health: http://localhost:${PORT}/api/health`);
+  console.log(`🔒 Security: Enabled`);
+  console.log(`📊 Rate Limiting: Enabled`);
+});
+
+export default app;
+
