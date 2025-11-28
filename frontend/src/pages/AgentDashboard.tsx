@@ -185,36 +185,61 @@ export default function AgentDashboard() {
     setUploading(true);
 
     try {
-      // Get session token for API call
-      const { data: { session } } = await supabase.auth.getSession();
-      if (!session) {
-        throw new Error('No active session');
+      if (!agentProfile) {
+        throw new Error('Agent profile not found');
       }
 
-      // Create FormData for file upload
-      const formData = new FormData();
-      formData.append('document', uploadForm.file);
-      formData.append('document_type', uploadForm.document_type);
+      // Upload file directly to Supabase Storage
+      const fileName = `${user.id}/${Date.now()}_${uploadForm.file.name}`;
+      const filePath = `verifications/${fileName}`;
+
+      const { error: uploadError } = await supabase.storage
+        .from('verification-documents')
+        .upload(filePath, uploadForm.file, {
+          cacheControl: '3600',
+          upsert: false,
+        });
+
+      if (uploadError) {
+        throw new Error('Failed to upload document: ' + uploadError.message);
+      }
+
+      // Get public URL (or signed URL for private bucket)
+      const { data: urlData } = supabase.storage
+        .from('verification-documents')
+        .getPublicUrl(filePath);
+
+      if (!urlData?.publicUrl) {
+        throw new Error('Failed to get document URL');
+      }
+
+      // Create verification record in database
+      const verificationData: any = {
+        entity_type: 'agent',
+        entity_id: agentProfile.id,
+        document_type: uploadForm.document_type,
+        document_url: urlData.publicUrl,
+        status: 'pending',
+      };
+
       if (uploadForm.notes) {
-        formData.append('notes', uploadForm.notes);
+        verificationData.review_notes = uploadForm.notes;
       }
+
       if (uploadForm.expiry_date && uploadForm.document_type === 'license') {
-        formData.append('expiry_date', uploadForm.expiry_date);
+        verificationData.expiry_date = uploadForm.expiry_date;
       }
 
-      // Submit to backend
-      const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/agent/verification/submit`, {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${session.access_token}`,
-        },
-        body: formData,
-      });
+      const { error: insertError } = await supabase
+        .from('verifications')
+        .insert(verificationData);
 
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.error || 'Failed to submit document');
+      if (insertError) {
+        // Try to delete the uploaded file if database insert fails
+        await supabase.storage
+          .from('verification-documents')
+          .remove([filePath]);
+        throw new Error('Failed to create verification record: ' + insertError.message);
       }
 
       setUploadSuccess('Document submitted successfully! It will be reviewed within 2-5 business days.');

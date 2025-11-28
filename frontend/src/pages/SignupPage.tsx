@@ -102,39 +102,39 @@ export default function SignupPage() {
                 onClick={() => setUserType('buyer')}
                 className={`p-4 border-2 rounded-lg text-center transition-all ${
                   userType === 'buyer'
-                    ? 'border-primary-600 bg-primary-50 text-primary-700'
+                    ? 'border-primary-600 bg-primary-50'
                     : 'border-gray-200 hover:border-gray-300'
                 }`}
               >
                 <div className="text-2xl mb-2">🏠</div>
-                <div className="text-sm font-semibold">Buyer</div>
-                <div className="text-xs text-gray-500 mt-1">Find properties</div>
+                <div className={`text-sm font-semibold ${userType === 'buyer' ? 'text-black' : 'text-black'}`}>Buyer</div>
+                <div className="text-xs text-black mt-1">Find properties</div>
               </button>
               <button
                 type="button"
                 onClick={() => setUserType('seller')}
                 className={`p-4 border-2 rounded-lg text-center transition-all ${
                   userType === 'seller'
-                    ? 'border-primary-600 bg-primary-50 text-primary-700'
+                    ? 'border-primary-600 bg-primary-50'
                     : 'border-gray-200 hover:border-gray-300'
                 }`}
               >
                 <div className="text-2xl mb-2">🏘️</div>
-                <div className="text-sm font-semibold">Seller</div>
-                <div className="text-xs text-gray-500 mt-1">List properties</div>
+                <div className={`text-sm font-semibold ${userType === 'seller' ? 'text-black' : 'text-black'}`}>Seller</div>
+                <div className="text-xs text-black mt-1">List properties</div>
               </button>
               <button
                 type="button"
                 onClick={() => setUserType('agent')}
                 className={`p-4 border-2 rounded-lg text-center transition-all ${
                   userType === 'agent'
-                    ? 'border-primary-600 bg-primary-50 text-primary-700'
+                    ? 'border-primary-600 bg-primary-50'
                     : 'border-gray-200 hover:border-gray-300'
                 }`}
               >
                 <div className="text-2xl mb-2">👔</div>
-                <div className="text-sm font-semibold">Agent</div>
-                <div className="text-xs text-gray-500 mt-1">Help clients</div>
+                <div className={`text-sm font-semibold ${userType === 'agent' ? 'text-black' : 'text-black'}`}>Agent</div>
+                <div className="text-xs text-black mt-1">Help clients</div>
               </button>
             </div>
           </div>
