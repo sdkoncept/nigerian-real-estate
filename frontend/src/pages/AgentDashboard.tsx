@@ -206,7 +206,7 @@ export default function AgentDashboard() {
       if (fileInput) fileInput.value = '';
 
       // Reload data
-      await loadAgentData();
+      await loadUserData();
     } catch (error: any) {
       console.error('Error submitting document:', error);
       setUploadError(error.message || 'Failed to submit document. Please try again.');

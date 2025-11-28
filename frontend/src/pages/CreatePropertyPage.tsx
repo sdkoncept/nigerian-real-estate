@@ -69,7 +69,7 @@ export default function CreatePropertyPage() {
           const fileName = `${user.id}/${Date.now()}_${file.name}`;
           const filePath = `properties/${fileName}`;
 
-          const { data: uploadData, error: uploadError } = await supabase.storage
+          const { error: uploadError } = await supabase.storage
             .from('property-images')
             .upload(filePath, file, {
               cacheControl: '3600',
@@ -104,7 +104,7 @@ export default function CreatePropertyPage() {
         .filter(a => a.length > 0);
 
       // Create property
-      const { data, error: insertError } = await supabase
+      const { error: insertError } = await supabase
         .from('properties')
         .insert({
           title: formData.title,

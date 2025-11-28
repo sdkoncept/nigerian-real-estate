@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import Layout from '../components/Layout';
-import { useAuth } from '../contexts/AuthContext';
 import { supabase } from '../lib/supabase';
 import SecureInput from '../components/SecureInput';
 
@@ -18,12 +17,10 @@ interface User {
 }
 
 export default function AdminUsersPage() {
-  const { user } = useAuth();
   const [users, setUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState<'all' | 'buyer' | 'seller' | 'agent' | 'admin'>('all');
   const [searchTerm, setSearchTerm] = useState('');
-  const [selectedUser, setSelectedUser] = useState<User | null>(null);
   const [editingUser, setEditingUser] = useState<User | null>(null);
   const [editForm, setEditForm] = useState({
     full_name: '',
@@ -137,7 +134,7 @@ export default function AdminUsersPage() {
       });
 
       // Update in database
-      const { data, error } = await supabase
+      const { error } = await supabase
         .from('profiles')
         .update({
           full_name: editForm.full_name || null,
@@ -146,9 +143,7 @@ export default function AdminUsersPage() {
           is_verified: editForm.is_verified,
           updated_at: new Date().toISOString(),
         })
-        .eq('id', userIdToUpdate)
-        .select()
-        .single();
+        .eq('id', userIdToUpdate);
 
       if (error) {
         // Revert optimistic update on error
@@ -346,15 +341,9 @@ export default function AdminUsersPage() {
                       <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                         <button
                           onClick={() => handleEditUser(user)}
-                          className="text-purple-600 hover:text-purple-900 mr-4"
+                          className="text-purple-600 hover:text-purple-900"
                         >
                           Edit
-                        </button>
-                        <button
-                          onClick={() => setSelectedUser(user)}
-                          className="text-blue-600 hover:text-blue-900"
-                        >
-                          View
                         </button>
                       </td>
                     </tr>

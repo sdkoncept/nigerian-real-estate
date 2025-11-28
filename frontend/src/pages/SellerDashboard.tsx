@@ -62,7 +62,7 @@ export default function SellerDashboard() {
         // Calculate stats
         setStats({
           total: transformedProperties.length,
-          active: transformedProperties.filter(p => true).length, // All are active if loaded
+          active: transformedProperties.length, // All are active if loaded
           pending: transformedProperties.filter(p => p.verification_status === 'pending').length,
           verified: transformedProperties.filter(p => p.verification_status === 'verified').length,
         });

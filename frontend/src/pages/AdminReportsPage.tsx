@@ -22,8 +22,6 @@ interface Report {
   entity_name?: string;
 }
 
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
-
 export default function AdminReportsPage() {
   const { user } = useAuth();
   const { isAdmin } = useUserProfile();
@@ -106,7 +104,7 @@ export default function AdminReportsPage() {
 
     try {
       setProcessing(true);
-      const { user } = await supabase.auth.getUser();
+      const { data: { user } } = await supabase.auth.getUser();
       if (!user) throw new Error('Not authenticated');
 
       // Update report directly in Supabase

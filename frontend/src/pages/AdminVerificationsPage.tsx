@@ -20,9 +20,6 @@ interface Verification {
   entity_email?: string;
 }
 
-// Using Supabase directly for reads, backend API for writes
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
-
 export default function AdminVerificationsPage() {
   const { user } = useAuth();
   const { isAdmin } = useUserProfile();
@@ -105,7 +102,7 @@ export default function AdminVerificationsPage() {
 
     try {
       setProcessing(true);
-      const { user } = await supabase.auth.getUser();
+      const { data: { user } } = await supabase.auth.getUser();
       if (!user) throw new Error('Not authenticated');
 
       // Update verification status directly in Supabase
@@ -157,7 +154,7 @@ export default function AdminVerificationsPage() {
 
     try {
       setProcessing(true);
-      const { user } = await supabase.auth.getUser();
+      const { data: { user } } = await supabase.auth.getUser();
       if (!user) throw new Error('Not authenticated');
 
       // Update verification status directly in Supabase
