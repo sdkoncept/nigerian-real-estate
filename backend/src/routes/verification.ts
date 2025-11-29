@@ -165,5 +165,81 @@ router.post('/phone/verify', authLimiter, authenticate, validate(verifyPhoneSche
   }
 });
 
+/**
+ * Request WhatsApp verification code
+ */
+router.post('/whatsapp/request', authLimiter, authenticate, async (req: AuthRequest, res: Response) => {
+  try {
+    if (!req.user) {
+      return res.status(401).json({ error: 'Unauthorized' });
+    }
+
+    const { phone } = req.body;
+
+    if (!phone) {
+      return res.status(400).json({ error: 'Phone number is required' });
+    }
+
+    const result = await whatsappService.sendVerificationCode(phone);
+
+    if (result.success) {
+      res.json({
+        success: true,
+        message: result.message || 'Verification code sent via WhatsApp',
+      });
+    } else {
+      res.status(400).json({
+        success: false,
+        error: result.error || 'Failed to send verification code',
+      });
+    }
+  } catch (error: any) {
+    console.error('WhatsApp verification request error:', error);
+    res.status(500).json({ error: 'Failed to send verification code' });
+  }
+});
+
+/**
+ * Verify WhatsApp code
+ */
+router.post('/whatsapp/verify', authLimiter, authenticate, async (req: AuthRequest, res: Response) => {
+  try {
+    if (!req.user) {
+      return res.status(401).json({ error: 'Unauthorized' });
+    }
+
+    const { phone, code } = req.body;
+
+    if (!phone || !code) {
+      return res.status(400).json({ error: 'Phone number and code are required' });
+    }
+
+    const result = await whatsappService.verifyCode(phone, code);
+
+    if (result.success) {
+      // Update user profile
+      if (supabaseAdmin) {
+        await supabaseAdmin
+          .from('profiles')
+          .update({ phone, is_verified: true })
+          .eq('id', req.user.id);
+      }
+
+      res.json({
+        success: true,
+        message: result.message || 'Phone number verified successfully',
+      });
+    } else {
+      res.status(400).json({
+        success: false,
+        error: result.error || 'Invalid verification code',
+      });
+    }
+  } catch (error: any) {
+    console.error('WhatsApp verification error:', error);
+    res.status(500).json({ error: 'Phone verification failed' });
+  }
+});
+
 export default router;
 
