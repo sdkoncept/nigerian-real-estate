@@ -138,10 +138,74 @@ export default function CreatePropertyPage() {
         throw insertError;
       }
 
-      // If featured listing was selected, prompt for payment
+      // If featured listing was selected, initiate payment
       if (formData.is_featured && propertyData) {
-        // TODO: Integrate Paystack payment for featured listing
-        alert('Featured listing selected! Payment integration coming soon. Your property will be featured after payment confirmation.');
+        try {
+          // Get session token
+          const { data: { session } } = await supabase.auth.getSession();
+          if (!session) {
+            throw new Error('Please log in to continue');
+          }
+
+          // Import PaymentService dynamically to avoid circular dependencies
+          const { PaymentService } = await import('../services/payment');
+
+          // Initialize featured listing payment
+          const paymentResult = await PaymentService.initializePayment(
+            {
+              amount: 2000, // ₦2,000 per month
+              currency: 'NGN',
+              payment_type: 'featured_listing',
+              entity_id: propertyData.id,
+              description: `Featured Listing - ${formData.title}`,
+            },
+            session.access_token
+          );
+
+          if (!paymentResult.success || !paymentResult.authorization_url) {
+            throw new Error(paymentResult.error || 'Failed to initialize payment');
+          }
+
+          // Open Paystack payment window
+          const paymentCompleted = await PaymentService.openPaymentWindow(
+            paymentResult.authorization_url
+          );
+
+          if (paymentCompleted && paymentResult.reference) {
+            // Verify payment
+            const verifyResult = await PaymentService.verifyPayment(
+              paymentResult.reference,
+              session.access_token
+            );
+
+            if (verifyResult.success) {
+              // Create featured listing record
+              const featuredUntil = new Date();
+              featuredUntil.setMonth(featuredUntil.getMonth() + 1); // 1 month from now
+
+              const { error: featuredError } = await supabase
+                .from('featured_listings')
+                .insert({
+                  property_id: propertyData.id,
+                  featured_until: featuredUntil.toISOString(),
+                  priority: 1,
+                });
+
+              if (featuredError) {
+                console.error('Error creating featured listing:', featuredError);
+                // Payment succeeded but featured listing creation failed
+                alert('Payment successful! However, there was an error activating featured status. Please contact support.');
+              } else {
+                alert('Payment successful! Your property is now featured for 1 month.');
+              }
+            } else {
+              throw new Error('Payment verification failed. Please contact support.');
+            }
+          }
+        } catch (paymentError: any) {
+          console.error('Featured listing payment error:', paymentError);
+          alert(`Payment error: ${paymentError.message}. Your property has been created but is not featured. You can upgrade later.`);
+        }
       }
 
       // Success - redirect to property detail or dashboard

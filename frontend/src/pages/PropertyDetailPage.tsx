@@ -117,10 +117,44 @@ export default function PropertyDetailPage() {
       return;
     }
 
-    // TODO: Implement contact form submission to backend
-    alert('Contact form submitted! (This will be connected to backend)');
-    setShowContactForm(false);
-    setContactForm({ ...contactForm, message: '' });
+    // Submit message via Supabase
+    try {
+      if (!user || !property) return;
+
+      // Get property owner from database if property is from database
+      let recipientId = property.id; // Default fallback
+      
+      if (isValidUUID(property.id)) {
+        const { data: propertyData } = await supabase
+          .from('properties')
+          .select('user_id')
+          .eq('id', property.id)
+          .single();
+        
+        if (propertyData?.user_id) {
+          recipientId = propertyData.user_id;
+        }
+      }
+
+      const { error } = await supabase.from('messages').insert({
+        sender_id: user.id,
+        recipient_id: recipientId,
+        property_id: isValidUUID(property.id) ? property.id : null,
+        subject: `Inquiry about ${property.title}`,
+        message: contactForm.message,
+      });
+
+      if (error) {
+        throw error;
+      }
+
+      alert('Message sent successfully! The property owner will be notified.');
+      setShowContactForm(false);
+      setContactForm({ ...contactForm, message: '' });
+    } catch (error: any) {
+      console.error('Error sending message:', error);
+      alert('Error sending message: ' + error.message);
+    }
   };
 
   const handleShare = () => {

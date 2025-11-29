@@ -41,10 +41,28 @@ export default function AgentDetailPage() {
 
   const handleContactSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // TODO: Implement contact form submission
-    alert('Contact form submitted! (This will be connected to backend)');
-    setShowContactForm(false);
-    setContactForm({ ...contactForm, message: '' });
+    // Submit message via Supabase
+    try {
+      if (!user || !agent) return;
+
+      const { error } = await supabase.from('messages').insert({
+        sender_id: user.id,
+        recipient_id: agent.user_id,
+        subject: `Inquiry for ${agent.full_name || 'Agent'}`,
+        message: contactForm.message,
+      });
+
+      if (error) {
+        throw error;
+      }
+
+      alert('Message sent successfully! The agent will be notified.');
+      setShowContactForm(false);
+      setContactForm({ ...contactForm, message: '' });
+    } catch (error: any) {
+      console.error('Error sending message:', error);
+      alert('Error sending message: ' + error.message);
+    }
   };
 
   const avatarUrl = agent.avatar_url || 'https://picsum.photos/200/200?random=agent';

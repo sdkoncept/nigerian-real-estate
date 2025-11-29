@@ -100,5 +100,8 @@ export const paymentSchema = z.object({
   property_id: schemas.uuid.optional(),
   description: z.string().max(500).optional(),
   callback_url: z.string().url().optional(),
+  payment_type: z.enum(['subscription', 'featured_listing', 'verification_fee']).optional(),
+  plan_type: z.enum(['premium', 'enterprise', 'professional']).optional(),
+  entity_id: schemas.uuid.optional(),
 });
 

@@ -33,8 +33,21 @@ export default function PropertyListingPage() {
         // Fallback to sample properties if database query fails
         setProperties(sampleProperties);
       } else if (data && data.length > 0) {
+        // Get featured listings
+        const { data: featuredData } = await supabase
+          .from('featured_listings')
+          .select('property_id, priority, featured_until')
+          .gt('featured_until', new Date().toISOString());
+
+        const featuredPropertyIds = new Set(
+          (featuredData || []).map((f: any) => f.property_id)
+        );
+        const featuredPriorities = new Map(
+          (featuredData || []).map((f: any) => [f.property_id, f.priority || 0])
+        );
+
         // Transform database properties to Property type
-        const transformedProperties: Property[] = data.map((p: any) => ({
+        let transformedProperties: Property[] = data.map((p: any) => ({
           id: p.id,
           title: p.title,
           description: p.description,
@@ -49,9 +62,23 @@ export default function PropertyListingPage() {
           bathrooms: p.bathrooms,
           sqm: p.sqm ? parseFloat(p.sqm) : undefined,
           images: p.images || [],
-          is_featured: p.is_featured || false,
+          is_featured: featuredPropertyIds.has(p.id) || p.is_featured || false,
           verification_status: p.verification_status || 'pending',
         }));
+
+        // Sort: Featured first (by priority), then by created_at
+        transformedProperties.sort((a, b) => {
+          const aFeatured = a.is_featured ? (featuredPriorities.get(a.id) || 0) : -1;
+          const bFeatured = b.is_featured ? (featuredPriorities.get(b.id) || 0) : -1;
+          
+          if (aFeatured !== bFeatured) {
+            return bFeatured - aFeatured; // Higher priority first
+          }
+          
+          // If both featured or both not featured, sort by date
+          return 0; // Will be sorted by sortBy later
+        });
+
         setProperties(transformedProperties);
       } else {
         // No properties in database, use sample data

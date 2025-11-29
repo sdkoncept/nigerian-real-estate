@@ -132,6 +132,27 @@ export default function Header() {
                     >
                       Favorites
                     </Link>
+                    <Link
+                      to="/messages"
+                      className="block px-4 py-2 text-gray-700 hover:bg-gray-100 transition-colors"
+                      onClick={() => setIsUserMenuOpen(false)}
+                    >
+                      Messages
+                    </Link>
+                    <Link
+                      to="/map"
+                      className="block px-4 py-2 text-gray-700 hover:bg-gray-100 transition-colors"
+                      onClick={() => setIsUserMenuOpen(false)}
+                    >
+                      Map View
+                    </Link>
+                    <Link
+                      to="/subscription"
+                      className="block px-4 py-2 text-gray-700 hover:bg-gray-100 transition-colors"
+                      onClick={() => setIsUserMenuOpen(false)}
+                    >
+                      My Subscription
+                    </Link>
                     <hr className="my-2" />
                     <button
                       onClick={handleSignOut}

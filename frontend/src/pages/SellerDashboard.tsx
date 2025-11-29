@@ -15,7 +15,9 @@ export default function SellerDashboard() {
     active: 0,
     pending: 0,
     verified: 0,
+    featured: 0,
   });
+  const [featuredListings, setFeaturedListings] = useState<Map<string, any>>(new Map());
 
   useEffect(() => {
     if (user) {
@@ -37,6 +39,22 @@ export default function SellerDashboard() {
       if (error) {
         console.error('Error loading properties:', error);
       } else if (data) {
+        // Get featured listings
+        const propertyIds = data.map((p: any) => p.id);
+        const { data: featuredData } = await supabase
+          .from('featured_listings')
+          .select('property_id, featured_until, priority')
+          .in('property_id', propertyIds)
+          .gt('featured_until', new Date().toISOString());
+
+        const featuredMap = new Map();
+        if (featuredData) {
+          featuredData.forEach((f: any) => {
+            featuredMap.set(f.property_id, f);
+          });
+        }
+        setFeaturedListings(featuredMap);
+
         // Transform database properties to Property type
         const transformedProperties: Property[] = data.map((p: any) => ({
           id: p.id,
@@ -53,7 +71,7 @@ export default function SellerDashboard() {
           bathrooms: p.bathrooms,
           sqm: p.sqm ? parseFloat(p.sqm) : undefined,
           images: p.images || [],
-          is_featured: p.is_featured,
+          is_featured: featuredMap.has(p.id) || p.is_featured || false,
           verification_status: p.verification_status,
         }));
 
@@ -62,9 +80,10 @@ export default function SellerDashboard() {
         // Calculate stats
         setStats({
           total: transformedProperties.length,
-          active: transformedProperties.length, // All are active if loaded
+          active: transformedProperties.length,
           pending: transformedProperties.filter(p => p.verification_status === 'pending').length,
           verified: transformedProperties.filter(p => p.verification_status === 'verified').length,
+          featured: transformedProperties.filter(p => p.is_featured).length,
         });
       }
     } catch (error) {
@@ -147,6 +166,10 @@ export default function SellerDashboard() {
               <div className="text-3xl font-bold text-blue-600 mb-2">{stats.verified}</div>
               <div className="text-sm text-gray-600">Verified Properties</div>
             </div>
+            <div className="bg-white rounded-lg shadow-md p-6">
+              <div className="text-3xl font-bold text-yellow-600 mb-2">{stats.featured}</div>
+              <div className="text-sm text-gray-600">Featured Listings</div>
+            </div>
           </div>
 
           {/* Properties List */}
@@ -180,19 +203,34 @@ export default function SellerDashboard() {
                 {properties.map((property) => (
                   <div key={property.id} className="relative">
                     <PropertyCard property={property} />
-                    <div className="mt-2 flex gap-2">
-                      <Link
-                        to={`/seller/properties/${property.id}/edit`}
-                        className="flex-1 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm font-semibold text-center"
-                      >
-                        Edit
-                      </Link>
-                      <button
-                        onClick={() => handleDeleteProperty(property.id)}
-                        className="flex-1 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors text-sm font-semibold"
-                      >
-                        Delete
-                      </button>
+                    <div className="mt-2 space-y-2">
+                      <div className="flex gap-2">
+                        <Link
+                          to={`/seller/properties/${property.id}/edit`}
+                          className="flex-1 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm font-semibold text-center"
+                        >
+                          Edit
+                        </Link>
+                        <button
+                          onClick={() => handleDeleteProperty(property.id)}
+                          className="flex-1 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors text-sm font-semibold"
+                        >
+                          Delete
+                        </button>
+                      </div>
+                      {!property.is_featured && (
+                        <Link
+                          to={`/pricing?feature=${property.id}`}
+                          className="block w-full px-4 py-2 bg-yellow-500 text-white rounded-lg hover:bg-yellow-600 transition-colors text-sm font-semibold text-center"
+                        >
+                          ⭐ Make Featured (₦2,000/mo)
+                        </Link>
+                      )}
+                      {property.is_featured && featuredListings.has(property.id) && (
+                        <div className="px-4 py-2 bg-yellow-50 border border-yellow-200 rounded-lg text-sm text-yellow-800 text-center">
+                          ⭐ Featured until {new Date(featuredListings.get(property.id).featured_until).toLocaleDateString()}
+                        </div>
+                      )}
                     </div>
                   </div>
                 ))}

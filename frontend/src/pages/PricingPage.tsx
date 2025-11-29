@@ -1,10 +1,15 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Layout from '../components/Layout';
 import { useAuth } from '../contexts/AuthContext';
+import { supabase } from '../lib/supabase';
+import { PaymentService } from '../services/payment';
 
 export default function PricingPage() {
   const { user } = useAuth();
-  const [, setSelectedPlan] = useState<string | null>(null);
+  const navigate = useNavigate();
+  const [processing, setProcessing] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
 
   const plans = {
     seller: [
@@ -96,19 +101,79 @@ export default function PricingPage() {
     ],
   };
 
-  const handleSelectPlan = (planName: string, price: number) => {
+  const handleSelectPlan = async (planName: string, price: number, userType: 'seller' | 'agent') => {
+    if (!user) {
+      navigate('/signup');
+      return;
+    }
+
     if (price === 0) {
-      // Free plan - redirect to signup or dashboard
-      if (!user) {
-        window.location.href = '/signup';
+      // Free plan - redirect to dashboard
+      if (userType === 'seller') {
+        navigate('/seller/dashboard');
       } else {
-        window.location.href = '/seller/dashboard';
+        navigate('/agent/dashboard');
       }
-    } else {
-      // Paid plan - initiate payment
-      setSelectedPlan(planName);
-      // TODO: Integrate Paystack payment
-      alert(`Payment integration coming soon! Plan: ${planName} - ₦${price.toLocaleString()}/month`);
+      return;
+    }
+
+    // Paid plan - initiate payment
+    try {
+      setProcessing(planName);
+      setError(null);
+
+      // Get session token
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session) {
+        throw new Error('Please log in to continue');
+      }
+
+      // Determine plan type
+      let planType: 'premium' | 'enterprise' | 'professional' = 'premium';
+      if (planName === 'Enterprise') planType = 'enterprise';
+      if (planName === 'Professional') planType = 'professional';
+
+      // Initialize payment
+      const paymentResult = await PaymentService.initializePayment(
+        {
+          amount: price,
+          currency: 'NGN',
+          payment_type: 'subscription',
+          plan_type: planType,
+          description: `${planName} Plan - ${userType === 'seller' ? 'Seller' : 'Agent'} Subscription`,
+        },
+        session.access_token
+      );
+
+      if (!paymentResult.success || !paymentResult.authorization_url) {
+        throw new Error(paymentResult.error || 'Failed to initialize payment');
+      }
+
+      // Open Paystack payment window
+      const paymentCompleted = await PaymentService.openPaymentWindow(
+        paymentResult.authorization_url
+      );
+
+      if (paymentCompleted && paymentResult.reference) {
+        // Verify payment
+        const verifyResult = await PaymentService.verifyPayment(
+          paymentResult.reference,
+          session.access_token
+        );
+
+        if (verifyResult.success) {
+          alert(`Payment successful! Your ${planName} subscription is now active.`);
+          // Reload to show updated subscription status
+          window.location.reload();
+        } else {
+          throw new Error('Payment verification failed. Please contact support.');
+        }
+      }
+    } catch (err: any) {
+      console.error('Payment error:', err);
+      setError(err.message || 'Payment failed. Please try again.');
+    } finally {
+      setProcessing(null);
     }
   };
 
@@ -126,6 +191,12 @@ export default function PricingPage() {
         </div>
 
         <div className="container mx-auto px-4 py-16">
+          {error && (
+            <div className="mb-8 p-4 bg-red-50 border border-red-200 rounded-lg text-red-800 text-center">
+              {error}
+            </div>
+          )}
+
           {/* Seller Plans */}
           <div className="mb-16">
             <div className="text-center mb-12">
@@ -178,14 +249,15 @@ export default function PricingPage() {
                   </ul>
 
                   <button
-                    onClick={() => handleSelectPlan(plan.name, plan.price)}
-                    className={`w-full py-3 rounded-lg font-bold transition-all ${
+                    onClick={() => handleSelectPlan(plan.name, plan.price, 'seller')}
+                    disabled={processing === plan.name}
+                    className={`w-full py-3 rounded-lg font-bold transition-all disabled:opacity-50 disabled:cursor-not-allowed ${
                       plan.popular
                         ? 'bg-primary-600 text-white hover:bg-primary-700'
                         : 'bg-gray-100 text-gray-900 hover:bg-gray-200'
                     }`}
                   >
-                    {plan.cta}
+                    {processing === plan.name ? 'Processing...' : plan.cta}
                   </button>
                 </div>
               ))}
@@ -244,14 +316,15 @@ export default function PricingPage() {
                   </ul>
 
                   <button
-                    onClick={() => handleSelectPlan(plan.name, plan.price)}
-                    className={`w-full py-3 rounded-lg font-bold transition-all ${
+                    onClick={() => handleSelectPlan(plan.name, plan.price, 'seller')}
+                    disabled={processing === plan.name}
+                    className={`w-full py-3 rounded-lg font-bold transition-all disabled:opacity-50 disabled:cursor-not-allowed ${
                       plan.popular
                         ? 'bg-primary-600 text-white hover:bg-primary-700'
                         : 'bg-gray-100 text-gray-900 hover:bg-gray-200'
                     }`}
                   >
-                    {plan.cta}
+                    {processing === plan.name ? 'Processing...' : plan.cta}
                   </button>
                 </div>
               ))}

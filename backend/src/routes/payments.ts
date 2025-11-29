@@ -24,7 +24,16 @@ router.post('/paystack/initialize', validate(paymentSchema), async (req: AuthReq
       return res.status(401).json({ error: 'Unauthorized' });
     }
 
-    const { amount, currency, property_id, description, callback_url } = req.body;
+    const { 
+      amount, 
+      currency, 
+      property_id, 
+      description, 
+      callback_url,
+      payment_type,
+      plan_type,
+      entity_id
+    } = req.body;
 
     const result = await paystackService.initializePayment({
       amount,
@@ -34,6 +43,9 @@ router.post('/paystack/initialize', validate(paymentSchema), async (req: AuthReq
         user_id: req.user.id,
         property_id: property_id || null,
         description: description || 'Property Payment',
+        payment_type: payment_type || 'subscription',
+        plan_type: plan_type || null,
+        entity_id: entity_id || null,
       },
       callback_url: callback_url || `${process.env.FRONTEND_URL || 'http://localhost:5173'}/payment/callback`,
     });
@@ -58,7 +70,7 @@ router.post('/paystack/initialize', validate(paymentSchema), async (req: AuthReq
 });
 
 /**
- * Verify Paystack payment
+ * Verify Paystack payment and process subscription/featured listing
  */
 router.post('/paystack/verify', async (req: AuthRequest, res: Response) => {
   try {
@@ -71,9 +83,18 @@ router.post('/paystack/verify', async (req: AuthRequest, res: Response) => {
     const result = await paystackService.verifyPayment(reference);
 
     if (result.success) {
+      // Get payment details from Paystack to extract metadata
+      const paymentData = result as any;
+      const metadata = paymentData.metadata || {};
+
+      // Create payment record in database
+      // TODO: Integrate with Supabase to create payment record
+      // This will be handled by a webhook or direct Supabase call
+
       res.json({
         success: true,
         message: 'Payment verified successfully',
+        metadata,
       });
     } else {
       res.status(400).json({
@@ -84,6 +105,38 @@ router.post('/paystack/verify', async (req: AuthRequest, res: Response) => {
   } catch (error: any) {
     console.error('Paystack verification error:', error);
     res.status(500).json({ error: 'Payment verification failed' });
+  }
+});
+
+/**
+ * Paystack webhook handler
+ * Handles payment callbacks from Paystack
+ */
+router.post('/paystack/webhook', async (req: any, res: Response) => {
+  try {
+    // Verify webhook signature (implement Paystack webhook verification)
+    const event = req.body;
+
+    if (event.event === 'charge.success') {
+      const { reference, metadata, amount, customer } = event.data;
+
+      // Process payment based on type
+      if (metadata?.payment_type === 'subscription') {
+        // Create subscription record
+        // TODO: Insert into subscriptions table via Supabase
+      } else if (metadata?.payment_type === 'featured_listing') {
+        // Create featured listing record
+        // TODO: Insert into featured_listings table via Supabase
+      }
+
+      // Create payment record
+      // TODO: Insert into payments table via Supabase
+    }
+
+    res.status(200).json({ received: true });
+  } catch (error: any) {
+    console.error('Webhook error:', error);
+    res.status(500).json({ error: 'Webhook processing failed' });
   }
 });
 

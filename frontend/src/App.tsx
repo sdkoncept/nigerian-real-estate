@@ -20,6 +20,11 @@ import AdminVerificationsPage from './pages/AdminVerificationsPage'
 import AdminReportsPage from './pages/AdminReportsPage'
 import AdminSettingsPage from './pages/AdminSettingsPage'
 import PricingPage from './pages/PricingPage'
+import SubscriptionPage from './pages/SubscriptionPage'
+import PaymentHistoryPage from './pages/PaymentHistoryPage'
+import MapViewPage from './pages/MapViewPage'
+import MessagesPage from './pages/MessagesPage'
+import ReviewsPage from './pages/ReviewsPage'
 
 function App() {
   const { user, loading } = useAuth()
@@ -73,6 +78,22 @@ function App() {
         element={
           <ProtectedRoute>
             <PricingPage />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/subscription"
+        element={
+          <ProtectedRoute>
+            <SubscriptionPage />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/payments"
+        element={
+          <ProtectedRoute>
+            <PaymentHistoryPage />
           </ProtectedRoute>
         }
       />
@@ -169,6 +190,30 @@ function App() {
         element={
           <ProtectedRoute>
             <AdminSettingsPage />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/map"
+        element={
+          <ProtectedRoute>
+            <MapViewPage />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/messages"
+        element={
+          <ProtectedRoute>
+            <MessagesPage />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/reviews/:type/:id"
+        element={
+          <ProtectedRoute>
+            <ReviewsPage />
           </ProtectedRoute>
         }
       />
