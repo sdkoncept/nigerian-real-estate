@@ -10,6 +10,7 @@ import { validate, schemas } from '../middleware/validation.js';
 import { z } from 'zod';
 import { emailService } from '../services/email.js';
 import { phoneService } from '../services/phone.js';
+import { whatsappService } from '../services/whatsapp.js';
 import { supabaseAdmin } from '../config/supabase.js';
 
 const router = Router();
