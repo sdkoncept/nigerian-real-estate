@@ -1,15 +1,209 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Layout from '../components/Layout';
 import AgentCard from '../components/AgentCard';
-import type { Agent } from '../data/sampleAgents';
-import { sampleAgents } from '../data/sampleAgents';
+import { supabase } from '../lib/supabase';
+
+// Agent interface - moved here to avoid importing from sampleAgents
+interface Agent {
+  id: string;
+  user_id: string;
+  license_number?: string;
+  company_name?: string;
+  bio?: string;
+  specialties: string[];
+  years_experience: number;
+  properties_sold: number;
+  rating: number;
+  total_reviews: number;
+  verification_status: 'pending' | 'verified' | 'rejected';
+  is_active: boolean;
+  full_name?: string;
+  email?: string;
+  phone?: string;
+  avatar_url?: string;
+  city?: string;
+  state?: string;
+}
 
 export default function AgentsPage() {
-  const [agents] = useState<Agent[]>(sampleAgents);
+  const [agents, setAgents] = useState<Agent[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedState, setSelectedState] = useState<string>('all');
   const [selectedVerification, setSelectedVerification] = useState<string>('all');
   const [sortBy, setSortBy] = useState<string>('rating');
+
+  useEffect(() => {
+    console.log('🚀 AgentsPage component mounted');
+    console.log('🚀 FORCING DATABASE LOAD - NO SAMPLE DATA');
+    // Clear any cached data
+    setAgents([]);
+    setLoading(true);
+    loadAgents();
+  }, []);
+
+  const loadAgents = async () => {
+    try {
+      setLoading(true);
+      console.log('=== AGENTS PAGE: Starting to load agents ===');
+      console.log('Supabase client:', supabase ? 'Initialized' : 'NOT INITIALIZED');
+      
+      // Test Supabase connection first
+      const { data: testData, error: testError } = await supabase
+        .from('agents')
+        .select('id')
+        .limit(1);
+      
+      if (testError) {
+        console.error('=== SUPABASE CONNECTION TEST FAILED ===');
+        console.error('Error:', testError);
+        console.error('Error code:', testError.code);
+        console.error('Error message:', testError.message);
+        console.error('Error details:', testError.details);
+        console.error('Error hint:', testError.hint);
+        setError(`Database connection error: ${testError.message || 'Unable to connect to database'}`);
+        setAgents([]);
+        setLoading(false);
+        return;
+      }
+      
+      console.log('✅ Supabase connection test passed');
+      console.log('🔄 Loading all agents from database...');
+      
+      // Load all agents from database
+      const { data: agentsData, error: agentsError } = await supabase
+        .from('agents')
+        .select('*')
+        .order('rating', { ascending: false });
+
+      if (agentsError) {
+        console.error('❌ Error loading agents:', agentsError);
+        console.error('Error code:', agentsError.code);
+        console.error('Error message:', agentsError.message);
+        console.error('Error details:', agentsError.details);
+        setError(`Error loading agents: ${agentsError.message || 'Unknown error'}`);
+        setAgents([]);
+        setLoading(false);
+        return;
+      }
+
+      if (!agentsData) {
+        console.warn('⚠️ No agents data returned (null or undefined)');
+        setAgents([]);
+        setLoading(false);
+        return;
+      }
+
+      if (agentsData.length === 0) {
+        console.log('ℹ️ No agents found in database');
+        setAgents([]);
+        setLoading(false);
+        return;
+      }
+
+      console.log(`✅ Loaded ${agentsData.length} agents from database`);
+      console.log('📊 Agent summary:', agentsData.map(a => ({
+        id: a.id,
+        user_id: a.user_id,
+        is_active: a.is_active,
+        verification_status: a.verification_status,
+        rating: a.rating
+      })));
+
+      // Filter out inactive agents (but keep NULL as active)
+      const activeAgents = agentsData.filter(agent => agent.is_active !== false);
+      console.log(`✅ ${activeAgents.length} active agents after filtering`);
+
+      // Get profile information for each agent
+      console.log('🔄 Loading profiles for agents...');
+      const agentsWithProfiles = await Promise.all(
+        activeAgents.map(async (agent: any) => {
+          try {
+            const { data: profile, error: profileError } = await supabase
+              .from('profiles')
+              .select('full_name, email, phone, avatar_url')
+              .eq('id', agent.user_id)
+              .single();
+
+            if (profileError) {
+              console.warn(`⚠️ Error loading profile for agent ${agent.id} (user_id: ${agent.user_id}):`, profileError);
+            }
+
+            const transformedAgent = {
+              ...agent,
+              full_name: profile?.full_name || 'Agent',
+              email: profile?.email || '',
+              phone: profile?.phone || '',
+              avatar_url: profile?.avatar_url || undefined,
+              // Ensure required fields have defaults
+              specialties: agent.specialties || [],
+              years_experience: agent.years_experience || 0,
+              properties_sold: agent.properties_sold || 0,
+              rating: agent.rating || 0,
+              total_reviews: agent.total_reviews || 0,
+              verification_status: agent.verification_status || 'pending',
+              is_active: agent.is_active !== undefined ? agent.is_active : true,
+              // Optional location fields
+              city: undefined,
+              state: undefined,
+            };
+
+            return transformedAgent;
+          } catch (error) {
+            console.error(`❌ Error processing agent ${agent.id}:`, error);
+            // Return agent with minimal data if profile fetch fails
+            return {
+              ...agent,
+              full_name: 'Agent',
+              email: '',
+              phone: '',
+              specialties: agent.specialties || [],
+              years_experience: agent.years_experience || 0,
+              properties_sold: agent.properties_sold || 0,
+              rating: agent.rating || 0,
+              total_reviews: agent.total_reviews || 0,
+              verification_status: agent.verification_status || 'pending',
+              is_active: agent.is_active !== undefined ? agent.is_active : true,
+            };
+          }
+        })
+      );
+
+      console.log(`✅ Successfully loaded ${agentsWithProfiles.length} agents with profiles`);
+      console.log('📋 Verification status breakdown:', {
+        verified: agentsWithProfiles.filter(a => a.verification_status === 'verified').length,
+        pending: agentsWithProfiles.filter(a => a.verification_status === 'pending').length,
+        rejected: agentsWithProfiles.filter(a => a.verification_status === 'rejected').length,
+      });
+      console.log('👤 Agent names:', agentsWithProfiles.map(a => a.full_name));
+      console.log('🎯 SETTING AGENTS FROM DATABASE - NOT SAMPLE DATA');
+      console.log('🎯 First agent ID:', agentsWithProfiles[0]?.id);
+      console.log('🎯 First agent name:', agentsWithProfiles[0]?.full_name);
+
+      // FORCE SET - This is from database, not sample data
+      setAgents(agentsWithProfiles);
+      
+      // Double check - log what we just set
+      setTimeout(() => {
+        console.log('🔍 Verification: Agents state after set:', agentsWithProfiles.length);
+      }, 100);
+    } catch (error) {
+      console.error('❌ Unexpected error loading agents:', error);
+      if (error instanceof Error) {
+        console.error('Error message:', error.message);
+        console.error('Error stack:', error.stack);
+        setError(`Unexpected error: ${error.message}`);
+      } else {
+        setError('An unexpected error occurred while loading agents');
+      }
+      setAgents([]);
+    } finally {
+      setLoading(false);
+      console.log('✅ Finished loading agents');
+      setError(null); // Clear error if we successfully loaded
+    }
+  };
 
   // Get unique states for filter
   const states = Array.from(new Set(agents.map(a => a.state).filter(Boolean))).sort();
@@ -135,15 +329,51 @@ export default function AgentsPage() {
             </div>
           </div>
 
-          {/* Results Count */}
-          <div className="mb-6">
-            <p className="text-gray-600">
-              Found <span className="font-semibold text-gray-900">{sortedAgents.length}</span> agent{sortedAgents.length !== 1 ? 's' : ''}
-            </p>
-          </div>
+          {/* Error State */}
+          {error && (
+            <div className="bg-red-50 border border-red-200 rounded-lg p-4 mb-6">
+              <div className="flex items-center">
+                <svg className="w-5 h-5 text-red-600 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                  <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
+                </svg>
+                <div>
+                  <h3 className="text-sm font-medium text-red-800">Error Loading Agents</h3>
+                  <p className="text-sm text-red-700 mt-1">{error}</p>
+                  <button
+                    onClick={() => {
+                      setError(null);
+                      loadAgents();
+                    }}
+                    className="mt-2 text-sm text-red-600 hover:text-red-800 underline"
+                  >
+                    Try again
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
 
-          {/* Agents Grid */}
-          {sortedAgents.length > 0 ? (
+          {/* Loading State */}
+          {loading ? (
+            <div className="flex justify-center items-center py-12">
+              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600"></div>
+            </div>
+          ) : (
+            <>
+              {/* Results Count */}
+              <div className="mb-6">
+                <p className="text-gray-600">
+                  Found <span className="font-semibold text-gray-900">{sortedAgents.length}</span> agent{sortedAgents.length !== 1 ? 's' : ''} from database
+                </p>
+                {sortedAgents.length > 0 && (
+                  <p className="text-xs text-gray-500 mt-1">
+                    ✅ Loaded from Supabase database (not sample data)
+                  </p>
+                )}
+              </div>
+
+              {/* Agents Grid */}
+              {sortedAgents.length > 0 ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {sortedAgents.map(agent => (
                 <AgentCard key={agent.id} agent={agent} />
@@ -164,6 +394,8 @@ export default function AgentsPage() {
                 Try adjusting your search or filter criteria
               </p>
             </div>
+          )}
+            </>
           )}
         </div>
       </div>
