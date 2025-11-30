@@ -6,7 +6,6 @@ import type { Property } from '../components/PropertyCard';
 export default function MapViewPage() {
   const [properties, setProperties] = useState<Property[]>([]);
   const [loading, setLoading] = useState(true);
-  const [selectedProperty, setSelectedProperty] = useState<Property | null>(null);
 
   useEffect(() => {
     loadProperties();

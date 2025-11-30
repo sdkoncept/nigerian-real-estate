@@ -8,16 +8,7 @@ To become a verified agent on the Nigerian Real Estate Platform, agents must sub
 
 Agents must submit the following documents:
 
-### 1. Real Estate Agent License (REQUIRED)
-- **What**: Valid Real Estate Agent License from a recognized Nigerian regulatory body
-- **Format**: PDF, JPG, or PNG
-- **Requirements**:
-  - License must be current and valid
-  - License number must be clearly visible
-  - License must be issued by a recognized authority (e.g., Real Estate Developers Association of Nigeria - REDAN, or state regulatory body)
-- **Example**: `REA/LAG/2020/001` format
-
-### 2. Government-Issued ID (REQUIRED)
+### 1. Government-Issued ID (REQUIRED)
 - **What**: Valid government-issued identification document
 - **Accepted Forms**:
   - National ID Card
@@ -31,12 +22,20 @@ Agents must submit the following documents:
   - Photo must be clearly visible
   - ID number must be readable
 
-### 3. Professional Credentials (OPTIONAL but Recommended)
+### 2. Business Registration (OPTIONAL but Recommended)
+- **What**: CAC Certificate of Incorporation or Business Name Registration
+- **Format**: PDF, JPG, or PNG
+- **Requirements**:
+  - Must be current and valid
+  - Company/business name must match profile
+- **Note**: This helps agents achieve "Trusted Agent" status
+
+### 3. Professional Credentials (OPTIONAL)
 - **What**: Additional professional certifications or credentials
 - **Examples**:
   - Real Estate Professional Certifications
   - Property Management Certifications
-  - Business Registration Documents (if operating as a company)
+  - Training Certificates
 - **Format**: PDF, JPG, or PNG
 
 ## Document Submission Process
@@ -44,9 +43,9 @@ Agents must submit the following documents:
 ### Step 1: Complete Agent Profile
 Before submitting documents, agents must:
 1. Verify their email address
-2. Complete their agent profile with:
+2. Verify their phone number
+3. Complete their agent profile with:
    - Full name
-   - License number
    - Company name (if applicable)
    - Bio/description
    - Specialties
@@ -71,12 +70,35 @@ Agents can upload verification documents through:
 ### Step 4: Verification Status
 After review, agents receive one of three statuses:
 
-#### ✅ Verified
-- All documents approved
-- Agent profile shows "Verified" badge
-- Agent can list properties
+#### ✅ Verified (Tiered System)
+Agents can achieve different verification tiers:
+
+**Platform Verified** (Level 1):
+- ID verified
+- Phone & email verified
+- Basic verification badge
+- Can list properties
+
+**Trusted Agent** (Level 2):
+- All Level 1 requirements
+- Bank account verified (optional)
+- Business registration (optional)
+- "Trusted Agent" badge
 - Higher search ranking
-- Access to premium features
+
+**Premium Agent** (Level 3):
+- All Level 2 requirements
+- 5+ successful transactions
+- 4.0+ rating
+- "Premium Agent" badge
+- Priority placement
+
+**Top Agent** (Level 4):
+- All Level 3 requirements
+- 20+ properties sold
+- 4.5+ rating
+- "Top Agent" badge
+- Featured placement
 
 #### ⏳ Pending
 - Documents submitted but not yet reviewed
@@ -90,14 +112,7 @@ After review, agents receive one of three statuses:
 
 ## Document Requirements Checklist
 
-### Real Estate License
-- [ ] License is current and valid
-- [ ] License number is clearly visible
-- [ ] Issued by recognized authority
-- [ ] Name on license matches account name
-- [ ] File is clear and readable (not blurry)
-
-### Government ID
+### Government ID (REQUIRED)
 - [ ] ID is current and not expired
 - [ ] Full name matches account name
 - [ ] Photo is clearly visible
@@ -133,25 +148,19 @@ Use descriptive names:
 ## Common Rejection Reasons
 
 Documents may be rejected if:
-1. **License Issues**:
-   - License is expired
-   - License number doesn't match profile
-   - License is from unrecognized authority
-   - License is illegible or blurry
-
-2. **ID Issues**:
+1. **ID Issues**:
    - ID is expired
    - Name doesn't match account name
    - Photo is not clearly visible
    - ID is illegible or blurry
 
-3. **File Issues**:
+2. **File Issues**:
    - File is corrupted or unreadable
    - File size exceeds limit
    - Wrong file format
    - File is not actually a document (wrong file uploaded)
 
-4. **Other Issues**:
+3. **Other Issues**:
    - Documents appear to be fake or altered
    - Information doesn't match profile details
    - Missing required documents
@@ -159,12 +168,13 @@ Documents may be rejected if:
 ## After Verification
 
 Once verified, agents can:
-- ✅ Display "Verified" badge on profile
-- ✅ List unlimited properties
+- ✅ Display verification badge on profile (tiered system)
+- ✅ List properties (unlimited for Premium/Top agents)
 - ✅ Access analytics dashboard
-- ✅ Receive priority in search results
+- ✅ Receive priority in search results (higher tiers get more priority)
 - ✅ Build trust with potential clients
-- ✅ Access premium features
+- ✅ Get 3x more inquiries than unverified agents
+- ✅ Access premium features (based on tier)
 
 ## Resubmission Process
 

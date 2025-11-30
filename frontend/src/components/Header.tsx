@@ -64,6 +64,18 @@ export default function Header() {
             >
               Pricing
             </Link>
+            <Link
+              to="/comparison"
+              className="text-gray-700 hover:text-primary-600 font-medium transition-colors"
+            >
+              Why Verified?
+            </Link>
+            <Link
+              to="/testimonials"
+              className="text-gray-700 hover:text-primary-600 font-medium transition-colors"
+            >
+              Success Stories
+            </Link>
 
             {/* User Menu */}
             {user ? (

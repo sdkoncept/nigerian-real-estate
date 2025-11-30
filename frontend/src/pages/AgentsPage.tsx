@@ -50,7 +50,7 @@ export default function AgentsPage() {
       console.log('Supabase client:', supabase ? 'Initialized' : 'NOT INITIALIZED');
       
       // Test Supabase connection first
-      const { data: testData, error: testError } = await supabase
+      const { error: testError } = await supabase
         .from('agents')
         .select('id')
         .limit(1);

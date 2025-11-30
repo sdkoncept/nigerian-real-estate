@@ -6,19 +6,19 @@ Yes, agents **must submit documentation** to become verified. Here's what's requ
 
 ### Required Documents:
 
-1. **Real Estate Agent License** (REQUIRED)
-   - Must be a valid license from a recognized Nigerian regulatory body
-   - Format: PDF, JPG, or PNG
-   - Max size: 5MB
-   - Example: `REA/LAG/2020/001` format
-
-2. **Government-Issued ID** (REQUIRED)
+1. **Government-Issued ID** (REQUIRED)
    - Accepted: National ID, International Passport, Driver's License, or Voter's Card
    - Format: PDF, JPG, or PNG
    - Max size: 5MB
    - Must match the name on the account
 
-3. **Professional Credentials** (OPTIONAL but Recommended)
+2. **Business Registration** (OPTIONAL but Recommended)
+   - CAC Certificate or Business Name Registration
+   - Helps achieve "Trusted Agent" status
+   - Format: PDF, JPG, or PNG
+   - Max size: 5MB
+
+3. **Professional Credentials** (OPTIONAL)
    - Additional certifications or credentials
    - Format: PDF, JPG, or PNG
    - Max size: 5MB
@@ -26,10 +26,12 @@ Yes, agents **must submit documentation** to become verified. Here's what's requ
 ## Verification Process:
 
 1. **Agent registers** → Selects "Agent" as user type
-2. **Completes profile** → Adds license number, bio, specialties, etc.
-3. **Uploads documents** → Submits license and ID through agent dashboard
-4. **Admin reviews** → Takes 2-5 business days
-5. **Status updated** → Agent receives "Verified" badge or rejection notice
+2. **Verifies email & phone** → Completes basic verification
+3. **Completes profile** → Adds bio, specialties, experience, etc.
+4. **Uploads ID document** → Submits government-issued ID through agent dashboard
+5. **Optional: Uploads business registration** → For "Trusted Agent" status
+6. **Admin reviews** → Takes 2-5 business days
+7. **Status updated** → Agent receives verification badge (tiered system)
 
 ## Current Implementation Status:
 
@@ -48,12 +50,28 @@ Yes, agents **must submit documentation** to become verified. Here's what's requ
 
 ## What Happens After Submission?
 
-### If Approved (Verified):
-- ✅ "Verified" badge appears on profile
-- ✅ Can list unlimited properties
+### If Approved (Tiered Verification System):
+**Platform Verified** (Level 1):
+- ✅ ID verified badge appears on profile
+- ✅ Can list properties
+- ✅ Basic verification status
+
+**Trusted Agent** (Level 2):
+- ✅ "Trusted Agent" badge
 - ✅ Higher search ranking
+- ✅ More client trust
+
+**Premium Agent** (Level 3):
+- ✅ "Premium Agent" badge
+- ✅ Priority placement
+- ✅ Unlimited listings
 - ✅ Access to analytics
-- ✅ Builds trust with clients
+
+**Top Agent** (Level 4):
+- ✅ "Top Agent" badge
+- ✅ Featured placement
+- ✅ Maximum visibility
+- ✅ All premium features
 
 ### If Rejected:
 - ❌ Receives email with rejection reason
@@ -69,11 +87,12 @@ Yes, agents **must submit documentation** to become verified. Here's what's requ
 
 ## Common Rejection Reasons:
 
-- License expired or invalid
+- ID expired or invalid
 - Name doesn't match account
 - Documents are blurry or illegible
 - Wrong file format
 - File corrupted or unreadable
+- ID not clearly visible
 
 ---
 

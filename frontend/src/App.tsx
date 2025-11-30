@@ -25,6 +25,8 @@ import PaymentHistoryPage from './pages/PaymentHistoryPage'
 import MapViewPage from './pages/MapViewPage'
 import MessagesPage from './pages/MessagesPage'
 import ReviewsPage from './pages/ReviewsPage'
+import TestimonialsPage from './pages/TestimonialsPage'
+import ComparisonPage from './pages/ComparisonPage'
 
 function App() {
   const { user, loading } = useAuth()
@@ -214,6 +216,22 @@ function App() {
         element={
           <ProtectedRoute>
             <ReviewsPage />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/testimonials"
+        element={
+          <ProtectedRoute>
+            <TestimonialsPage />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/comparison"
+        element={
+          <ProtectedRoute>
+            <ComparisonPage />
           </ProtectedRoute>
         }
       />

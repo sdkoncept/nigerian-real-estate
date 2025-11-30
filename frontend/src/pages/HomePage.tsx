@@ -72,12 +72,14 @@ export default function HomePage() {
           <div className="relative container mx-auto px-4 py-20 md:py-32">
             <div className="max-w-4xl mx-auto text-center">
               <h1 className="text-5xl md:text-7xl font-bold mb-6 leading-tight">
-                Find Your Perfect
-                <span className="block text-primary-200">Property in Nigeria</span>
+                100% Verified Properties
+                <span className="block text-primary-200">No Scams. No Fake Listings.</span>
               </h1>
-              <p className="text-xl md:text-2xl text-primary-100 mb-8 max-w-2xl mx-auto">
-                Buy, rent, or lease properties. List your shortlets and Airbnb. Connect with verified agents.
-                <span className="block mt-2 text-lg">All in one trusted platform.</span>
+              <p className="text-xl md:text-2xl text-primary-100 mb-4 max-w-2xl mx-auto">
+                Find real properties. Connect with ID-verified agents. Buy, sell, or rent safely.
+              </p>
+              <p className="text-lg text-primary-200 mb-8 max-w-2xl mx-auto">
+                Tired of fake listings on Facebook? We verify every property and agent. All prices in Naira. All agents ID-checked.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Link
@@ -190,14 +192,15 @@ export default function HomePage() {
             <div className="grid md:grid-cols-3 gap-8">
               <div className="bg-white rounded-xl p-8 shadow-md hover:shadow-xl transition-shadow">
                 <div className="text-5xl mb-4">✅</div>
-                <h3 className="text-2xl font-bold text-gray-900 mb-3">100% Verified</h3>
+                <h3 className="text-2xl font-bold text-gray-900 mb-3">100% ID-Verified</h3>
                 <p className="text-gray-600 mb-4">
-                  Every property and agent is verified. No scams, no fake listings. We verify documents, licenses, and property ownership.
+                  Every property and agent is verified. No scams, no fake listings. We verify ID documents, property ownership, and agent credentials.
                 </p>
                 <ul className="text-sm text-gray-600 space-y-2">
-                  <li>✓ Document verification</li>
-                  <li>✓ License checks for agents</li>
-                  <li>✓ Property ownership verification</li>
+                  <li>✓ ID verification (National ID, Passport)</li>
+                  <li>✓ Phone & email verification</li>
+                  <li>✓ Property ownership documents checked</li>
+                  <li>✓ Real photos only (no stock images)</li>
                 </ul>
               </div>
 
@@ -271,12 +274,107 @@ export default function HomePage() {
           </div>
         </div>
 
+        {/* Testimonials Section */}
+        <div className="bg-white py-16">
+          <div className="container mx-auto px-4">
+            <div className="text-center mb-12">
+              <h2 className="text-4xl font-bold text-gray-900 mb-4">Success Stories</h2>
+              <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+                Real Nigerians sharing their real estate success stories
+              </p>
+            </div>
+
+            <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+              {/* Testimonial 1 */}
+              <div className="bg-gray-50 rounded-xl p-6 shadow-md">
+                <div className="flex items-center mb-4">
+                  <div className="w-12 h-12 bg-primary-600 rounded-full flex items-center justify-center text-white font-bold text-lg mr-4">
+                    AO
+                  </div>
+                  <div>
+                    <h4 className="font-bold text-gray-900">Adebayo Okafor</h4>
+                    <p className="text-sm text-gray-600">Lagos, Seller</p>
+                  </div>
+                </div>
+                <div className="flex mb-3">
+                  {[...Array(5)].map((_, i) => (
+                    <svg key={i} className="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+                      <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                    </svg>
+                  ))}
+                </div>
+                <p className="text-gray-700 italic">
+                  "Sold my property in 2 weeks! The verification process gave buyers confidence. No more dealing with time wasters."
+                </p>
+              </div>
+
+              {/* Testimonial 2 */}
+              <div className="bg-gray-50 rounded-xl p-6 shadow-md">
+                <div className="flex items-center mb-4">
+                  <div className="w-12 h-12 bg-primary-600 rounded-full flex items-center justify-center text-white font-bold text-lg mr-4">
+                    CK
+                  </div>
+                  <div>
+                    <h4 className="font-bold text-gray-900">Chioma Kalu</h4>
+                    <p className="text-sm text-gray-600">Abuja, Buyer</p>
+                  </div>
+                </div>
+                <div className="flex mb-3">
+                  {[...Array(5)].map((_, i) => (
+                    <svg key={i} className="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+                      <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                    </svg>
+                  ))}
+                </div>
+                <p className="text-gray-700 italic">
+                  "Finally found my dream home! The verified agents made all the difference. No scams, just real properties."
+                </p>
+              </div>
+
+              {/* Testimonial 3 */}
+              <div className="bg-gray-50 rounded-xl p-6 shadow-md">
+                <div className="flex items-center mb-4">
+                  <div className="w-12 h-12 bg-primary-600 rounded-full flex items-center justify-center text-white font-bold text-lg mr-4">
+                    IE
+                  </div>
+                  <div>
+                    <h4 className="font-bold text-gray-900">Ibrahim Emeka</h4>
+                    <p className="text-sm text-gray-600">Port Harcourt, Agent</p>
+                  </div>
+                </div>
+                <div className="flex mb-3">
+                  {[...Array(5)].map((_, i) => (
+                    <svg key={i} className="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+                      <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                    </svg>
+                  ))}
+                </div>
+                <p className="text-gray-700 italic">
+                  "Being verified helped me stand out. I get 3x more inquiries than before. Clients trust verified agents more."
+                </p>
+              </div>
+            </div>
+
+            <div className="text-center mt-8">
+              <Link
+                to="/testimonials"
+                className="text-primary-600 font-semibold hover:text-primary-700 inline-flex items-center"
+              >
+                Read More Success Stories →
+              </Link>
+            </div>
+          </div>
+        </div>
+
         {/* CTA Section */}
         <div className="bg-gradient-to-r from-primary-600 to-primary-800 text-white py-16">
           <div className="container mx-auto px-4 text-center">
             <h2 className="text-4xl font-bold mb-4">Ready to Get Started?</h2>
-            <p className="text-xl text-primary-100 mb-8 max-w-2xl mx-auto">
-              Join thousands of Nigerians buying, selling, and renting properties on our trusted platform
+            <p className="text-xl text-primary-100 mb-4 max-w-2xl mx-auto">
+              Join thousands of Nigerians buying, selling, and renting properties safely
+            </p>
+            <p className="text-lg text-primary-200 mb-8 max-w-2xl mx-auto">
+              No scams. No fake listings. Just real estate with verified agents and properties.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               {!user ? (

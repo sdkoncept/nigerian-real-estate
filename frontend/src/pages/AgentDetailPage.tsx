@@ -5,6 +5,7 @@ import { sampleAgents } from '../data/sampleAgents';
 import VerificationBadge from '../components/VerificationBadge';
 import SecureInput from '../components/SecureInput';
 import { useAuth } from '../contexts/AuthContext';
+import { supabase } from '../lib/supabase';
 
 export default function AgentDetailPage() {
   const { id } = useParams<{ id: string }>();
@@ -39,7 +40,7 @@ export default function AgentDetailPage() {
     );
   }
 
-  const handleContactSubmit = (e: React.FormEvent) => {
+  const handleContactSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     // Submit message via Supabase
     try {

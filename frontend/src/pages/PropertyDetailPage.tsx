@@ -92,7 +92,7 @@ export default function PropertyDetailPage() {
     }).format(price);
   };
 
-  const handleContactSubmit = (e: React.FormEvent) => {
+  const handleContactSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
     // Validate form data
