@@ -1,15 +1,39 @@
 import { useParams, Link } from 'react-router-dom';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Layout from '../components/Layout';
-import { sampleAgents } from '../data/sampleAgents';
 import VerificationBadge from '../components/VerificationBadge';
 import SecureInput from '../components/SecureInput';
 import { useAuth } from '../contexts/AuthContext';
 import { supabase } from '../lib/supabase';
 
+// Agent interface
+interface Agent {
+  id: string;
+  user_id: string;
+  license_number?: string;
+  company_name?: string;
+  bio?: string;
+  specialties: string[];
+  years_experience: number;
+  properties_sold: number;
+  rating: number;
+  total_reviews: number;
+  verification_status: 'pending' | 'verified' | 'rejected';
+  is_active: boolean;
+  full_name?: string;
+  email?: string;
+  phone?: string;
+  avatar_url?: string;
+  city?: string;
+  state?: string;
+}
+
 export default function AgentDetailPage() {
   const { id } = useParams<{ id: string }>();
   const { user } = useAuth();
+  const [agent, setAgent] = useState<Agent | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const [showContactForm, setShowContactForm] = useState(false);
   const [contactForm, setContactForm] = useState({
     name: user?.user_metadata?.name || '',
@@ -18,10 +42,86 @@ export default function AgentDetailPage() {
     message: '',
   });
 
-  // Find the agent
-  const agent = sampleAgents.find(a => a.id === id);
+  useEffect(() => {
+    if (id) {
+      loadAgent();
+    }
+  }, [id]);
 
-  if (!agent) {
+  const loadAgent = async () => {
+    if (!id) return;
+
+    try {
+      setLoading(true);
+      setError(null);
+
+      // Load agent from database
+      const { data: agentData, error: agentError } = await supabase
+        .from('agents')
+        .select('*')
+        .eq('id', id)
+        .single();
+
+      if (agentError) {
+        console.error('Error loading agent:', agentError);
+        setError('Agent not found');
+        setLoading(false);
+        return;
+      }
+
+      if (!agentData) {
+        setError('Agent not found');
+        setLoading(false);
+        return;
+      }
+
+      // Load profile information
+      const { data: profile, error: profileError } = await supabase
+        .from('profiles')
+        .select('full_name, email, phone, avatar_url')
+        .eq('id', agentData.user_id)
+        .single();
+
+      if (profileError) {
+        console.warn('Error loading profile:', profileError);
+      }
+
+      // Combine agent and profile data
+      const agentWithProfile: Agent = {
+        ...agentData,
+        full_name: profile?.full_name || 'Agent',
+        email: profile?.email || '',
+        phone: profile?.phone || '',
+        avatar_url: profile?.avatar_url || undefined,
+        specialties: agentData.specialties || [],
+        years_experience: agentData.years_experience || 0,
+        properties_sold: agentData.properties_sold || 0,
+        rating: agentData.rating || 0,
+        total_reviews: agentData.total_reviews || 0,
+        verification_status: agentData.verification_status || 'pending',
+        is_active: agentData.is_active !== undefined ? agentData.is_active : true,
+      };
+
+      setAgent(agentWithProfile);
+    } catch (error: any) {
+      console.error('Error loading agent:', error);
+      setError('Failed to load agent');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  if (loading) {
+    return (
+      <Layout>
+        <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600"></div>
+        </div>
+      </Layout>
+    );
+  }
+
+  if (error || !agent) {
     return (
       <Layout>
         <div className="min-h-screen bg-gray-50 flex items-center justify-center">
