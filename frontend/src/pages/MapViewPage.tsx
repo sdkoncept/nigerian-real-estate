@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import Layout from '../components/Layout';
 import { supabase } from '../lib/supabase';
 import type { Property } from '../components/PropertyCard';
@@ -107,10 +108,10 @@ export default function MapViewPage() {
               <h3 className="text-2xl font-bold text-gray-900 mb-4">Properties ({properties.length})</h3>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                 {properties.slice(0, 6).map((property) => (
-                  <div
+                  <Link
                     key={property.id}
-                    className="bg-white rounded-lg shadow-md p-4 hover:shadow-lg transition-shadow cursor-pointer"
-                    onClick={() => setSelectedProperty(property)}
+                    to={`/properties/${property.id}`}
+                    className="bg-white rounded-lg shadow-md p-4 hover:shadow-lg transition-shadow cursor-pointer block"
                   >
                     <h4 className="font-semibold text-gray-900 mb-2">{property.title}</h4>
                     <p className="text-sm text-gray-600 mb-2">
@@ -119,7 +120,7 @@ export default function MapViewPage() {
                     <p className="text-lg font-bold text-primary-600">
                       ₦{property.price.toLocaleString()}
                     </p>
-                  </div>
+                  </Link>
                 ))}
               </div>
             </div>
