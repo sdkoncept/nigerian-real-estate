@@ -41,48 +41,22 @@ function App() {
 
   return (
     <Routes>
+      {/* Public routes */}
       <Route path="/login" element={user ? <Navigate to="/" replace /> : <LoginPage />} />
       <Route path="/signup" element={user ? <Navigate to="/" replace /> : <SignupPage />} />
-      <Route
-        path="/"
-        element={
-          <ProtectedRoute>
-            <HomePage />
-          </ProtectedRoute>
-        }
-      />
-      <Route
-        path="/properties"
-        element={
-          <ProtectedRoute>
-            <PropertyListingPage />
-          </ProtectedRoute>
-        }
-      />
-      <Route
-        path="/properties/:id"
-        element={
-          <ProtectedRoute>
-            <PropertyDetailPage />
-          </ProtectedRoute>
-        }
-      />
-      <Route
-        path="/about"
-        element={
-          <ProtectedRoute>
-            <AboutPage />
-          </ProtectedRoute>
-        }
-      />
-      <Route
-        path="/pricing"
-        element={
-          <ProtectedRoute>
-            <PricingPage />
-          </ProtectedRoute>
-        }
-      />
+      <Route path="/" element={<HomePage />} />
+      <Route path="/properties" element={<PropertyListingPage />} />
+      <Route path="/properties/:id" element={<PropertyDetailPage />} />
+      <Route path="/about" element={<AboutPage />} />
+      <Route path="/pricing" element={<PricingPage />} />
+      <Route path="/agents" element={<AgentsPage />} />
+      <Route path="/agents/:id" element={<AgentDetailPage />} />
+      <Route path="/testimonials" element={<TestimonialsPage />} />
+      <Route path="/comparison" element={<ComparisonPage />} />
+      <Route path="/map" element={<MapViewPage />} />
+      <Route path="/reviews/:type/:id" element={<ReviewsPage />} />
+      
+      {/* Protected routes - require authentication */}
       <Route
         path="/subscription"
         element={
@@ -96,22 +70,6 @@ function App() {
         element={
           <ProtectedRoute>
             <PaymentHistoryPage />
-          </ProtectedRoute>
-        }
-      />
-      <Route
-        path="/agents"
-        element={
-          <ProtectedRoute>
-            <AgentsPage />
-          </ProtectedRoute>
-        }
-      />
-      <Route
-        path="/agents/:id"
-        element={
-          <ProtectedRoute>
-            <AgentDetailPage />
           </ProtectedRoute>
         }
       />
@@ -196,42 +154,10 @@ function App() {
         }
       />
       <Route
-        path="/map"
-        element={
-          <ProtectedRoute>
-            <MapViewPage />
-          </ProtectedRoute>
-        }
-      />
-      <Route
         path="/messages"
         element={
           <ProtectedRoute>
             <MessagesPage />
-          </ProtectedRoute>
-        }
-      />
-      <Route
-        path="/reviews/:type/:id"
-        element={
-          <ProtectedRoute>
-            <ReviewsPage />
-          </ProtectedRoute>
-        }
-      />
-      <Route
-        path="/testimonials"
-        element={
-          <ProtectedRoute>
-            <TestimonialsPage />
-          </ProtectedRoute>
-        }
-      />
-      <Route
-        path="/comparison"
-        element={
-          <ProtectedRoute>
-            <ComparisonPage />
           </ProtectedRoute>
         }
       />
