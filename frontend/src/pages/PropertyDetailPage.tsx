@@ -1,7 +1,6 @@
 import { useParams, Link } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import Layout from '../components/Layout';
-import { sampleProperties } from '../data/sampleProperties';
 import { useAuth } from '../contexts/AuthContext';
 import VerificationBadge from '../components/VerificationBadge';
 import SecureInput from '../components/SecureInput';
@@ -9,22 +8,151 @@ import { validatePropertyForm } from '../utils/validation';
 import { detectSuspiciousPatterns } from '../utils/security';
 import { supabase } from '../lib/supabase';
 
+interface Property {
+  id: string;
+  title: string;
+  description: string;
+  price: number;
+  currency?: string;
+  property_type: string;
+  listing_type: string;
+  location: string;
+  state: string;
+  city: string;
+  bedrooms?: number;
+  bathrooms?: number;
+  sqm?: number;
+  images: string[];
+  is_featured?: boolean;
+  verification_status?: 'verified' | 'pending' | 'rejected';
+}
+
 export default function PropertyDetailPage() {
   const { id } = useParams<{ id: string }>();
   const { user } = useAuth();
+  const [property, setProperty] = useState<Property | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   const [isFavorite, setIsFavorite] = useState(false);
   const [showContactForm, setShowContactForm] = useState(false);
 
+  // Helper function to check if a string is a valid UUID
+  const isValidUUID = (str: string): boolean => {
+    const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+    return uuidRegex.test(str);
+  };
+
+  // Load property from database or sample data
+  useEffect(() => {
+    if (id) {
+      loadProperty();
+    }
+  }, [id]);
+
   // Check if property is in favorites
   useEffect(() => {
-    if (user && id) {
+    if (user && id && property) {
       checkFavorite();
     }
-  }, [user, id]);
+  }, [user, id, property]);
+
+  const loadProperty = async () => {
+    if (!id) return;
+
+    try {
+      setLoading(true);
+      setError(null);
+
+      console.log('Loading property with ID:', id);
+      console.log('Is UUID?', isValidUUID(id));
+
+      // Check if it's a UUID (database property) or sample data ID
+      if (isValidUUID(id)) {
+        // Fetch from database - try without is_active filter first (RLS will handle it)
+        const { data, error: dbError } = await supabase
+          .from('properties')
+          .select('*')
+          .eq('id', id)
+          .single();
+
+        console.log('Database query result:', { data, error: dbError });
+
+        if (dbError) {
+          console.error('Error loading property:', dbError);
+          // Check if it's a permission error or not found
+          if (dbError.code === 'PGRST116' || dbError.message?.includes('No rows')) {
+            setError('Property not found. It may have been deleted or is not active.');
+          } else if (dbError.message?.includes('permission') || dbError.message?.includes('policy')) {
+            setError('Permission denied. You may not have access to view this property.');
+          } else {
+            setError(`Error loading property: ${dbError.message || 'Unknown error'}`);
+          }
+          setLoading(false);
+          return;
+        }
+
+        if (!data) {
+          console.warn('No data returned from database');
+          setError('Property not found');
+          setLoading(false);
+          return;
+        }
+
+        console.log('Property loaded successfully:', data);
+
+        // Check if property is featured (don't fail if this query fails)
+        let featuredData = null;
+        try {
+          const { data: featured } = await supabase
+            .from('featured_listings')
+            .select('property_id, priority, featured_until')
+            .eq('property_id', id)
+            .gt('featured_until', new Date().toISOString())
+            .maybeSingle();
+          featuredData = featured;
+        } catch (featuredError) {
+          console.warn('Error checking featured status:', featuredError);
+          // Continue anyway
+        }
+
+        // Transform database property to Property type
+        const transformedProperty: Property = {
+          id: data.id,
+          title: data.title,
+          description: data.description,
+          price: parseFloat(String(data.price)),
+          currency: data.currency || 'NGN',
+          property_type: data.property_type,
+          listing_type: data.listing_type,
+          location: data.location,
+          state: data.state,
+          city: data.city,
+          bedrooms: data.bedrooms,
+          bathrooms: data.bathrooms,
+          sqm: data.sqm ? parseFloat(String(data.sqm)) : undefined,
+          images: Array.isArray(data.images) ? data.images : [],
+          is_featured: !!featuredData || data.is_featured || false,
+          verification_status: data.verification_status || 'pending',
+        };
+
+        console.log('Transformed property:', transformedProperty);
+        setProperty(transformedProperty);
+      } else {
+        // Not a valid UUID - property not found
+        console.warn('Invalid property ID format:', id);
+        setError('Property not found. Invalid property ID format.');
+      }
+    } catch (error: any) {
+      console.error('Error loading property:', error);
+      setError(`Failed to load property: ${error.message || 'Unknown error'}`);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const checkFavorite = async () => {
-    if (!user || !id) return;
+    if (!user || !id || !property) return;
 
     // Only check favorites for UUIDs (database properties), not sample data
     if (!isValidUUID(id)) {
@@ -49,11 +177,6 @@ export default function PropertyDetailPage() {
     }
   };
 
-  // Helper function to check if a string is a valid UUID
-  const isValidUUID = (str: string): boolean => {
-    const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
-    return uuidRegex.test(str);
-  };
   const [contactForm, setContactForm] = useState({
     name: user?.user_metadata?.name || '',
     email: user?.email || '',
@@ -61,22 +184,44 @@ export default function PropertyDetailPage() {
     message: '',
   });
 
-  // Find the property
-  const property = sampleProperties.find(p => p.id === id);
-
-  if (!property) {
+  if (loading) {
     return (
       <Layout>
         <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-          <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600"></div>
+        </div>
+      </Layout>
+    );
+  }
+
+  if (error || !property) {
+    return (
+      <Layout>
+        <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+          <div className="text-center max-w-2xl mx-auto px-4">
             <h1 className="text-2xl font-bold text-gray-900 mb-4">Property Not Found</h1>
-            <p className="text-gray-600 mb-6">The property you're looking for doesn't exist.</p>
-            <Link
-              to="/properties"
-              className="px-6 py-3 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors"
-            >
-              Browse Properties
-            </Link>
+            <p className="text-gray-600 mb-2">{error || 'The property you're looking for doesn't exist.'}</p>
+            {id && (
+              <p className="text-sm text-gray-500 mb-4">
+                Property ID: <code className="bg-gray-100 px-2 py-1 rounded">{id}</code>
+              </p>
+            )}
+            <div className="space-y-3">
+              <Link
+                to="/properties"
+                className="inline-block px-6 py-3 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors"
+              >
+                Browse Properties
+              </Link>
+              <div className="text-xs text-gray-500 mt-4">
+                <p>If this property was just created, please check:</p>
+                <ul className="list-disc list-inside mt-2 space-y-1">
+                  <li>Browser console (F12) for detailed error messages</li>
+                  <li>That the property ID matches what's in the database</li>
+                  <li>That the property is set to <code>is_active = true</code></li>
+                </ul>
+              </div>
+            </div>
           </div>
         </div>
       </Layout>

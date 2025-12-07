@@ -26,6 +26,17 @@ You need to create the following storage buckets in Supabase:
    - **Allowed MIME types**: `image/jpeg, image/jpg, image/png, application/pdf`
 4. Click **"Create bucket"**
 
+### 3. Portfolio Bucket
+
+1. Go to **Supabase Dashboard** → **Storage**
+2. Click **"New bucket"**
+3. Configure:
+   - **Name**: `portfolio`
+   - **Public**: ✅ **Yes** (check this box)
+   - **File size limit**: 5MB (or as needed)
+   - **Allowed MIME types**: `image/jpeg, image/jpg, image/png`
+4. Click **"Create bucket"**
+
 ## Storage Policies
 
 **⚠️ IMPORTANT**: Storage policies cannot be created via SQL in Supabase. You must use the Supabase Dashboard.
@@ -118,6 +129,53 @@ You need to create the following storage buckets in Supabase:
      ```
    - Click **"Review"** → **"Save policy"**
 
+#### For Portfolio Bucket (Public):
+
+1. Go to **Storage** → Click on `portfolio` bucket
+2. Click **"Policies"** tab
+3. Click **"New Policy"**
+4. Create these policies:
+
+   **Policy 1: Public Read Access**
+   - Policy Name: `Public can view portfolio images`
+   - Allowed Operation: `SELECT`
+   - Policy Definition:
+     ```sql
+     bucket_id = 'portfolio'
+     ```
+   - Click **"Review"** → **"Save policy"**
+
+   **Policy 2: Authenticated Upload**
+   - Policy Name: `Authenticated users can upload portfolio images`
+   - Allowed Operation: `INSERT`
+   - Policy Definition:
+     ```sql
+     bucket_id = 'portfolio' AND auth.role() = 'authenticated'
+     ```
+   - Click **"Review"** → **"Save policy"**
+
+   **Policy 3: Users can update their own uploads**
+   - Policy Name: `Users can update their own portfolio images`
+   - Allowed Operation: `UPDATE`
+   - Policy Definition:
+     ```sql
+     bucket_id = 'portfolio' 
+     AND auth.role() = 'authenticated'
+     AND (storage.foldername(name))[1] = auth.uid()::text
+     ```
+   - Click **"Review"** → **"Save policy"**
+
+   **Policy 4: Users can delete their own uploads**
+   - Policy Name: `Users can delete their own portfolio images`
+   - Allowed Operation: `DELETE`
+   - Policy Definition:
+     ```sql
+     bucket_id = 'portfolio' 
+     AND auth.role() = 'authenticated'
+     AND (storage.foldername(name))[1] = auth.uid()::text
+     ```
+   - Click **"Review"** → **"Save policy"**
+
 ### Method 2: Using Supabase CLI (Advanced)
 
 If you have Supabase CLI installed, you can use:
@@ -125,6 +183,7 @@ If you have Supabase CLI installed, you can use:
 ```bash
 supabase storage create property-images --public
 supabase storage create verification-documents --private
+supabase storage create portfolio --public
 ```
 
 Then create policies via the Dashboard as shown above.
@@ -156,6 +215,10 @@ Then create policies via the Dashboard as shown above.
 2. **Test Verification Document Upload**:
    - Go to `/agent/dashboard`
    - Upload a verification document
+   - Check if it's stored correctly
+
+3. **Test Portfolio Image Upload**:
+   - Try saving a portfolio item with an image
    - Check if it's stored correctly
 
 ## Troubleshooting

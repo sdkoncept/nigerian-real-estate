@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import PropertyCard from '../components/PropertyCard';
 import type { Property } from '../components/PropertyCard';
-import { sampleProperties } from '../data/sampleProperties';
 import Layout from '../components/Layout';
 import { supabase } from '../lib/supabase';
 
@@ -30,8 +29,7 @@ export default function PropertyListingPage() {
 
       if (error) {
         console.error('Error loading properties:', error);
-        // Fallback to sample properties if database query fails
-        setProperties(sampleProperties);
+        setProperties([]);
       } else if (data && data.length > 0) {
         // Get featured listings
         const { data: featuredData } = await supabase
@@ -81,13 +79,12 @@ export default function PropertyListingPage() {
 
         setProperties(transformedProperties);
       } else {
-        // No properties in database, use sample data
-        setProperties(sampleProperties);
+        // No properties in database
+        setProperties([]);
       }
     } catch (error) {
       console.error('Error loading properties:', error);
-      // Fallback to sample properties on error
-      setProperties(sampleProperties);
+      setProperties([]);
     } finally {
       setLoading(false);
     }

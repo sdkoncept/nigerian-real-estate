@@ -201,6 +201,17 @@ export default function AgentDashboard() {
         });
 
       if (uploadError) {
+        // Check if the error is due to missing bucket
+        if (uploadError.message?.toLowerCase().includes('bucket') || 
+            uploadError.message?.toLowerCase().includes('not found') ||
+            uploadError.statusCode === '404' ||
+            uploadError.error === 'Bucket not found') {
+          throw new Error(
+            'Storage bucket "verification-documents" not found. ' +
+            'Please create this bucket in Supabase Dashboard: Storage → New Bucket → Name: "verification-documents" → Private → Create. ' +
+            'See STORAGE_SETUP.md for detailed instructions.'
+          );
+        }
         throw new Error('Failed to upload document: ' + uploadError.message);
       }
 
