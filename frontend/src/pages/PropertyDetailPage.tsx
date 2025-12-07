@@ -200,7 +200,7 @@ export default function PropertyDetailPage() {
         <div className="min-h-screen bg-gray-50 flex items-center justify-center">
           <div className="text-center max-w-2xl mx-auto px-4">
             <h1 className="text-2xl font-bold text-gray-900 mb-4">Property Not Found</h1>
-            <p className="text-gray-600 mb-2">{error || 'The property you're looking for doesn't exist.'}</p>
+            <p className="text-gray-600 mb-2">{error || "The property you're looking for doesn't exist."}</p>
             {id && (
               <p className="text-sm text-gray-500 mb-4">
                 Property ID: <code className="bg-gray-100 px-2 py-1 rounded">{id}</code>

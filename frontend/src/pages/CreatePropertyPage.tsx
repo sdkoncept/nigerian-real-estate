@@ -82,13 +82,12 @@ export default function CreatePropertyPage() {
             
             // Check for different error types
             const errorMessage = uploadError.message?.toLowerCase() || '';
-            const errorStatus = uploadError.statusCode || '';
             
             let userFriendlyError = '';
             
             if (errorMessage.includes('bucket') && errorMessage.includes('not found')) {
               userFriendlyError = 'Storage bucket "property-images" not found. Please create this bucket in Supabase Dashboard → Storage → New Bucket.';
-            } else if (errorMessage.includes('permission') || errorMessage.includes('policy') || errorStatus === '403') {
+            } else if (errorMessage.includes('permission') || errorMessage.includes('policy')) {
               userFriendlyError = 'Permission denied. Storage policies are missing or incorrect. Please check that INSERT policy exists for "property-images" bucket. See STORAGE_SETUP.md for setup instructions.';
             } else if (errorMessage.includes('duplicate') || errorMessage.includes('already exists')) {
               // File already exists, try with a different timestamp
@@ -102,8 +101,6 @@ export default function CreatePropertyPage() {
             setError(userFriendlyError);
             console.error('Full error details:', {
               message: uploadError.message,
-              statusCode: uploadError.statusCode,
-              error: uploadError.error,
               name: uploadError.name,
             });
             
