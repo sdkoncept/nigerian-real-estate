@@ -623,8 +623,8 @@ export default function PropertyDetailPage() {
                 <h3 className="text-lg font-semibold text-gray-900 mb-4">Property Information</h3>
                 <div className="space-y-3 text-sm">
                   <div className="flex justify-between">
-                    <span className="text-gray-600">Property ID:</span>
-                    <span className="font-medium text-gray-900">{property.id}</span>
+                    <span className="text-gray-600">Location:</span>
+                    <span className="font-medium text-gray-900 text-right">{property.location}{property.city ? `, ${property.city}` : ''}{property.state ? `, ${property.state}` : ''}</span>
                   </div>
                   <div className="flex justify-between">
                     <span className="text-gray-600">Type:</span>
