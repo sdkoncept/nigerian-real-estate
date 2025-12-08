@@ -53,6 +53,15 @@ export class PaymentService {
       return result;
     } catch (error: any) {
       console.error('Payment initialization error:', error);
+      
+      // Check if it's a connection error
+      if (error.message?.includes('Failed to fetch') || error.message?.includes('ERR_CONNECTION_REFUSED')) {
+        return {
+          success: false,
+          error: 'Unable to connect to payment server. Please ensure the backend server is running on port 5000.',
+        };
+      }
+      
       return {
         success: false,
         error: error.message || 'Payment initialization failed',
@@ -89,6 +98,15 @@ export class PaymentService {
       return result;
     } catch (error: any) {
       console.error('Payment verification error:', error);
+      
+      // Check if it's a connection error
+      if (error.message?.includes('Failed to fetch') || error.message?.includes('ERR_CONNECTION_REFUSED')) {
+        return {
+          success: false,
+          error: 'Unable to connect to payment server. Please ensure the backend server is running on port 5000.',
+        };
+      }
+      
       return {
         success: false,
         error: error.message || 'Payment verification failed',
