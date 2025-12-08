@@ -14,7 +14,7 @@ export default function PropertyListingPage() {
   const [selectedListingType, setSelectedListingType] = useState<string>('all');
   const [selectedState, setSelectedState] = useState<string>('all');
   const [sortBy, setSortBy] = useState<string>('newest');
-  const orientation = useOrientation();
+  const { isLandscape } = useOrientation();
 
   useEffect(() => {
     loadProperties();
