@@ -50,7 +50,8 @@ export default function AdminSubscriptionsPage() {
       if (filter === 'active') {
         query = query.eq('status', 'active');
       } else if (filter === 'expired') {
-        query = query.eq('status', 'expired');
+        // Get both explicitly expired and active subscriptions that have passed expiry date
+        query = query.or('status.eq.expired,and(status.eq.active,expires_at.lt.' + new Date().toISOString() + ')');
       } else if (filter === 'cancelled') {
         query = query.eq('status', 'cancelled');
       }
