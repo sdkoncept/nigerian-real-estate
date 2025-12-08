@@ -9,14 +9,14 @@
       }
     },
     {
-      "src": "api/index.ts",
+      "src": "api/[...path].ts",
       "use": "@vercel/node"
     }
   ],
   "routes": [
     {
       "src": "/api/(.*)",
-      "dest": "/api/index.ts"
+      "dest": "/api/[...path].ts"
     },
     {
       "src": "/(.*)",
@@ -26,7 +26,7 @@
   "rewrites": [
     {
       "source": "/api/(.*)",
-      "destination": "/api/index.ts"
+      "destination": "/api/[...path].ts"
     },
     {
       "source": "/(.*)",
