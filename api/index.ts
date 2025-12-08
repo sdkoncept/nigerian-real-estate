@@ -2,14 +2,14 @@
  * Vercel Serverless Function Entry Point
  * This file handles ALL /api/* routes via Express
  * 
- * IMPORTANT: Vercel strips the /api prefix when routing to serverless functions
- * So /api/payments/paystack/initialize becomes /payments/paystack/initialize
- * That's why we have routes for both /api/* and /* patterns
+ * IMPORTANT: When Vercel routes /api/payments/paystack/initialize here,
+ * the request path in Express will be /api/payments/paystack/initialize
+ * (Vercel keeps the full path when using routes configuration)
  */
 
 import app from '../backend/src/index.js';
 
-// Export Express app - @vercel/node will automatically handle it
-// The app has routes for both /api/payments and /payments to handle both cases
+// Export Express app directly - @vercel/node handles Express apps automatically
+// Make sure the app has routes registered for /api/* paths
 export default app;
 
