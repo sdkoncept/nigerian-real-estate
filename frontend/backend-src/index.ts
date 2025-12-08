@@ -47,16 +47,35 @@ app.get('/api/health', (req: Request, res: Response) => {
 
 // Debug endpoint to check environment variables (without exposing secrets)
 app.get('/api/debug/env', (req: Request, res: Response) => {
+  // Get all Supabase-related env vars
+  const supabaseVars = Object.keys(process.env)
+    .filter(key => key.includes('SUPABASE'))
+    .reduce((acc: Record<string, any>, key) => {
+      acc[key] = {
+        exists: !!process.env[key],
+        length: process.env[key]?.length || 0,
+        prefix: process.env[key]?.substring(0, 10) || 'none',
+      };
+      return acc;
+    }, {});
+
   res.json({
     hasPaystackSecret: !!process.env.PAYSTACK_SECRET_KEY,
     paystackSecretLength: process.env.PAYSTACK_SECRET_KEY?.length || 0,
     paystackSecretPrefix: process.env.PAYSTACK_SECRET_KEY?.substring(0, 3) || 'none',
     hasSupabaseUrl: !!process.env.SUPABASE_URL,
+    supabaseUrlValue: process.env.SUPABASE_URL || 'NOT SET',
+    hasSupabaseAnonKey: !!process.env.SUPABASE_ANON_KEY,
+    supabaseAnonKeyLength: process.env.SUPABASE_ANON_KEY?.length || 0,
     hasSupabaseServiceKey: !!process.env.SUPABASE_SERVICE_ROLE_KEY,
     supabaseServiceKeyLength: process.env.SUPABASE_SERVICE_ROLE_KEY?.length || 0,
     frontendUrl: process.env.FRONTEND_URL,
     nodeEnv: process.env.NODE_ENV,
     vercel: process.env.VERCEL,
+    allSupabaseVars: supabaseVars,
+    // Check for common mistakes
+    hasViteSupabaseUrl: !!process.env.VITE_SUPABASE_URL,
+    hasViteSupabaseAnonKey: !!process.env.VITE_SUPABASE_ANON_KEY,
   });
 });
 
