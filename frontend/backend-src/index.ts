@@ -15,6 +15,7 @@ import reportsRoutes from './routes/reports.js';
 import paymentsRoutes from './routes/payments.js';
 import verificationRoutes from './routes/verification.js';
 import agentRoutes from './routes/agent.js';
+import securityRoutes from './routes/security.js';
 
 const app = express();
 const PORT = process.env.PORT || 5000;

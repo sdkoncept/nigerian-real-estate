@@ -5,6 +5,8 @@
 
 import { Request, Response, NextFunction } from 'express';
 import { supabaseAdmin } from '../config/supabase.js';
+import { logSecurityEvent } from '../services/securityMonitoring.js';
+import { isTwoFactorEnabled, verifyTwoFactorToken } from '../services/twoFactor.js';
 
 export interface AuthRequest extends Request {
   user?: {
@@ -68,11 +70,83 @@ export const authenticate = async (
       console.warn('[Auth] Profile fetch error (non-fatal):', profileError.message);
     }
 
+    const userType = profile?.user_type || 'buyer';
+    const isAdmin = userType === 'admin';
+
+    // Check if 2FA is required for admin accounts
+    if (isAdmin) {
+      const twoFactorEnabled = await isTwoFactorEnabled(user.id);
+
+      if (twoFactorEnabled) {
+        // Check for 2FA token in header
+        const twoFactorToken = req.headers['x-2fa-token'] as string;
+
+        if (!twoFactorToken) {
+          // Log 2FA requirement
+          await logSecurityEvent({
+            event_type: 'unauthorized_access_attempt',
+            user_id: user.id,
+            ip_address: req.ip,
+            user_agent: req.headers['user-agent'],
+            details: { reason: '2FA token missing' },
+            severity: 'medium',
+          });
+
+          return res.status(401).json({
+            error: 'Two-Factor Authentication Required',
+            message: 'Please provide a 2FA token in the X-2FA-Token header',
+            requires2FA: true,
+          });
+        }
+
+        // Verify 2FA token
+        const twoFactorResult = await verifyTwoFactorToken(user.id, twoFactorToken);
+
+        if (!twoFactorResult.valid) {
+          // Log failed 2FA attempt
+          await logSecurityEvent({
+            event_type: '2fa_verification_failed',
+            user_id: user.id,
+            ip_address: req.ip,
+            user_agent: req.headers['user-agent'],
+            details: { usedBackupCode: twoFactorResult.usedBackupCode },
+            severity: 'high',
+          });
+
+          return res.status(401).json({
+            error: 'Invalid 2FA Token',
+            message: 'The provided 2FA token is invalid or expired',
+          });
+        }
+
+        // Log successful 2FA verification
+        if (twoFactorResult.usedBackupCode) {
+          await logSecurityEvent({
+            event_type: '2fa_verification_failed',
+            user_id: user.id,
+            ip_address: req.ip,
+            details: { note: 'Backup code used - user should regenerate codes' },
+            severity: 'medium',
+          });
+        }
+      }
+    }
+
+    // Log successful authentication
+    await logSecurityEvent({
+      event_type: 'login_success',
+      user_id: user.id,
+      ip_address: req.ip,
+      user_agent: req.headers['user-agent'],
+      details: { user_type: userType },
+      severity: 'low',
+    });
+
     // Attach user to request
     req.user = {
       id: user.id,
       email: user.email || '',
-      user_type: profile?.user_type || 'buyer',
+      user_type: userType,
     };
 
     console.log('[Auth] User authenticated:', { id: req.user.id, email: req.user.email, user_type: req.user.user_type });
