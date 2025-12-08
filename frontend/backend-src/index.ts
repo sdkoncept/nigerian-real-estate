@@ -127,6 +127,8 @@ app.use('/api/verification', verificationRoutes);
 app.use('/verification', verificationRoutes);
 app.use('/api/agent', agentRoutes);
 app.use('/agent', agentRoutes);
+app.use('/api/security', securityRoutes);
+app.use('/security', securityRoutes);
 
 // 404 handler - log for debugging
 app.use((req: Request, res: Response) => {
