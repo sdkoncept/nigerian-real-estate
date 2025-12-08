@@ -6,6 +6,7 @@ import type { Property } from '../components/PropertyCard';
 import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
+import { geocodeAddress } from '../utils/geocoding';
 
 // Extend Property interface to include coordinates
 interface PropertyWithCoords extends Property {
@@ -105,27 +106,6 @@ export default function MapViewPage() {
     }
   };
 
-  // Geocode address to coordinates (using Nominatim - free OpenStreetMap geocoding)
-  const geocodeAddress = async (address: string, city: string, state: string): Promise<[number, number] | null> => {
-    try {
-      const query = `${address}, ${city}, ${state}, Nigeria`.replace(/\s+/g, '+');
-      const response = await fetch(
-        `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(query)}&limit=1`,
-        {
-          headers: {
-            'User-Agent': 'HouseDirectNG/1.0',
-          },
-        }
-      );
-      const data = await response.json();
-      if (data && data.length > 0) {
-        return [parseFloat(data[0].lat), parseFloat(data[0].lon)];
-      }
-    } catch (error) {
-      console.error('Geocoding error:', error);
-    }
-    return null;
-  };
 
   const handleMarkerClick = (property: PropertyWithCoords) => {
     setSelectedProperty(property);
