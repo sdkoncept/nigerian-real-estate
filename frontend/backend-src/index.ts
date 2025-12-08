@@ -123,23 +123,28 @@ app.use((req: Request, res: Response) => {
 
 // Error handler
 app.use((err: any, req: Request, res: Response, next: any) => {
-  console.error('Error:', err);
-  console.error('Error stack:', err.stack);
-  console.error('Request path:', req.path);
-  console.error('Request method:', req.method);
+  console.error('[Global Error Handler] Error:', err);
+  console.error('[Global Error Handler] Error name:', err?.name);
+  console.error('[Global Error Handler] Error message:', err?.message);
+  console.error('[Global Error Handler] Error stack:', err?.stack);
+  console.error('[Global Error Handler] Request path:', req.path);
+  console.error('[Global Error Handler] Request method:', req.method);
   
   // Return more detailed error in production for debugging
   const errorMessage = err.message || 'Internal Server Error';
   const statusCode = err.status || 500;
   
+  // Always include error message in response for debugging
   res.status(statusCode).json({
     error: errorMessage,
-    ...(process.env.NODE_ENV === 'development' && { stack: err.stack }),
+    message: errorMessage, // Also include as 'message' for consistency
     ...(process.env.VERCEL === '1' && { 
       // Include error details in Vercel for debugging
       details: err.message,
       path: req.path,
+      name: err?.name,
     }),
+    ...(process.env.NODE_ENV === 'development' && { stack: err.stack }),
   });
 });
 

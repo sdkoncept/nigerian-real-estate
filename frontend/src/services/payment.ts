@@ -66,17 +66,28 @@ export class PaymentService {
         body: JSON.stringify(data),
       });
 
-      // Handle empty responses (common with 405 errors)
+      // Handle error responses
       if (!response.ok) {
         const text = await response.text();
         let errorMessage = `HTTP ${response.status}: ${response.statusText}`;
         
         try {
           const json = JSON.parse(text);
-          errorMessage = json.error || json.message || errorMessage;
+          // Try multiple fields for error message
+          errorMessage = json.error || json.message || json.details || errorMessage;
+          console.error('[Payment Service] Error response:', json);
         } catch {
-          if (text) errorMessage = text;
+          if (text) {
+            errorMessage = text;
+            console.error('[Payment Service] Error text:', text);
+          }
         }
+        
+        console.error('[Payment Service] Payment failed:', {
+          status: response.status,
+          statusText: response.statusText,
+          error: errorMessage,
+        });
         
         return {
           success: false,

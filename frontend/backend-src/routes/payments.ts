@@ -110,6 +110,7 @@ router.post('/paystack/initialize', validate(paymentSchema), async (req: AuthReq
     
     return res.status(500).json({ 
       error: errorMessage,
+      message: errorMessage, // Include as 'message' too for frontend compatibility
       ...errorDetails,
     });
   }
