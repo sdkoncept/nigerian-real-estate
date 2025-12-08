@@ -241,6 +241,12 @@ export default function PropertyDetailPage() {
   const handleContactSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
+    // Require authentication
+    if (!user) {
+      navigate('/signup');
+      return;
+    }
+    
     // Validate form data
     const validation = validatePropertyForm({
       title: 'Contact Form',
@@ -265,7 +271,7 @@ export default function PropertyDetailPage() {
 
     // Submit message via Supabase
     try {
-      if (!user || !property) return;
+      if (!property) return;
 
       // Get property owner from database if property is from database
       let recipientId = property.id; // Default fallback
