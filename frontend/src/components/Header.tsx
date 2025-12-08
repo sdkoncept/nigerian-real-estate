@@ -2,12 +2,14 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { useState } from 'react';
 import { useUserProfile } from '../hooks/useUserProfile';
+import { useOrientation } from '../hooks/useOrientation';
 import Logo from './Logo';
 
 export default function Header() {
   const { user, signOut } = useAuth();
   const { profile, isAdmin } = useUserProfile();
   const navigate = useNavigate();
+  const orientation = useOrientation();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
 
@@ -31,7 +33,7 @@ export default function Header() {
           <Logo showTagline={false} />
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-6">
+          <div className={`hidden ${orientation.isLandscape ? 'lg:flex' : 'md:flex'} items-center ${orientation.isLandscape ? 'space-x-3' : 'space-x-6'}`}>
             <Link
               to="/"
               className="text-gray-700 hover:text-primary-600 font-medium transition-colors"

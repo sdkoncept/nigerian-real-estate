@@ -4,6 +4,7 @@ import PropertyCard from '../components/PropertyCard';
 import type { Property } from '../components/PropertyCard';
 import Layout from '../components/Layout';
 import { supabase } from '../lib/supabase';
+import { useOrientation } from '../hooks/useOrientation';
 
 export default function PropertyListingPage() {
   const [properties, setProperties] = useState<Property[]>([]);
@@ -13,6 +14,7 @@ export default function PropertyListingPage() {
   const [selectedListingType, setSelectedListingType] = useState<string>('all');
   const [selectedState, setSelectedState] = useState<string>('all');
   const [sortBy, setSortBy] = useState<string>('newest');
+  const orientation = useOrientation();
 
   useEffect(() => {
     loadProperties();

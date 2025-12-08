@@ -6,6 +6,7 @@ import type { Property } from '../components/PropertyCard';
 import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
+import { useOrientation } from '../hooks/useOrientation';
 
 // Extend Property interface to include coordinates
 interface PropertyWithCoords extends Property {
@@ -49,6 +50,10 @@ export default function MapViewPage() {
   const [selectedProperty, setSelectedProperty] = useState<PropertyWithCoords | null>(null);
   const [mapCenter, setMapCenter] = useState<[number, number]>([6.5244, 3.3792]); // Lagos, Nigeria default
   const mapZoom = 10;
+  const orientation = useOrientation();
+  
+  // Calculate map height based on orientation
+  const mapHeight = orientation.isLandscape ? '70vh' : '400px';
 
   useEffect(() => {
     loadProperties();
@@ -140,9 +145,9 @@ export default function MapViewPage() {
           </div>
         </div>
 
-        <div className="container mx-auto px-4 py-8">
+        <div className="container mx-auto px-4 py-4 md:py-8">
           {/* Map Container */}
-          <div className="bg-white rounded-lg shadow-md overflow-hidden mb-8" style={{ height: '600px' }}>
+          <div className="bg-white rounded-lg shadow-md overflow-hidden mb-4 md:mb-8" style={{ height: mapHeight, minHeight: '300px' }}>
             <MapContainer
               center={mapCenter}
               zoom={mapZoom}
