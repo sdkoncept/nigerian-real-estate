@@ -35,9 +35,14 @@ export const authenticate = async (
     const token = authHeader.substring(7); // Remove 'Bearer ' prefix
 
     if (!supabaseAdmin) {
+      console.error('[Auth] supabaseAdmin is null! Check environment variables:');
+      console.error('[Auth] SUPABASE_URL:', process.env.SUPABASE_URL ? 'SET' : 'MISSING');
+      console.error('[Auth] SUPABASE_SERVICE_ROLE_KEY:', process.env.SUPABASE_SERVICE_ROLE_KEY ? 'SET' : 'MISSING');
+      console.error('[Auth] SUPABASE_SERVICE_ROLE_KEY length:', process.env.SUPABASE_SERVICE_ROLE_KEY?.length || 0);
+      
       return res.status(500).json({
         error: 'Server Error',
-        message: 'Supabase not configured',
+        message: 'Supabase not configured. Please check SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY environment variables.',
       });
     }
 
