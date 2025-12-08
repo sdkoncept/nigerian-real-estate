@@ -7,6 +7,7 @@ import SecureInput from '../components/SecureInput';
 
 export default function CreatePropertyPage() {
   const { user } = useAuth();
+  const { profile } = useUserProfile();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);

@@ -28,6 +28,7 @@ import MessagesPage from './pages/MessagesPage'
 import ReviewsPage from './pages/ReviewsPage'
 import TestimonialsPage from './pages/TestimonialsPage'
 import ComparisonPage from './pages/ComparisonPage'
+import VerifyEmailPage from './pages/VerifyEmailPage'
 
 function App() {
   const { user, loading } = useAuth()
@@ -45,6 +46,7 @@ function App() {
       {/* Public routes */}
       <Route path="/login" element={user ? <Navigate to="/" replace /> : <LoginPage />} />
       <Route path="/signup" element={user ? <Navigate to="/" replace /> : <SignupPage />} />
+      <Route path="/verify-email" element={<VerifyEmailPage />} />
       <Route path="/" element={<HomePage />} />
       <Route path="/properties" element={<PropertyListingPage />} />
       <Route path="/properties/:id" element={<PropertyDetailPage />} />

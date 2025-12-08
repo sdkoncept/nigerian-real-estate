@@ -71,10 +71,11 @@ export default function AgentsPage() {
       console.log('✅ Supabase connection test passed');
       console.log('🔄 Loading all agents from database...');
       
-      // Load all agents from database
+      // Load only verified agents from database
       const { data: agentsData, error: agentsError } = await supabase
         .from('agents')
         .select('*')
+        .eq('verification_status', 'verified') // Only show verified agents
         .order('rating', { ascending: false });
 
       if (agentsError) {

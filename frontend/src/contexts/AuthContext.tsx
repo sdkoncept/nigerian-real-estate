@@ -43,12 +43,17 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const signUp = async (email: string, password: string, metadata?: { name?: string; user_type?: string }) => {
+    // Get the frontend URL from environment or use current origin
+    const frontendUrl = import.meta.env.VITE_FRONTEND_URL || window.location.origin;
+    const redirectTo = `${frontendUrl}/verify-email`;
+    
     // The trigger function will automatically create the profile with user_type from metadata
     const { error } = await supabase.auth.signUp({
       email,
       password,
       options: {
         data: metadata, // user_type and name are passed in metadata, trigger will extract them
+        emailRedirectTo: redirectTo, // Redirect to verify-email page after confirmation
       },
     });
 
