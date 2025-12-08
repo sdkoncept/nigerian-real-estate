@@ -30,7 +30,7 @@ export default function AdminDashboard() {
     verifiedProperties: 0,
   });
   const [loading, setLoading] = useState(true);
-  const [activeTab, setActiveTab] = useState<'overview' | 'users' | 'verifications' | 'reports' | 'settings' | 'subscriptions'>('overview');
+  const [activeTab, setActiveTab] = useState<'overview' | 'users' | 'properties' | 'verifications' | 'reports' | 'settings' | 'subscriptions'>('overview');
 
   useEffect(() => {
     if (user && isAdmin) {
@@ -138,6 +138,7 @@ export default function AdminDashboard() {
                 {[
                   { id: 'overview', label: 'Overview', icon: '📊' },
                   { id: 'users', label: 'Users', icon: '👥' },
+                  { id: 'properties', label: 'Properties', icon: '🏠', link: '/admin/properties' },
                   { id: 'subscriptions', label: 'Subscriptions', icon: '💳', link: '/admin/subscriptions' },
                   { id: 'verifications', label: 'Verifications', icon: '✓' },
                   { id: 'reports', label: 'Reports', icon: '🚨' },

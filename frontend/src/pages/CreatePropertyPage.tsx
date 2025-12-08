@@ -26,6 +26,8 @@ export default function CreatePropertyPage() {
     state: '',
     city: '',
     address: '',
+    latitude: '',
+    longitude: '',
     bedrooms: '',
     bathrooms: '',
     sqm: '',
@@ -35,6 +37,7 @@ export default function CreatePropertyPage() {
     amenities: '',
     is_featured: false,
   });
+  const [useManualCoordinates, setUseManualCoordinates] = useState(false);
 
   // Check verification status on mount
   useEffect(() => {
@@ -186,26 +189,42 @@ export default function CreatePropertyPage() {
         .map(a => a.trim())
         .filter(a => a.length > 0);
 
-      // Geocode address to get coordinates
+      // Get coordinates - either manual or geocoded
       let coordinates = null;
-      try {
-        const address = formData.address || formData.location;
-        if (address && formData.city && formData.state) {
-          console.log('Geocoding address:', { address, city: formData.city, state: formData.state });
-          const geocodeResult = await geocodeAddress(address, formData.city, formData.state);
-          if (geocodeResult) {
-            coordinates = {
-              lat: geocodeResult.lat,
-              lng: geocodeResult.lng,
-            };
-            console.log('Geocoding successful:', coordinates);
-          } else {
-            console.warn('Geocoding failed for address:', address);
-          }
+      
+      // Use manual coordinates if provided
+      if (useManualCoordinates && formData.latitude && formData.longitude) {
+        const lat = parseFloat(formData.latitude);
+        const lng = parseFloat(formData.longitude);
+        if (!isNaN(lat) && !isNaN(lng) && lat >= -90 && lat <= 90 && lng >= -180 && lng <= 180) {
+          coordinates = { lat, lng };
+          console.log('Using manual coordinates:', coordinates);
+        } else {
+          setError('Invalid coordinates. Latitude must be between -90 and 90, Longitude between -180 and 180.');
+          setLoading(false);
+          return;
         }
-      } catch (geocodeError) {
-        console.error('Geocoding error (non-fatal):', geocodeError);
-        // Don't fail property creation if geocoding fails
+      } else {
+        // Auto-geocode address if manual coordinates not provided
+        try {
+          const address = formData.address || formData.location;
+          if (address && formData.city && formData.state) {
+            console.log('Geocoding address:', { address, city: formData.city, state: formData.state });
+            const geocodeResult = await geocodeAddress(address, formData.city, formData.state);
+            if (geocodeResult) {
+              coordinates = {
+                lat: geocodeResult.lat,
+                lng: geocodeResult.lng,
+              };
+              console.log('Geocoding successful:', coordinates);
+            } else {
+              console.warn('Geocoding failed for address:', address);
+            }
+          }
+        } catch (geocodeError) {
+          console.error('Geocoding error (non-fatal):', geocodeError);
+          // Don't fail property creation if geocoding fails
+        }
       }
 
       // Create property
@@ -475,6 +494,55 @@ export default function CreatePropertyPage() {
                       placeholder="Full street address"
                     />
                   </div>
+                </div>
+
+                {/* Manual Coordinates Option */}
+                <div className="mt-6 p-4 bg-gray-50 rounded-lg border border-gray-200">
+                  <div className="flex items-center mb-4">
+                    <input
+                      type="checkbox"
+                      id="useManualCoordinates"
+                      checked={useManualCoordinates}
+                      onChange={(e) => setUseManualCoordinates(e.target.checked)}
+                      className="w-4 h-4 text-primary-600 border-gray-300 rounded focus:ring-primary-500"
+                    />
+                    <label htmlFor="useManualCoordinates" className="ml-2 text-sm font-medium text-gray-700">
+                      Manually set coordinates (for map display)
+                    </label>
+                  </div>
+                  {useManualCoordinates && (
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <div>
+                        <SecureInput
+                          type="number"
+                          step="any"
+                          label="Latitude"
+                          name="latitude"
+                          value={formData.latitude}
+                          onChange={(value) => handleInputChange('latitude', value)}
+                          placeholder="6.5244"
+                        />
+                        <p className="text-xs text-gray-500 mt-1">Example: 6.5244 (for Lagos)</p>
+                      </div>
+                      <div>
+                        <SecureInput
+                          type="number"
+                          step="any"
+                          label="Longitude"
+                          name="longitude"
+                          value={formData.longitude}
+                          onChange={(value) => handleInputChange('longitude', value)}
+                          placeholder="3.3792"
+                        />
+                        <p className="text-xs text-gray-500 mt-1">Example: 3.3792 (for Lagos)</p>
+                      </div>
+                    </div>
+                  )}
+                  {!useManualCoordinates && (
+                    <p className="text-xs text-gray-600 mt-2">
+                      💡 Coordinates will be automatically generated from your address. Or check the box above to set them manually.
+                    </p>
+                  )}
                 </div>
               </div>
 

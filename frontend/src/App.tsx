@@ -20,6 +20,7 @@ import AdminSubscriptionsPage from './pages/AdminSubscriptionsPage'
 import AdminVerificationsPage from './pages/AdminVerificationsPage'
 import AdminReportsPage from './pages/AdminReportsPage'
 import AdminSettingsPage from './pages/AdminSettingsPage'
+import AdminPropertiesPage from './pages/AdminPropertiesPage'
 import PricingPage from './pages/PricingPage'
 import SubscriptionPage from './pages/SubscriptionPage'
 import PaymentHistoryPage from './pages/PaymentHistoryPage'
@@ -137,6 +138,14 @@ function App() {
         element={
           <ProtectedRoute>
             <AdminSubscriptionsPage />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/admin/properties"
+        element={
+          <ProtectedRoute>
+            <AdminPropertiesPage />
           </ProtectedRoute>
         }
       />
