@@ -2,17 +2,23 @@
  * Vercel Serverless Function Entry Point
  * Handles ALL /api/* routes via Express
  * 
- * This explicitly wraps the Express app for Vercel serverless functions
- * to ensure all HTTP methods (GET, POST, PUT, DELETE, etc.) are handled correctly
+ * IMPORTANT: When Vercel routes /api/payments/paystack/initialize here,
+ * Express receives the FULL path: /api/payments/paystack/initialize
+ * 
+ * The Express app has routes registered for /api/payments which should match
  */
 
 import app from '../backend/src/index.js';
 
-// Export handler function that wraps Express app
-// @vercel/node will provide req and res types at runtime
+// Export handler that explicitly handles the request
 export default function handler(req: any, res: any) {
-  // Pass the request directly to Express
-  // Express will handle routing, CORS, authentication, etc.
+  // Log the incoming request for debugging
+  console.log(`[Vercel Handler] ${req.method} ${req.url}`, {
+    path: req.path,
+    originalUrl: req.originalUrl,
+  });
+  
+  // Pass to Express app
   return app(req, res);
 }
 

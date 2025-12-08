@@ -92,8 +92,13 @@ app.use('/verification', verificationRoutes);
 app.use('/api/agent', agentRoutes);
 app.use('/agent', agentRoutes);
 
-// 404 handler
+// 404 handler - log for debugging
 app.use((req: Request, res: Response) => {
+  console.log(`[404] ${req.method} ${req.path} - Route not found`, {
+    url: req.url,
+    originalUrl: req.originalUrl,
+    baseUrl: req.baseUrl,
+  });
   res.status(404).json({
     error: 'Not Found',
     message: `Route ${req.method} ${req.path} not found`,
