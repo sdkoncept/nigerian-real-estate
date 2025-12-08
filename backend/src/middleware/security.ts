@@ -77,15 +77,19 @@ export const paymentLimiter = rateLimit({
 export const corsOptions = {
   origin: (origin: string | undefined, callback: (err: Error | null, allow?: boolean) => void) => {
     const allowedOrigins = [
-      process.env.CORS_ORIGIN || 'http://localhost:5173',
+      // Production domain (primary)
+      'https://housedirectng.com',
+      // Environment variable override
+      process.env.CORS_ORIGIN,
+      // Development
       'http://localhost:5173',
       'http://localhost:3000',
+      // Legacy domains (keep for backwards compatibility)
       'https://nigerianrealestate.sdkoncept.com',
       'https://nigerian-real-estate.vercel.app',
-      'https://housedirectng.com',
       // Allow any Vercel preview deployments
       ...(process.env.CORS_ORIGIN?.includes('vercel.app') ? [process.env.CORS_ORIGIN] : []),
-    ];
+    ].filter(Boolean); // Remove undefined values
     
     // Allow requests with no origin (mobile apps, Postman, etc.)
     if (!origin) return callback(null, true);
@@ -95,14 +99,14 @@ export const corsOptions = {
       // Exact match
       if (origin === allowed) return true;
       // Wildcard support for Vercel previews
-      if (allowed.includes('vercel.app') && origin.includes('.vercel.app')) return true;
+      if (allowed && allowed.includes('vercel.app') && origin.includes('.vercel.app')) return true;
       return false;
     });
     
     if (isAllowed) {
       callback(null, true);
     } else {
-      console.warn(`CORS blocked origin: ${origin}`);
+      console.warn(`CORS blocked origin: ${origin}. Allowed: ${allowedOrigins.join(', ')}`);
       callback(new Error('Not allowed by CORS'));
     }
   },
