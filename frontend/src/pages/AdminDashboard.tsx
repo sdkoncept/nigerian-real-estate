@@ -138,22 +138,34 @@ export default function AdminDashboard() {
                 {[
                   { id: 'overview', label: 'Overview', icon: '📊' },
                   { id: 'users', label: 'Users', icon: '👥' },
+                  { id: 'subscriptions', label: 'Subscriptions', icon: '💳', link: '/admin/subscriptions' },
                   { id: 'verifications', label: 'Verifications', icon: '✓' },
                   { id: 'reports', label: 'Reports', icon: '🚨' },
                   { id: 'settings', label: 'Settings', icon: '⚙️' },
-                ].map((tab) => (
-                  <button
-                    key={tab.id}
-                    onClick={() => setActiveTab(tab.id as any)}
-                    className={`px-6 py-4 text-sm font-medium border-b-2 transition-colors ${
-                      activeTab === tab.id
-                        ? 'border-purple-600 text-purple-600'
-                        : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-                    }`}
-                  >
-                    <span className="mr-2">{tab.icon}</span>
-                    {tab.label}
-                  </button>
+                ].map((tab: any) => (
+                  tab.link ? (
+                    <Link
+                      key={tab.id}
+                      to={tab.link}
+                      className={`px-6 py-4 text-sm font-medium border-b-2 transition-colors border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300`}
+                    >
+                      <span className="mr-2">{tab.icon}</span>
+                      {tab.label}
+                    </Link>
+                  ) : (
+                    <button
+                      key={tab.id}
+                      onClick={() => setActiveTab(tab.id as any)}
+                      className={`px-6 py-4 text-sm font-medium border-b-2 transition-colors ${
+                        activeTab === tab.id
+                          ? 'border-purple-600 text-purple-600'
+                          : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                      }`}
+                    >
+                      <span className="mr-2">{tab.icon}</span>
+                      {tab.label}
+                    </button>
+                  )
                 ))}
               </nav>
             </div>
