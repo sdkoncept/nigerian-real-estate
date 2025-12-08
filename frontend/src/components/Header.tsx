@@ -45,6 +45,12 @@ export default function Header() {
               Properties
             </Link>
             <Link
+              to="/map"
+              className="text-gray-700 hover:text-primary-600 font-medium transition-colors"
+            >
+              Map View
+            </Link>
+            <Link
               to="/agents"
               className="text-gray-700 hover:text-primary-600 font-medium transition-colors"
             >
@@ -227,6 +233,13 @@ export default function Header() {
                 onClick={() => setIsMenuOpen(false)}
               >
                 Properties
+              </Link>
+              <Link
+                to="/map"
+                className="px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                Map View
               </Link>
               <Link
                 to="/agents"

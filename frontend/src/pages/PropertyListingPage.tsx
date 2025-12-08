@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import PropertyCard from '../components/PropertyCard';
 import type { Property } from '../components/PropertyCard';
 import Layout from '../components/Layout';
@@ -136,10 +137,35 @@ export default function PropertyListingPage() {
         {/* Hero Section */}
         <div className="bg-gradient-to-r from-primary-600 to-primary-800 text-white py-12">
           <div className="container mx-auto px-4">
-            <h1 className="text-4xl font-bold mb-4">Find Your Dream Property</h1>
-            <p className="text-xl text-primary-100">
-              Discover the best properties across Nigeria
-            </p>
+            <div className="flex flex-col md:flex-row md:items-center md:justify-between">
+              <div>
+                <h1 className="text-4xl font-bold mb-4">Find Your Dream Property</h1>
+                <p className="text-xl text-primary-100">
+                  Discover the best properties across Nigeria
+                </p>
+              </div>
+              <div className="mt-4 md:mt-0">
+                <Link
+                  to="/map"
+                  className="inline-flex items-center px-6 py-3 bg-white text-primary-600 rounded-lg hover:bg-primary-50 transition-colors font-semibold shadow-lg"
+                >
+                  <svg
+                    className="w-5 h-5 mr-2"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"
+                    />
+                  </svg>
+                  View on Map
+                </Link>
+              </div>
+            </div>
           </div>
         </div>
 
