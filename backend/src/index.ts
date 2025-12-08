@@ -69,6 +69,18 @@ app.use('/verification', verificationRoutes);
 app.use('/api/agent', agentRoutes);
 app.use('/agent', agentRoutes);
 
+// Debug middleware for Vercel (remove in production if needed)
+if (process.env.VERCEL === '1') {
+  app.use((req: Request, res: Response, next: any) => {
+    console.log(`[Vercel] ${req.method} ${req.path}`, {
+      url: req.url,
+      originalUrl: req.originalUrl,
+      baseUrl: req.baseUrl,
+    });
+    next();
+  });
+}
+
 // 404 handler
 app.use((req: Request, res: Response) => {
   res.status(404).json({
