@@ -45,6 +45,21 @@ app.get('/api/health', (req: Request, res: Response) => {
   });
 });
 
+// Debug endpoint to check environment variables (without exposing secrets)
+app.get('/api/debug/env', (req: Request, res: Response) => {
+  res.json({
+    hasPaystackSecret: !!process.env.PAYSTACK_SECRET_KEY,
+    paystackSecretLength: process.env.PAYSTACK_SECRET_KEY?.length || 0,
+    paystackSecretPrefix: process.env.PAYSTACK_SECRET_KEY?.substring(0, 3) || 'none',
+    hasSupabaseUrl: !!process.env.SUPABASE_URL,
+    hasSupabaseServiceKey: !!process.env.SUPABASE_SERVICE_ROLE_KEY,
+    supabaseServiceKeyLength: process.env.SUPABASE_SERVICE_ROLE_KEY?.length || 0,
+    frontendUrl: process.env.FRONTEND_URL,
+    nodeEnv: process.env.NODE_ENV,
+    vercel: process.env.VERCEL,
+  });
+});
+
 // Root route
 app.get('/', (req: Request, res: Response) => {
   res.json({
