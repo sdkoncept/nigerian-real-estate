@@ -80,14 +80,29 @@ export const corsOptions = {
       process.env.CORS_ORIGIN || 'http://localhost:5173',
       'http://localhost:5173',
       'http://localhost:3000',
+      'https://nigerianrealestate.sdkoncept.com',
+      'https://nigerian-real-estate.vercel.app',
+      'https://housedirectng.com',
+      // Allow any Vercel preview deployments
+      ...(process.env.CORS_ORIGIN?.includes('vercel.app') ? [process.env.CORS_ORIGIN] : []),
     ];
     
     // Allow requests with no origin (mobile apps, Postman, etc.)
     if (!origin) return callback(null, true);
     
-    if (allowedOrigins.includes(origin)) {
+    // Check if origin matches any allowed origin
+    const isAllowed = allowedOrigins.some(allowed => {
+      // Exact match
+      if (origin === allowed) return true;
+      // Wildcard support for Vercel previews
+      if (allowed.includes('vercel.app') && origin.includes('.vercel.app')) return true;
+      return false;
+    });
+    
+    if (isAllowed) {
       callback(null, true);
     } else {
+      console.warn(`CORS blocked origin: ${origin}`);
       callback(new Error('Not allowed by CORS'));
     }
   },

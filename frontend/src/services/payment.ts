@@ -3,7 +3,26 @@
  * Handles Paystack payment integration
  */
 
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+// Get API URL from environment or use appropriate fallback
+const getApiUrl = () => {
+  const envUrl = import.meta.env.VITE_API_URL;
+  
+  // If VITE_API_URL is set, use it
+  if (envUrl) {
+    return envUrl;
+  }
+  
+  // In production (HTTPS), don't fallback to localhost
+  if (window.location.protocol === 'https:') {
+    console.error('VITE_API_URL is not set in production environment');
+    return ''; // Return empty to trigger error
+  }
+  
+  // In development, fallback to localhost
+  return 'http://localhost:5000';
+};
+
+const API_URL = getApiUrl();
 
 export interface PaymentRequest {
   amount: number;
@@ -31,6 +50,14 @@ export class PaymentService {
     data: PaymentRequest,
     token: string
   ): Promise<PaymentResponse> {
+    // Check if API URL is configured
+    if (!API_URL) {
+      return {
+        success: false,
+        error: 'Payment service is not configured. Please contact support.',
+      };
+    }
+    
     try {
       const response = await fetch(`${API_URL}/api/payments/paystack/initialize`, {
         method: 'POST',
@@ -76,6 +103,14 @@ export class PaymentService {
     reference: string,
     token: string
   ): Promise<PaymentResponse> {
+    // Check if API URL is configured
+    if (!API_URL) {
+      return {
+        success: false,
+        error: 'Payment service is not configured. Please contact support.',
+      };
+    }
+    
     try {
       const response = await fetch(`${API_URL}/api/payments/paystack/verify`, {
         method: 'POST',
