@@ -19,8 +19,15 @@ router.use(paymentLimiter);
  * Initialize Paystack payment
  */
 router.post('/paystack/initialize', validate(paymentSchema), async (req: AuthRequest, res: Response) => {
+  console.log('[Payment Init] Request received:', {
+    hasUser: !!req.user,
+    userEmail: req.user?.email,
+    body: req.body,
+  });
+  
   try {
     if (!req.user) {
+      console.error('[Payment Init] No user found in request');
       return res.status(401).json({ error: 'Unauthorized' });
     }
 
@@ -35,6 +42,7 @@ router.post('/paystack/initialize', validate(paymentSchema), async (req: AuthReq
       entity_id
     } = req.body;
 
+    console.log('[Payment Init] Calling Paystack service...');
     const result = await paystackService.initializePayment({
       amount,
       email: req.user.email,
@@ -49,6 +57,8 @@ router.post('/paystack/initialize', validate(paymentSchema), async (req: AuthReq
       },
       callback_url: callback_url || `${process.env.FRONTEND_URL || 'http://localhost:5173'}/payment/callback`,
     });
+
+    console.log('[Payment Init] Paystack result:', { success: result.success, error: result.error });
 
     if (result.success) {
       res.json({
