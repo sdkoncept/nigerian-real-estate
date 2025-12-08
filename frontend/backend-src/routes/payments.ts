@@ -65,7 +65,14 @@ router.post('/paystack/initialize', validate(paymentSchema), async (req: AuthReq
     }
   } catch (error: any) {
     console.error('Paystack initialization error:', error);
-    res.status(500).json({ error: 'Payment initialization failed' });
+    console.error('Error stack:', error.stack);
+    console.error('Request body:', req.body);
+    console.error('User:', req.user);
+    
+    res.status(500).json({ 
+      error: error.message || 'Payment initialization failed',
+      details: process.env.NODE_ENV === 'development' ? error.stack : undefined,
+    });
   }
 });
 

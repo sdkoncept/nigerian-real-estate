@@ -108,9 +108,22 @@ app.use((req: Request, res: Response) => {
 // Error handler
 app.use((err: any, req: Request, res: Response, next: any) => {
   console.error('Error:', err);
-  res.status(err.status || 500).json({
-    error: err.message || 'Internal Server Error',
+  console.error('Error stack:', err.stack);
+  console.error('Request path:', req.path);
+  console.error('Request method:', req.method);
+  
+  // Return more detailed error in production for debugging
+  const errorMessage = err.message || 'Internal Server Error';
+  const statusCode = err.status || 500;
+  
+  res.status(statusCode).json({
+    error: errorMessage,
     ...(process.env.NODE_ENV === 'development' && { stack: err.stack }),
+    ...(process.env.VERCEL === '1' && { 
+      // Include error details in Vercel for debugging
+      details: err.message,
+      path: req.path,
+    }),
   });
 });
 
