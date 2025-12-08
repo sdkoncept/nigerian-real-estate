@@ -57,11 +57,17 @@ app.get('/', (req: Request, res: Response) => {
 });
 
 // API Routes
+// Support both /api/* (Vercel routing) and /* (direct access)
 app.use('/api/admin', adminRoutes);
+app.use('/admin', adminRoutes);
 app.use('/api/reports', reportsRoutes);
+app.use('/reports', reportsRoutes);
 app.use('/api/payments', paymentsRoutes);
+app.use('/payments', paymentsRoutes);
 app.use('/api/verification', verificationRoutes);
+app.use('/verification', verificationRoutes);
 app.use('/api/agent', agentRoutes);
+app.use('/agent', agentRoutes);
 
 // 404 handler
 app.use((req: Request, res: Response) => {
@@ -80,13 +86,16 @@ app.use((err: any, req: Request, res: Response, next: any) => {
   });
 });
 
-// Start server
-app.listen(PORT, () => {
-  console.log(`🚀 Server running on http://localhost:${PORT}`);
-  console.log(`📡 API Health: http://localhost:${PORT}/api/health`);
-  console.log(`🔒 Security: Enabled`);
-  console.log(`📊 Rate Limiting: Enabled`);
-});
-
+// Export handler for Vercel serverless functions
 export default app;
+
+// Start server only if not in serverless environment
+if (process.env.VERCEL !== '1' && process.env.NODE_ENV !== 'production') {
+  app.listen(PORT, () => {
+    console.log(`🚀 Server running on http://localhost:${PORT}`);
+    console.log(`📡 API Health: http://localhost:${PORT}/api/health`);
+    console.log(`🔒 Security: Enabled`);
+    console.log(`📊 Rate Limiting: Enabled`);
+  });
+}
 
