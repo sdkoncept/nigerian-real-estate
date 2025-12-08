@@ -6,6 +6,8 @@ interface LogoProps {
 }
 
 export default function Logo({ className = '', showTagline = false }: LogoProps) {
+  const isFooter = className.includes('text-white');
+  
   return (
     <Link to="/" className={`flex items-center ${className}`}>
       {/* Logo Container */}
