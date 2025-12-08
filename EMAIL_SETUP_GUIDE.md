@@ -225,13 +225,23 @@ SMTP_FROM=noreply@housedirectng.com
 2. Create email accounts
 3. Use your hosting provider's SMTP settings
 
-**Example (cPanel):**
+**Example (cPanel/Standard Hosting):**
 ```
 SMTP_HOST=mail.housedirectng.com
 SMTP_PORT=587
 SMTP_SECURE=false
 SMTP_USER=noreply@housedirectng.com
 SMTP_PASS=your_email_password
+```
+
+**Example (Supreme Cluster Hosting - Port 465 with SSL):**
+```
+SMTP_HOST=mail.supremecluster.com
+SMTP_PORT=465
+SMTP_SECURE=true
+SMTP_USER=noreply@housedirectng.com
+SMTP_PASS=your_email_password
+SMTP_FROM=noreply@housedirectng.com
 ```
 
 ---
