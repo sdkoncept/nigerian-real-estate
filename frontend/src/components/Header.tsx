@@ -2,6 +2,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { useState } from 'react';
 import { useUserProfile } from '../hooks/useUserProfile';
+import Logo from './Logo';
 
 export default function Header() {
   const { user, signOut } = useAuth();
@@ -27,10 +28,7 @@ export default function Header() {
       <nav className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
-          <Link to="/" className="flex items-center space-x-2">
-            <span className="text-2xl">🏠</span>
-            <span className="text-xl font-bold text-primary-700">House Direct NG</span>
-          </Link>
+          <Logo showTagline={false} />
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-6">

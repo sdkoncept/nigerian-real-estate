@@ -9,9 +9,8 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           {/* Company Info */}
           <div>
-            <div className="flex items-center space-x-2 mb-4">
-              <span className="text-2xl">🏠</span>
-              <span className="text-xl font-bold text-white">House Direct NG</span>
+            <div className="mb-4">
+              <Logo showTagline={true} className="text-white" />
             </div>
             <p className="text-gray-400 mb-4">
               Your trusted platform for buying, selling, and renting properties in Nigeria.
