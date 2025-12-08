@@ -6,7 +6,6 @@ import type { Property } from '../components/PropertyCard';
 import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
-import { geocodeAddress } from '../utils/geocoding';
 
 // Extend Property interface to include coordinates
 interface PropertyWithCoords extends Property {
@@ -49,7 +48,7 @@ export default function MapViewPage() {
   const [loading, setLoading] = useState(true);
   const [selectedProperty, setSelectedProperty] = useState<PropertyWithCoords | null>(null);
   const [mapCenter, setMapCenter] = useState<[number, number]>([6.5244, 3.3792]); // Lagos, Nigeria default
-  const [mapZoom, setMapZoom] = useState(10);
+  const mapZoom = 10;
 
   useEffect(() => {
     loadProperties();
