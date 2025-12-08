@@ -96,12 +96,12 @@ export const reportSchema = z.object({
  */
 export const paymentSchema = z.object({
   amount: schemas.price,
-  currency: z.string().default('NGN'),
+  currency: z.string().optional().default('NGN'),
   property_id: schemas.uuid.optional(),
   description: z.string().max(500).optional(),
-  callback_url: z.string().url().optional(),
+  callback_url: z.string().url().optional().or(z.literal('')),
   payment_type: z.enum(['subscription', 'featured_listing', 'verification_fee']).optional(),
   plan_type: z.enum(['premium', 'enterprise', 'professional']).optional(),
   entity_id: schemas.uuid.optional(),
-});
+}).passthrough(); // Allow extra fields that might be sent
 
