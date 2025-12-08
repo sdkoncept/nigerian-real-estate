@@ -7,16 +7,12 @@
       "config": {
         "distDir": "frontend/dist"
       }
-    },
-    {
-      "src": "api/index.ts",
-      "use": "@vercel/node"
     }
   ],
   "routes": [
     {
       "src": "/api/(.*)",
-      "dest": "api/index.ts"
+      "dest": "/api/index.ts"
     },
     {
       "src": "/(.*)",
@@ -24,10 +20,6 @@
     }
   ],
   "rewrites": [
-    {
-      "source": "/api/(.*)",
-      "destination": "/api/$1"
-    },
     {
       "source": "/(.*)",
       "destination": "/index.html"
