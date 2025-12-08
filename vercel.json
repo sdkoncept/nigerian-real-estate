@@ -9,14 +9,14 @@
       }
     },
     {
-      "src": "api/index.ts",
+      "src": "frontend/api/index.ts",
       "use": "@vercel/node"
     }
   ],
   "routes": [
     {
       "src": "/api/(.*)",
-      "dest": "/api/index.ts",
+      "dest": "/frontend/api/index.ts",
       "methods": ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"]
     },
     {
