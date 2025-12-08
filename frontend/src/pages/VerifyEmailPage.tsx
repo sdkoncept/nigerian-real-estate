@@ -25,7 +25,7 @@ export default function VerifyEmailPage() {
 
         // Supabase handles email verification automatically when the link is clicked
         // We just need to check if the user is now confirmed
-        const { data: { session }, error: sessionError } = await supabase.auth.getSession();
+        const { error: sessionError } = await supabase.auth.getSession();
 
         if (sessionError) {
           console.error('Session error:', sessionError);
