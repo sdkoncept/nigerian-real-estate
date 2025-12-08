@@ -6,7 +6,7 @@
  * Express receives the full path: /api/payments/paystack/initialize
  */
 
-import app from '../../backend/src/index.js';
+import app from '../backend-src/index.js';
 
 // Export Express app directly - @vercel/node handles Express apps automatically
 export default app;
