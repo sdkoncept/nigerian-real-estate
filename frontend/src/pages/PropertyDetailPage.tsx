@@ -30,6 +30,7 @@ interface Property {
 export default function PropertyDetailPage() {
   const { id } = useParams<{ id: string }>();
   const { user } = useAuth();
+  const navigate = useNavigate();
   const [property, setProperty] = useState<Property | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -497,16 +498,22 @@ export default function PropertyDetailPage() {
               <div className="bg-white rounded-lg shadow-md p-6 mb-6 sticky top-20">
                 <div className="space-y-4">
                   <button
-                    onClick={() => setShowContactForm(!showContactForm)}
+                    onClick={() => {
+                      if (!user) {
+                        navigate('/signup');
+                        return;
+                      }
+                      setShowContactForm(!showContactForm);
+                    }}
                     className="w-full px-6 py-3 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors font-semibold"
                   >
-                    Contact Agent
+                    {user ? 'Contact Agent' : 'Sign Up to Contact'}
                   </button>
                   
                   <button
                     onClick={async () => {
                       if (!user) {
-                        alert('Please log in to add favorites');
+                        navigate('/signup');
                         return;
                       }
 
@@ -562,7 +569,7 @@ export default function PropertyDetailPage() {
                 </div>
 
                 {/* Contact Form */}
-                {showContactForm && (
+                {showContactForm && user && (
                   <form onSubmit={handleContactSubmit} className="mt-6 pt-6 border-t">
                     <div className="space-y-4">
                       <SecureInput

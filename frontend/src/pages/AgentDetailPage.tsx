@@ -31,6 +31,7 @@ interface Agent {
 export default function AgentDetailPage() {
   const { id } = useParams<{ id: string }>();
   const { user } = useAuth();
+  const navigate = useNavigate();
   const [agent, setAgent] = useState<Agent | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -142,9 +143,16 @@ export default function AgentDetailPage() {
 
   const handleContactSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    // Require authentication
+    if (!user) {
+      navigate('/signup');
+      return;
+    }
+    
     // Submit message via Supabase
     try {
-      if (!user || !agent) return;
+      if (!agent) return;
 
       const { error } = await supabase.from('messages').insert({
         sender_id: user.id,
@@ -328,14 +336,20 @@ export default function AgentDetailPage() {
                 )}
 
                 <button
-                  onClick={() => setShowContactForm(!showContactForm)}
+                  onClick={() => {
+                    if (!user) {
+                      navigate('/signup');
+                      return;
+                    }
+                    setShowContactForm(!showContactForm);
+                  }}
                   className="w-full px-6 py-3 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors font-semibold mb-4"
                 >
-                  Send Message
+                  {user ? 'Send Message' : 'Sign Up to Contact'}
                 </button>
 
                 {/* Contact Form */}
-                {showContactForm && (
+                {showContactForm && user && (
                   <form onSubmit={handleContactSubmit} className="pt-4 border-t">
                     <div className="space-y-4">
                       <SecureInput
