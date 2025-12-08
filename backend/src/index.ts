@@ -56,8 +56,22 @@ app.get('/', (req: Request, res: Response) => {
   });
 });
 
+// Debug middleware for Vercel (place before routes to log all requests)
+if (process.env.VERCEL === '1') {
+  app.use((req: Request, res: Response, next: any) => {
+    console.log(`[Vercel] ${req.method} ${req.path}`, {
+      url: req.url,
+      originalUrl: req.originalUrl,
+      baseUrl: req.baseUrl,
+      headers: req.headers,
+    });
+    next();
+  });
+}
+
 // API Routes
 // Support both /api/* (Vercel routing) and /* (direct access)
+// Note: Vercel may strip /api prefix when routing to serverless functions
 app.use('/api/admin', adminRoutes);
 app.use('/admin', adminRoutes);
 app.use('/api/reports', reportsRoutes);
@@ -68,18 +82,6 @@ app.use('/api/verification', verificationRoutes);
 app.use('/verification', verificationRoutes);
 app.use('/api/agent', agentRoutes);
 app.use('/agent', agentRoutes);
-
-// Debug middleware for Vercel (remove in production if needed)
-if (process.env.VERCEL === '1') {
-  app.use((req: Request, res: Response, next: any) => {
-    console.log(`[Vercel] ${req.method} ${req.path}`, {
-      url: req.url,
-      originalUrl: req.originalUrl,
-      baseUrl: req.baseUrl,
-    });
-    next();
-  });
-}
 
 // 404 handler
 app.use((req: Request, res: Response) => {
