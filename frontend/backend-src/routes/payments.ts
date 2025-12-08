@@ -85,7 +85,6 @@ router.post('/paystack/initialize', validate(paymentSchema), async (req: AuthReq
     });
   }
 });
-});
 
 /**
  * Verify Paystack payment and process subscription/featured listing

@@ -52,11 +52,16 @@ export const authenticate = async (
     }
 
     // Get user profile to check user_type
-    const { data: profile } = await supabaseAdmin
+    const { data: profile, error: profileError } = await supabaseAdmin
       .from('profiles')
       .select('user_type')
       .eq('id', user.id)
       .single();
+
+    // Log profile fetch errors but don't fail authentication
+    if (profileError) {
+      console.warn('[Auth] Profile fetch error (non-fatal):', profileError.message);
+    }
 
     // Attach user to request
     req.user = {
@@ -65,6 +70,7 @@ export const authenticate = async (
       user_type: profile?.user_type || 'buyer',
     };
 
+    console.log('[Auth] User authenticated:', { id: req.user.id, email: req.user.email, user_type: req.user.user_type });
     next();
   } catch (error) {
     console.error('Authentication error:', error);

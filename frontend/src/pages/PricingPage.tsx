@@ -316,7 +316,7 @@ export default function PricingPage() {
                   </ul>
 
                   <button
-                    onClick={() => handleSelectPlan(plan.name, plan.price, 'seller')}
+                    onClick={() => handleSelectPlan(plan.name, plan.price, 'agent')}
                     disabled={processing === plan.name}
                     className={`w-full py-3 rounded-lg font-bold transition-all disabled:opacity-50 disabled:cursor-not-allowed ${
                       plan.popular

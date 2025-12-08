@@ -82,9 +82,23 @@ export class PaystackService {
       };
     } catch (error: any) {
       console.error('Paystack payment error:', error);
+      console.error('Error details:', {
+        message: error.message,
+        response: error.response?.data,
+        status: error.response?.status,
+      });
+      
+      // Provide more detailed error messages
+      let errorMessage = 'Payment initialization failed';
+      if (error.response?.data?.message) {
+        errorMessage = error.response.data.message;
+      } else if (error.message) {
+        errorMessage = error.message;
+      }
+      
       return {
         success: false,
-        error: error.response?.data?.message || 'Payment initialization failed',
+        error: errorMessage,
       };
     }
   }
