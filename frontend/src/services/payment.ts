@@ -66,6 +66,24 @@ export class PaymentService {
         body: JSON.stringify(data),
       });
 
+      // Handle empty responses (common with 405 errors)
+      if (!response.ok) {
+        const text = await response.text();
+        let errorMessage = `HTTP ${response.status}: ${response.statusText}`;
+        
+        try {
+          const json = JSON.parse(text);
+          errorMessage = json.error || json.message || errorMessage;
+        } catch {
+          if (text) errorMessage = text;
+        }
+        
+        return {
+          success: false,
+          error: errorMessage,
+        };
+      }
+
       const result = await response.json();
 
       if (!response.ok) {
