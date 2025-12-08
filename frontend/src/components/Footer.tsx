@@ -98,11 +98,15 @@ export default function Footer() {
             <ul className="space-y-2 text-gray-400">
               <li className="flex items-start">
                 <span className="mr-2">📧</span>
-                <span>info@nigerianrealestate.ng</span>
+                <a href="mailto:support@housedirectng.com" className="hover:text-white transition-colors">
+                  support@housedirectng.com
+                </a>
               </li>
               <li className="flex items-start">
                 <span className="mr-2">📞</span>
-                <span>+234 800 000 0000</span>
+                <a href="tel:+2347061350647" className="hover:text-white transition-colors">
+                  +234 7061350647
+                </a>
               </li>
               <li className="flex items-start">
                 <span className="mr-2">📍</span>

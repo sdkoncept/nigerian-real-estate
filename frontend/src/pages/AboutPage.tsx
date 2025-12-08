@@ -145,13 +145,13 @@ export default function AboutPage() {
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <a
-                href="mailto:info@nigerianrealestate.ng"
+                href="mailto:support@housedirectng.com"
                 className="px-6 py-3 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors"
               >
                 📧 Email Us
               </a>
               <a
-                href="tel:+2348000000000"
+                href="tel:+2347061350647"
                 className="px-6 py-3 bg-white text-primary-600 border-2 border-primary-600 rounded-lg hover:bg-primary-50 transition-colors"
               >
                 📞 Call Us
