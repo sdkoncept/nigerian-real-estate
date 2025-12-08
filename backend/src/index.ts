@@ -20,8 +20,9 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 
 // Trust proxy - Required for Vercel and other reverse proxies
-// This allows Express to correctly identify client IPs from X-Forwarded-For headers
-app.set('trust proxy', true);
+// Set to 1 to trust only the first proxy (Vercel's edge network)
+// This allows Express to correctly identify client IPs while maintaining rate limiting security
+app.set('trust proxy', 1);
 
 // Security middleware (apply first)
 app.use(securityHeaders);
