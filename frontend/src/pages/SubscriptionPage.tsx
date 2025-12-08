@@ -168,12 +168,20 @@ export default function SubscriptionPage() {
                   <p className="text-gray-600 mb-6">
                     You're currently on the free plan. Upgrade to unlock premium features!
                   </p>
-                  <Link
-                    to="/pricing"
-                    className="inline-block px-6 py-3 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors font-semibold"
-                  >
-                    View Plans
-                  </Link>
+                  <div className="flex gap-4 justify-center">
+                    <Link
+                      to="/pricing"
+                      className="inline-block px-6 py-3 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors font-semibold"
+                    >
+                      View Plans
+                    </Link>
+                    <Link
+                      to="/payments"
+                      className="inline-block px-6 py-3 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition-colors font-semibold"
+                    >
+                      Check Payment History
+                    </Link>
+                  </div>
                 </div>
               )}
             </div>

@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import Layout from '../components/Layout';
 import { useAuth } from '../contexts/AuthContext';
 import { supabase } from '../lib/supabase';
+import { PaymentService } from '../services/payment';
 
 interface Payment {
   id: string;
@@ -19,6 +20,7 @@ export default function PaymentHistoryPage() {
   const { user } = useAuth();
   const [payments, setPayments] = useState<Payment[]>([]);
   const [loading, setLoading] = useState(true);
+  const [verifying, setVerifying] = useState<string | null>(null);
 
   useEffect(() => {
     if (user) {
@@ -77,6 +79,35 @@ export default function PaymentHistoryPage() {
         return 'bg-gray-100 text-gray-800';
       default:
         return 'bg-gray-100 text-gray-800';
+    }
+  };
+
+  const handleVerifyPayment = async (reference: string) => {
+    if (!user) return;
+
+    try {
+      setVerifying(reference);
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session) {
+        alert('Please log in to verify payment');
+        return;
+      }
+
+      const result = await PaymentService.verifyPayment(reference, session.access_token);
+      
+      if (result.success) {
+        alert('Payment verified successfully! Your subscription has been activated.');
+        // Reload payments and redirect to subscription page
+        await loadPayments();
+        window.location.href = '/subscription';
+      } else {
+        alert(`Verification failed: ${result.error}`);
+      }
+    } catch (error: any) {
+      console.error('Error verifying payment:', error);
+      alert(`Error: ${error.message || 'Failed to verify payment'}`);
+    } finally {
+      setVerifying(null);
     }
   };
 
@@ -148,6 +179,9 @@ export default function PaymentHistoryPage() {
                         <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                           Reference
                         </th>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          Actions
+                        </th>
                       </tr>
                     </thead>
                     <tbody className="bg-white divide-y divide-gray-200">
@@ -177,6 +211,17 @@ export default function PaymentHistoryPage() {
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 font-mono">
                             {payment.payment_reference.substring(0, 12)}...
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap text-sm">
+                            {payment.status === 'pending' && payment.payment_type === 'subscription' && (
+                              <button
+                                onClick={() => handleVerifyPayment(payment.payment_reference)}
+                                disabled={verifying === payment.payment_reference}
+                                className="px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 disabled:opacity-50 disabled:cursor-not-allowed text-xs font-semibold"
+                              >
+                                {verifying === payment.payment_reference ? 'Verifying...' : 'Verify Payment'}
+                              </button>
+                            )}
                           </td>
                         </tr>
                       ))}
