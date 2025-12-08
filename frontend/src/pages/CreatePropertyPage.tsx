@@ -513,26 +513,34 @@ export default function CreatePropertyPage() {
                   {useManualCoordinates && (
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       <div>
-                        <SecureInput
+                        <label htmlFor="latitude" className="block text-sm font-medium text-gray-700 mb-1">
+                          Latitude
+                        </label>
+                        <input
+                          id="latitude"
                           type="number"
                           step="any"
-                          label="Latitude"
                           name="latitude"
                           value={formData.latitude}
-                          onChange={(value) => handleInputChange('latitude', value)}
+                          onChange={(e) => handleInputChange('latitude', e.target.value)}
                           placeholder="6.5244"
+                          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                         />
                         <p className="text-xs text-gray-500 mt-1">Example: 6.5244 (for Lagos)</p>
                       </div>
                       <div>
-                        <SecureInput
+                        <label htmlFor="longitude" className="block text-sm font-medium text-gray-700 mb-1">
+                          Longitude
+                        </label>
+                        <input
+                          id="longitude"
                           type="number"
                           step="any"
-                          label="Longitude"
                           name="longitude"
                           value={formData.longitude}
-                          onChange={(value) => handleInputChange('longitude', value)}
+                          onChange={(e) => handleInputChange('longitude', e.target.value)}
                           placeholder="3.3792"
+                          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                         />
                         <p className="text-xs text-gray-500 mt-1">Example: 3.3792 (for Lagos)</p>
                       </div>
