@@ -196,7 +196,7 @@ export default function PropertyListingPage() {
             </div>
 
             {/* Filters */}
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+            <div className={`grid gap-4 ${isLandscape ? 'grid-cols-2 lg:grid-cols-4' : 'grid-cols-1 md:grid-cols-4'}`}>
               {/* Property Type */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -281,7 +281,11 @@ export default function PropertyListingPage() {
 
           {/* Properties Grid */}
           {sortedProperties.length > 0 ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className={`grid gap-4 md:gap-6 ${
+              isLandscape 
+                ? 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3' 
+                : 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3'
+            }`}>
               {sortedProperties.map(property => (
                 <PropertyCard key={property.id} property={property} />
               ))}
