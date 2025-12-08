@@ -21,6 +21,9 @@ export default function PaymentHistoryPage() {
   const [payments, setPayments] = useState<Payment[]>([]);
   const [loading, setLoading] = useState(true);
   const [verifying, setVerifying] = useState<string | null>(null);
+  const [showManualVerify, setShowManualVerify] = useState(false);
+  const [manualReference, setManualReference] = useState('');
+  const [manualVerifying, setManualVerifying] = useState(false);
 
   useEffect(() => {
     if (user) {
@@ -111,6 +114,42 @@ export default function PaymentHistoryPage() {
     }
   };
 
+  const handleManualVerify = async () => {
+    if (!manualReference.trim()) {
+      alert('Please enter a payment reference');
+      return;
+    }
+
+    if (!user) return;
+
+    try {
+      setManualVerifying(true);
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session) {
+        alert('Please log in to verify payment');
+        return;
+      }
+
+      const result = await PaymentService.verifyPayment(manualReference.trim(), session.access_token);
+      
+      if (result.success) {
+        alert('Payment verified successfully! Your subscription has been activated.');
+        // Reload payments and redirect to subscription page
+        setManualReference('');
+        setShowManualVerify(false);
+        await loadPayments();
+        window.location.href = '/subscription';
+      } else {
+        alert(`Verification failed: ${result.error}`);
+      }
+    } catch (error: any) {
+      console.error('Error verifying payment:', error);
+      alert(`Error: ${error.message || 'Failed to verify payment'}`);
+    } finally {
+      setManualVerifying(false);
+    }
+  };
+
   if (loading) {
     return (
       <Layout>
@@ -144,6 +183,44 @@ export default function PaymentHistoryPage() {
 
         <div className="container mx-auto px-4 py-8">
           <div className="max-w-4xl mx-auto">
+            {/* Manual Verification Form */}
+            <div className="bg-white rounded-lg shadow-md p-6 mb-6">
+              <div className="flex items-center justify-between mb-4">
+                <h2 className="text-xl font-bold text-gray-900">Verify Payment Manually</h2>
+                <button
+                  onClick={() => setShowManualVerify(!showManualVerify)}
+                  className="px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors text-sm font-semibold"
+                >
+                  {showManualVerify ? 'Hide' : 'Verify Payment'}
+                </button>
+              </div>
+              {showManualVerify && (
+                <div className="mt-4">
+                  <p className="text-gray-600 mb-4">
+                    Enter your Paystack payment reference to verify and activate your subscription. 
+                    You can find this in your Paystack dashboard or email receipt.
+                  </p>
+                  <div className="flex gap-4">
+                    <input
+                      type="text"
+                      value={manualReference}
+                      onChange={(e) => setManualReference(e.target.value)}
+                      placeholder="Enter payment reference (e.g., PAY_1234567890_abc123)"
+                      className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                      disabled={manualVerifying}
+                    />
+                    <button
+                      onClick={handleManualVerify}
+                      disabled={manualVerifying || !manualReference.trim()}
+                      className="px-6 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 disabled:opacity-50 disabled:cursor-not-allowed font-semibold"
+                    >
+                      {manualVerifying ? 'Verifying...' : 'Verify'}
+                    </button>
+                  </div>
+                </div>
+              )}
+            </div>
+
             {payments.length === 0 ? (
               <div className="bg-white rounded-lg shadow-md p-12 text-center">
                 <div className="text-6xl mb-4">💳</div>
