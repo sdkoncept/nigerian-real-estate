@@ -5,6 +5,7 @@ import { useAuth } from '../contexts/AuthContext';
 import { supabase } from '../lib/supabase';
 import SecureInput from '../components/SecureInput';
 import { useUserProfile } from '../hooks/useUserProfile';
+import { geocodeAddress } from '../utils/geocoding';
 
 export default function CreatePropertyPage() {
   const { user } = useAuth();
@@ -185,6 +186,28 @@ export default function CreatePropertyPage() {
         .map(a => a.trim())
         .filter(a => a.length > 0);
 
+      // Geocode address to get coordinates
+      let coordinates = null;
+      try {
+        const address = formData.address || formData.location;
+        if (address && formData.city && formData.state) {
+          console.log('Geocoding address:', { address, city: formData.city, state: formData.state });
+          const geocodeResult = await geocodeAddress(address, formData.city, formData.state);
+          if (geocodeResult) {
+            coordinates = {
+              lat: geocodeResult.lat,
+              lng: geocodeResult.lng,
+            };
+            console.log('Geocoding successful:', coordinates);
+          } else {
+            console.warn('Geocoding failed for address:', address);
+          }
+        }
+      } catch (geocodeError) {
+        console.error('Geocoding error (non-fatal):', geocodeError);
+        // Don't fail property creation if geocoding fails
+      }
+
       // Create property
       const { data: propertyData, error: insertError } = await supabase
         .from('properties')
@@ -199,6 +222,7 @@ export default function CreatePropertyPage() {
           state: formData.state,
           city: formData.city,
           address: formData.address || null,
+          coordinates: coordinates,
           bedrooms: formData.bedrooms ? parseInt(formData.bedrooms) : null,
           bathrooms: formData.bathrooms ? parseFloat(formData.bathrooms) : null,
           sqm: formData.sqm ? parseFloat(formData.sqm) : null,
