@@ -121,37 +121,174 @@ router.post('/paystack/initialize', validate(paymentSchema), async (req: AuthReq
  */
 router.post('/paystack/verify', async (req: AuthRequest, res: Response) => {
   try {
+    if (!req.user) {
+      return res.status(401).json({ error: 'Unauthorized' });
+    }
+
     const { reference } = req.body;
 
     if (!reference) {
       return res.status(400).json({ error: 'Payment reference is required' });
     }
 
-    const result = await paystackService.verifyPayment(reference);
+    console.log('[Payment Verify] Verifying payment:', { reference, userId: req.user.id });
 
-    if (result.success) {
-      // Get payment details from Paystack to extract metadata
-      const paymentData = result as any;
-      const metadata = paymentData.metadata || {};
+    // Verify payment with Paystack
+    const verifyResult = await paystackService.verifyPayment(reference);
 
-      // Create payment record in database
-      // TODO: Integrate with Supabase to create payment record
-      // This will be handled by a webhook or direct Supabase call
-
-      res.json({
-        success: true,
-        message: 'Payment verified successfully',
-        metadata,
-      });
-    } else {
-      res.status(400).json({
+    if (!verifyResult.success) {
+      return res.status(400).json({
         success: false,
-        error: result.error || 'Payment verification failed',
+        error: verifyResult.error || 'Payment verification failed',
       });
     }
+
+    // Get full payment details from Paystack
+    const paystackResponse = verifyResult as any;
+    const paymentData = paystackResponse.paymentData || {};
+    const metadata = paymentData.metadata || {};
+    const amount = paymentData.amount ? paymentData.amount / 100 : 0; // Convert from kobo
+    const paymentType = metadata.payment_type || 'subscription';
+    const planType = metadata.plan_type || 'premium';
+
+    console.log('[Payment Verify] Payment verified:', {
+      amount,
+      paymentType,
+      planType,
+      metadata,
+    });
+
+    // Import Supabase admin client
+    const { supabaseAdmin } = await import('../config/supabase.js');
+
+    if (!supabaseAdmin) {
+      throw new Error('Supabase not configured');
+    }
+
+    // Create payment record
+    const { data: paymentRecord, error: paymentError } = await supabaseAdmin
+      .from('payments')
+      .insert({
+        user_id: req.user.id,
+        payment_type: paymentType,
+        entity_type: paymentType === 'subscription' ? 'subscription' : metadata.entity_type || null,
+        entity_id: metadata.entity_id || null,
+        amount: amount,
+        currency: 'NGN',
+        payment_provider: 'paystack',
+        payment_reference: reference,
+        status: 'completed',
+        metadata: metadata,
+      })
+      .select()
+      .single();
+
+    if (paymentError) {
+      console.error('[Payment Verify] Error creating payment record:', paymentError);
+      throw new Error(`Failed to create payment record: ${paymentError.message}`);
+    }
+
+    console.log('[Payment Verify] Payment record created:', paymentRecord?.id);
+
+    // Process based on payment type
+    if (paymentType === 'subscription') {
+      // Cancel any existing active subscriptions for this user
+      await supabaseAdmin
+        .from('subscriptions')
+        .update({ status: 'cancelled' })
+        .eq('user_id', req.user.id)
+        .eq('status', 'active');
+
+      // Calculate expiration date (30 days from now for monthly plans)
+      const expiresAt = new Date();
+      expiresAt.setDate(expiresAt.getDate() + 30);
+
+      // Create new subscription
+      const { data: subscription, error: subscriptionError } = await supabaseAdmin
+        .from('subscriptions')
+        .insert({
+          user_id: req.user.id,
+          plan_type: planType,
+          status: 'active',
+          payment_provider: 'paystack',
+          payment_reference: reference,
+          amount_paid: amount,
+          currency: 'NGN',
+          expires_at: expiresAt.toISOString(),
+          features: {},
+        })
+        .select()
+        .single();
+
+      if (subscriptionError) {
+        console.error('[Payment Verify] Error creating subscription:', subscriptionError);
+        throw new Error(`Failed to create subscription: ${subscriptionError.message}`);
+      }
+
+      console.log('[Payment Verify] Subscription created:', subscription?.id);
+
+      return res.json({
+        success: true,
+        message: 'Payment verified and subscription activated successfully',
+        subscription: {
+          plan_type: subscription.plan_type,
+          status: subscription.status,
+          expires_at: subscription.expires_at,
+        },
+        payment: {
+          reference: paymentRecord.payment_reference,
+          amount: paymentRecord.amount,
+        },
+      });
+    } else if (paymentType === 'featured_listing') {
+      // Handle featured listing payment
+      if (metadata.property_id) {
+        const featuredUntil = new Date();
+        featuredUntil.setDate(featuredUntil.getDate() + 30); // 30 days featured
+
+        const { error: featuredError } = await supabaseAdmin
+          .from('featured_listings')
+          .insert({
+            property_id: metadata.property_id,
+            payment_id: paymentRecord.id,
+            featured_until: featuredUntil.toISOString(),
+            priority: 1,
+          });
+
+        if (featuredError) {
+          console.error('[Payment Verify] Error creating featured listing:', featuredError);
+          throw new Error(`Failed to create featured listing: ${featuredError.message}`);
+        }
+
+        console.log('[Payment Verify] Featured listing created for property:', metadata.property_id);
+      }
+
+      return res.json({
+        success: true,
+        message: 'Payment verified and featured listing activated',
+        payment: {
+          reference: paymentRecord.payment_reference,
+          amount: paymentRecord.amount,
+        },
+      });
+    }
+
+    // Generic success response
+    return res.json({
+      success: true,
+      message: 'Payment verified successfully',
+      payment: {
+        reference: paymentRecord.payment_reference,
+        amount: paymentRecord.amount,
+      },
+    });
   } catch (error: any) {
-    console.error('Paystack verification error:', error);
-    res.status(500).json({ error: 'Payment verification failed' });
+    console.error('[Payment Verify] Error:', error);
+    console.error('[Payment Verify] Error stack:', error.stack);
+    res.status(500).json({ 
+      error: error.message || 'Payment verification failed',
+      message: error.message || 'Payment verification failed',
+    });
   }
 });
 

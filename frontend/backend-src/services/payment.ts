@@ -132,11 +132,13 @@ export class PaystackService {
   /**
    * Verify a payment transaction
    */
-  async verifyPayment(reference: string): Promise<PaymentResponse> {
+  async verifyPayment(reference: string): Promise<PaymentResponse & { paymentData?: any }> {
     try {
       if (!this.secretKey) {
         throw new Error('Paystack secret key not configured');
       }
+
+      console.log('[PaystackService] Verifying payment reference:', reference);
 
       const response = await axios.get(
         `${this.baseUrl}/transaction/verify/${reference}`,
@@ -144,25 +146,37 @@ export class PaystackService {
           headers: {
             Authorization: `Bearer ${this.secretKey}`,
           },
+          timeout: 30000,
         }
       );
+
+      console.log('[PaystackService] Verification response:', {
+        status: response.data?.status,
+        paymentStatus: response.data?.data?.status,
+      });
 
       if (response.data.status && response.data.data.status === 'success') {
         return {
           success: true,
           message: 'Payment verified successfully',
+          paymentData: response.data.data, // Include full payment data
         };
       }
 
       return {
         success: false,
-        error: 'Payment verification failed',
+        error: response.data.message || 'Payment verification failed',
       };
     } catch (error: any) {
-      console.error('Paystack verification error:', error);
+      console.error('[PaystackService] Verification error:', error);
+      console.error('[PaystackService] Error response:', {
+        status: error.response?.status,
+        data: error.response?.data,
+      });
+      
       return {
         success: false,
-        error: error.response?.data?.message || 'Payment verification failed',
+        error: error.response?.data?.message || error.message || 'Payment verification failed',
       };
     }
   }
