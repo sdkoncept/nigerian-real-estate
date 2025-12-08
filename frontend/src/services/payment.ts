@@ -7,15 +7,15 @@
 const getApiUrl = () => {
   const envUrl = import.meta.env.VITE_API_URL;
   
-  // If VITE_API_URL is set, use it
+  // If VITE_API_URL is set, use it (allows override for separate backend)
   if (envUrl) {
     return envUrl;
   }
   
-  // In production (HTTPS), don't fallback to localhost
+  // In production (HTTPS), use relative URL (works with Vercel routing)
+  // Backend is accessible at /api/* on the same domain
   if (window.location.protocol === 'https:') {
-    console.error('VITE_API_URL is not set in production environment');
-    return ''; // Return empty to trigger error
+    return ''; // Empty string means use relative URLs
   }
   
   // In development, fallback to localhost
@@ -50,16 +50,14 @@ export class PaymentService {
     data: PaymentRequest,
     token: string
   ): Promise<PaymentResponse> {
-    // Check if API URL is configured
-    if (!API_URL) {
-      return {
-        success: false,
-        error: 'Payment service is not configured. Please contact support.',
-      };
-    }
-    
     try {
-      const response = await fetch(`${API_URL}/api/payments/paystack/initialize`, {
+      // Use relative URL if API_URL is empty (production with same-domain backend)
+      // Otherwise use full URL
+      const url = API_URL 
+        ? `${API_URL}/api/payments/paystack/initialize`
+        : '/api/payments/paystack/initialize';
+      
+      const response = await fetch(url, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -103,16 +101,14 @@ export class PaymentService {
     reference: string,
     token: string
   ): Promise<PaymentResponse> {
-    // Check if API URL is configured
-    if (!API_URL) {
-      return {
-        success: false,
-        error: 'Payment service is not configured. Please contact support.',
-      };
-    }
-    
     try {
-      const response = await fetch(`${API_URL}/api/payments/paystack/verify`, {
+      // Use relative URL if API_URL is empty (production with same-domain backend)
+      // Otherwise use full URL
+      const url = API_URL 
+        ? `${API_URL}/api/payments/paystack/verify`
+        : '/api/payments/paystack/verify';
+      
+      const response = await fetch(url, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
