@@ -1,9 +1,10 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Layout from '../components/Layout';
 import { useAuth } from '../contexts/AuthContext';
 import { supabase } from '../lib/supabase';
 import SecureInput from '../components/SecureInput';
+import { useUserProfile } from '../hooks/useUserProfile';
 
 export default function CreatePropertyPage() {
   const { user } = useAuth();
@@ -34,6 +35,35 @@ export default function CreatePropertyPage() {
     is_featured: false,
   });
 
+  // Check verification status on mount
+  useEffect(() => {
+    if (user && profile) {
+      const userType = profile.user_type;
+      
+      // Agents and sellers must be verified
+      if (userType === 'agent' || userType === 'seller') {
+        if (userType === 'agent') {
+          supabase
+            .from('agents')
+            .select('verification_status')
+            .eq('user_id', user.id)
+            .single()
+            .then(({ data, error }) => {
+              if (error || !data) {
+                setError('Agent profile not found. Please complete your agent profile first.');
+              } else if (data.verification_status !== 'verified') {
+                setError('You must be verified by an admin before you can add properties. Please submit your verification documents and wait for approval.');
+              }
+            });
+        } else if (userType === 'seller') {
+          if (!profile.is_verified) {
+            setError('You must be verified before you can add properties. Please complete your verification.');
+          }
+        }
+      }
+    }
+  }, [user, profile]);
+
   const handleInputChange = (field: string, value: string) => {
     setFormData({ ...formData, [field]: value });
   };
@@ -60,6 +90,30 @@ export default function CreatePropertyPage() {
       setError('You must be logged in to create a property');
       setLoading(false);
       return;
+    }
+
+    // Check verification for agents and sellers
+    const userType = profile?.user_type;
+    if (userType === 'agent' || userType === 'seller') {
+      if (userType === 'agent') {
+        const { data: agentData } = await supabase
+          .from('agents')
+          .select('verification_status')
+          .eq('user_id', user.id)
+          .single();
+        
+        if (!agentData || agentData.verification_status !== 'verified') {
+          setError('You must be verified by an admin before you can add properties. Please submit your verification documents and wait for approval.');
+          setLoading(false);
+          return;
+        }
+      } else if (userType === 'seller') {
+        if (!profile?.is_verified) {
+          setError('You must be verified before you can add properties. Please complete your verification.');
+          setLoading(false);
+          return;
+        }
+      }
     }
 
     try {
