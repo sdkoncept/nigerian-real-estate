@@ -57,17 +57,22 @@ app.get('/', (req: Request, res: Response) => {
 });
 
 // Debug middleware for Vercel (place before routes to log all requests)
-if (process.env.VERCEL === '1') {
-  app.use((req: Request, res: Response, next: any) => {
-    console.log(`[Vercel] ${req.method} ${req.path}`, {
+// This will help diagnose routing issues
+app.use((req: Request, res: Response, next: any) => {
+  if (process.env.VERCEL === '1' || process.env.NODE_ENV === 'production') {
+    console.log(`[${process.env.VERCEL ? 'Vercel' : 'Production'}] ${req.method} ${req.path}`, {
       url: req.url,
       originalUrl: req.originalUrl,
       baseUrl: req.baseUrl,
-      headers: req.headers,
+      method: req.method,
+      headers: {
+        'content-type': req.headers['content-type'],
+        'authorization': req.headers['authorization'] ? 'present' : 'missing',
+      },
     });
-    next();
-  });
-}
+  }
+  next();
+});
 
 // API Routes
 // Support both /api/* (Vercel routing) and /* (direct access)

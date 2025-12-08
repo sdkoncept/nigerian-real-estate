@@ -1,13 +1,13 @@
 /**
  * Vercel Serverless Function Entry Point
- * This file handles ALL /api/* routes via Express
+ * Handles ALL /api/* routes via Express
  * 
- * Vercel automatically routes /api/* requests to this file
- * Express receives the full path including /api prefix
+ * This is a catch-all handler for all API routes
  */
 
 import app from '../backend/src/index.js';
 
-// Export Express app - @vercel/node automatically handles Express apps
+// For Vercel, we need to export the app directly
+// @vercel/node will handle Express apps automatically
 export default app;
 
