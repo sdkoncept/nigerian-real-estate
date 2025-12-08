@@ -50,13 +50,22 @@ export default function AdminSubscriptionsPage() {
       if (filter === 'active') {
         query = query.eq('status', 'active');
       } else if (filter === 'expired') {
-        // Get both explicitly expired and active subscriptions that have passed expiry date
-        query = query.or('status.eq.expired,and(status.eq.active,expires_at.lt.' + new Date().toISOString() + ')');
+        query = query.eq('status', 'expired');
       } else if (filter === 'cancelled') {
         query = query.eq('status', 'cancelled');
       }
 
       const { data, error } = await query;
+
+      // Filter expired subscriptions client-side (includes active subscriptions past expiry)
+      let filteredData = data || [];
+      if (filter === 'expired') {
+        const now = new Date();
+        filteredData = filteredData.filter((sub: any) => {
+          return sub.status === 'expired' || 
+                 (sub.status === 'active' && sub.expires_at && new Date(sub.expires_at) < now);
+        });
+      }
 
       if (error) {
         console.error('Error loading subscriptions:', error);
@@ -64,7 +73,7 @@ export default function AdminSubscriptionsPage() {
         return;
       }
 
-      if (!data || data.length === 0) {
+      if (!filteredData || filteredData.length === 0) {
         setSubscriptions([]);
         setLoading(false);
         return;
@@ -72,7 +81,7 @@ export default function AdminSubscriptionsPage() {
 
       // Load user information for each subscription
       const subscriptionsWithUsers = await Promise.all(
-        data.map(async (sub: any) => {
+        filteredData.map(async (sub: any) => {
           const { data: user } = await supabase
             .from('profiles')
             .select('email, full_name, user_type')
