@@ -11,7 +11,7 @@ export default function Footer() {
           <div>
             <div className="flex items-center space-x-2 mb-4">
               <span className="text-2xl">🏠</span>
-              <span className="text-xl font-bold text-white">Nigerian Real Estate</span>
+              <span className="text-xl font-bold text-white">House Direct NG</span>
             </div>
             <p className="text-gray-400 mb-4">
               Your trusted platform for buying, selling, and renting properties in Nigeria.
@@ -113,7 +113,7 @@ export default function Footer() {
         </div>
 
         <div className="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
-          <p>&copy; {currentYear} Nigerian Real Estate Platform. All rights reserved.</p>
+          <p>&copy; {currentYear} House Direct NG. All rights reserved.</p>
         </div>
       </div>
     </footer>

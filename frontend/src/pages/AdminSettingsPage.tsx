@@ -6,7 +6,7 @@ import { useUserProfile } from '../hooks/useUserProfile';
 export default function AdminSettingsPage() {
   const { isAdmin } = useUserProfile();
   const [settings, setSettings] = useState({
-    platformName: 'Nigerian Real Estate Platform',
+    platformName: 'House Direct NG',
     maintenanceMode: false,
     allowNewRegistrations: true,
     requireEmailVerification: true,

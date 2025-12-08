@@ -34,7 +34,7 @@ app.use('/api/', apiLimiter);
 app.get('/api/health', (req: Request, res: Response) => {
   res.json({
     status: 'ok',
-    message: 'Nigerian Real Estate Platform API is running!',
+    message: 'House Direct NG API is running!',
     timestamp: new Date().toISOString(),
     version: '1.0.0',
   });
@@ -43,7 +43,7 @@ app.get('/api/health', (req: Request, res: Response) => {
 // Root route
 app.get('/', (req: Request, res: Response) => {
   res.json({
-    message: 'Welcome to Nigerian Real Estate Platform API',
+    message: 'Welcome to House Direct NG API',
     version: '1.0.0',
     endpoints: {
       health: '/api/health',

@@ -29,7 +29,7 @@ export default function Header() {
           {/* Logo */}
           <Link to="/" className="flex items-center space-x-2">
             <span className="text-2xl">🏠</span>
-            <span className="text-xl font-bold text-primary-700">Nigerian Real Estate</span>
+            <span className="text-xl font-bold text-primary-700">House Direct NG</span>
           </Link>
 
           {/* Desktop Navigation */}

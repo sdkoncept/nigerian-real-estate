@@ -79,7 +79,7 @@ export class EmailService {
         <body style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
           <div style="max-width: 600px; margin: 0 auto; padding: 20px;">
             <h1 style="color: #0284c7;">Verify Your Email Address</h1>
-            <p>Thank you for signing up for Nigerian Real Estate Platform!</p>
+            <p>Thank you for signing up for House Direct NG!</p>
             <p>Please click the button below to verify your email address:</p>
             <div style="text-align: center; margin: 30px 0;">
               <a href="${verificationUrl}" 
@@ -94,7 +94,7 @@ export class EmailService {
             <p>If you didn't create an account, please ignore this email.</p>
             <hr style="border: none; border-top: 1px solid #eee; margin: 30px 0;">
             <p style="color: #666; font-size: 12px;">
-              © ${new Date().getFullYear()} Nigerian Real Estate Platform. All rights reserved.
+              © ${new Date().getFullYear()} House Direct NG. All rights reserved.
             </p>
           </div>
         </body>
@@ -103,7 +103,7 @@ export class EmailService {
 
     return this.sendEmail({
       to: email,
-      subject: 'Verify Your Email - Nigerian Real Estate Platform',
+      subject: 'Verify Your Email - House Direct NG',
       html,
       text: `Please verify your email by visiting: ${verificationUrl}`,
     });
@@ -125,7 +125,7 @@ export class EmailService {
         <body style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
           <div style="max-width: 600px; margin: 0 auto; padding: 20px;">
             <h1 style="color: #0284c7;">Reset Your Password</h1>
-            <p>You requested to reset your password for Nigerian Real Estate Platform.</p>
+            <p>You requested to reset your password for House Direct NG.</p>
             <p>Click the button below to reset your password:</p>
             <div style="text-align: center; margin: 30px 0;">
               <a href="${resetUrl}" 
@@ -140,7 +140,7 @@ export class EmailService {
             <p>If you didn't request a password reset, please ignore this email.</p>
             <hr style="border: none; border-top: 1px solid #eee; margin: 30px 0;">
             <p style="color: #666; font-size: 12px;">
-              © ${new Date().getFullYear()} Nigerian Real Estate Platform. All rights reserved.
+              © ${new Date().getFullYear()} House Direct NG. All rights reserved.
             </p>
           </div>
         </body>
@@ -149,7 +149,7 @@ export class EmailService {
 
     return this.sendEmail({
       to: email,
-      subject: 'Reset Your Password - Nigerian Real Estate Platform',
+      subject: 'Reset Your Password - House Direct NG',
       html,
       text: `Reset your password by visiting: ${resetUrl}`,
     });
@@ -209,7 +209,7 @@ export class EmailService {
             </div>
             <hr style="border: none; border-top: 1px solid #eee; margin: 30px 0;">
             <p style="color: #666; font-size: 12px;">
-              © ${new Date().getFullYear()} Nigerian Real Estate Platform. All rights reserved.
+              © ${new Date().getFullYear()} House Direct NG. All rights reserved.
             </p>
           </div>
         </body>
@@ -255,7 +255,7 @@ export class EmailService {
             </div>
             <hr style="border: none; border-top: 1px solid #eee; margin: 30px 0;">
             <p style="color: #666; font-size: 12px;">
-              © ${new Date().getFullYear()} Nigerian Real Estate Platform. All rights reserved.
+              © ${new Date().getFullYear()} House Direct NG. All rights reserved.
             </p>
           </div>
         </body>
@@ -296,7 +296,7 @@ export class EmailService {
             </div>
             <hr style="border: none; border-top: 1px solid #eee; margin: 30px 0;">
             <p style="color: #666; font-size: 12px;">
-              © ${new Date().getFullYear()} Nigerian Real Estate Platform. All rights reserved.
+              © ${new Date().getFullYear()} House Direct NG. All rights reserved.
             </p>
           </div>
         </body>
