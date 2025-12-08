@@ -31,6 +31,11 @@ router.post('/paystack/initialize', validate(paymentSchema), async (req: AuthReq
       return res.status(401).json({ error: 'Unauthorized' });
     }
 
+    if (!req.user.email) {
+      console.error('[Payment Init] User email is missing');
+      return res.status(400).json({ error: 'User email is required' });
+    }
+
     const { 
       amount, 
       currency, 
@@ -42,7 +47,17 @@ router.post('/paystack/initialize', validate(paymentSchema), async (req: AuthReq
       entity_id
     } = req.body;
 
-    console.log('[Payment Init] Calling Paystack service...');
+    // Validate amount
+    if (!amount || amount <= 0) {
+      return res.status(400).json({ error: 'Invalid amount' });
+    }
+
+    console.log('[Payment Init] Calling Paystack service with:', {
+      amount,
+      email: req.user.email,
+      currency: currency || 'NGN',
+    });
+
     const result = await paystackService.initializePayment({
       amount,
       email: req.user.email,
@@ -55,33 +70,41 @@ router.post('/paystack/initialize', validate(paymentSchema), async (req: AuthReq
         plan_type: plan_type || null,
         entity_id: entity_id || null,
       },
-      callback_url: callback_url || `${process.env.FRONTEND_URL || 'http://localhost:5173'}/payment/callback`,
+      callback_url: callback_url || `${process.env.FRONTEND_URL || 'https://housedirectng.com'}/payment/callback`,
     });
 
     console.log('[Payment Init] Paystack result:', { success: result.success, error: result.error });
 
     if (result.success) {
-      res.json({
+      return res.json({
         success: true,
         authorization_url: result.authorization_url,
         reference: result.reference,
         access_code: result.access_code,
       });
     } else {
-      res.status(400).json({
+      return res.status(400).json({
         success: false,
         error: result.error || 'Payment initialization failed',
       });
     }
   } catch (error: any) {
-    console.error('Paystack initialization error:', error);
-    console.error('Error stack:', error.stack);
-    console.error('Request body:', req.body);
-    console.error('User:', req.user);
+    console.error('[Payment Init] Exception caught:', error);
+    console.error('[Payment Init] Error name:', error?.name);
+    console.error('[Payment Init] Error message:', error?.message);
+    console.error('[Payment Init] Error stack:', error?.stack);
+    console.error('[Payment Init] Request body:', JSON.stringify(req.body, null, 2));
+    console.error('[Payment Init] User:', JSON.stringify(req.user, null, 2));
     
-    res.status(500).json({ 
-      error: error.message || 'Payment initialization failed',
-      details: process.env.NODE_ENV === 'development' ? error.stack : undefined,
+    // Always return a proper error response
+    const errorMessage = error?.message || 'Payment initialization failed';
+    const errorDetails = process.env.VERCEL === '1' || process.env.NODE_ENV === 'development' 
+      ? { stack: error?.stack, name: error?.name }
+      : undefined;
+    
+    return res.status(500).json({ 
+      error: errorMessage,
+      ...errorDetails,
     });
   }
 });

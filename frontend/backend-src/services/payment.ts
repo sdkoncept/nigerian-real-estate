@@ -45,27 +45,52 @@ export class PaystackService {
    */
   async initializePayment(data: PaymentRequest): Promise<PaymentResponse> {
     try {
+      console.log('[PaystackService] Initializing payment...');
+      console.log('[PaystackService] Secret key configured:', !!this.secretKey);
+      console.log('[PaystackService] Secret key length:', this.secretKey?.length || 0);
+      
       if (!this.secretKey) {
-        throw new Error('Paystack secret key not configured');
+        console.error('[PaystackService] Secret key is missing!');
+        throw new Error('Paystack secret key not configured. Please set PAYSTACK_SECRET_KEY environment variable.');
       }
+
+      if (!data.email) {
+        throw new Error('Email is required for payment initialization');
+      }
+
+      if (!data.amount || data.amount <= 0) {
+        throw new Error('Amount must be greater than 0');
+      }
+
+      const payload = {
+        amount: data.amount * 100, // Convert to kobo (smallest currency unit)
+        email: data.email,
+        currency: data.currency || 'NGN',
+        reference: data.reference || this.generateReference(),
+        metadata: data.metadata || {},
+        callback_url: data.callback_url,
+      };
+
+      console.log('[PaystackService] Payload:', {
+        ...payload,
+        amount: payload.amount,
+        metadata: payload.metadata,
+      });
 
       const response = await axios.post(
         `${this.baseUrl}/transaction/initialize`,
-        {
-          amount: data.amount * 100, // Convert to kobo (smallest currency unit)
-          email: data.email,
-          currency: data.currency || 'NGN',
-          reference: data.reference || this.generateReference(),
-          metadata: data.metadata || {},
-          callback_url: data.callback_url,
-        },
+        payload,
         {
           headers: {
             Authorization: `Bearer ${this.secretKey}`,
             'Content-Type': 'application/json',
           },
+          timeout: 30000, // 30 second timeout
         }
       );
+
+      console.log('[PaystackService] Response status:', response.status);
+      console.log('[PaystackService] Response data status:', response.data?.status);
 
       if (response.data.status) {
         return {
@@ -81,25 +106,26 @@ export class PaystackService {
         error: response.data.message || 'Payment initialization failed',
       };
     } catch (error: any) {
-      console.error('Paystack payment error:', error);
-      console.error('Error details:', {
-        message: error.message,
-        response: error.response?.data,
+      console.error('[PaystackService] Error caught:', error);
+      console.error('[PaystackService] Error type:', error?.constructor?.name);
+      console.error('[PaystackService] Error message:', error?.message);
+      console.error('[PaystackService] Error response:', {
         status: error.response?.status,
+        statusText: error.response?.statusText,
+        data: error.response?.data,
       });
       
       // Provide more detailed error messages
       let errorMessage = 'Payment initialization failed';
+      
       if (error.response?.data?.message) {
         errorMessage = error.response.data.message;
       } else if (error.message) {
         errorMessage = error.message;
       }
       
-      return {
-        success: false,
-        error: errorMessage,
-      };
+      // Re-throw so the route handler can catch it
+      throw new Error(errorMessage);
     }
   }
 
