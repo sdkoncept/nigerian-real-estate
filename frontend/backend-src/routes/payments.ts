@@ -58,35 +58,41 @@ router.post('/paystack/initialize', validate(paymentSchema), async (req: AuthReq
       currency: currency || 'NGN',
     });
 
-    const result = await paystackService.initializePayment({
-      amount,
-      email: req.user.email,
-      currency: currency || 'NGN',
-      metadata: {
-        user_id: req.user.id,
-        property_id: property_id || null,
-        description: description || 'Property Payment',
-        payment_type: payment_type || 'subscription',
-        plan_type: plan_type || null,
-        entity_id: entity_id || null,
-      },
-      callback_url: callback_url || `${process.env.FRONTEND_URL || 'https://housedirectng.com'}/payment/callback`,
-    });
-
-    console.log('[Payment Init] Paystack result:', { success: result.success, error: result.error });
-
-    if (result.success) {
-      return res.json({
-        success: true,
-        authorization_url: result.authorization_url,
-        reference: result.reference,
-        access_code: result.access_code,
+    try {
+      const result = await paystackService.initializePayment({
+        amount,
+        email: req.user.email,
+        currency: currency || 'NGN',
+        metadata: {
+          user_id: req.user.id,
+          property_id: property_id || null,
+          description: description || 'Property Payment',
+          payment_type: payment_type || 'subscription',
+          plan_type: plan_type || null,
+          entity_id: entity_id || null,
+        },
+        callback_url: callback_url || `${process.env.FRONTEND_URL || 'https://housedirectng.com'}/payment/callback`,
       });
-    } else {
-      return res.status(400).json({
-        success: false,
-        error: result.error || 'Payment initialization failed',
-      });
+
+      console.log('[Payment Init] Paystack result:', { success: result.success, error: result.error });
+
+      if (result.success) {
+        return res.json({
+          success: true,
+          authorization_url: result.authorization_url,
+          reference: result.reference,
+          access_code: result.access_code,
+        });
+      } else {
+        return res.status(400).json({
+          success: false,
+          error: result.error || 'Payment initialization failed',
+        });
+      }
+    } catch (paystackError: any) {
+      // PaystackService throws errors, catch them here
+      console.error('[Payment Init] Paystack service threw error:', paystackError);
+      throw paystackError; // Re-throw to be caught by outer catch
     }
   } catch (error: any) {
     console.error('[Payment Init] Exception caught:', error);
