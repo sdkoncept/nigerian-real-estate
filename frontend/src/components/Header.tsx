@@ -292,6 +292,20 @@ export default function Header() {
                       Seller Dashboard
                     </Link>
                   )}
+                  <Link
+                    to="/subscription"
+                    className="px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors"
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    My Subscription
+                  </Link>
+                  <Link
+                    to="/payments"
+                    className="px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors"
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    Payment History
+                  </Link>
                   <button
                     onClick={handleSignOut}
                     className="px-4 py-2 text-left text-red-600 hover:bg-gray-100 rounded-lg transition-colors"
