@@ -3,7 +3,8 @@ import Layout from '../components/Layout';
 import { useAuth } from '../contexts/AuthContext';
 import { supabase } from '../lib/supabase';
 import SecureInput from '../components/SecureInput';
-import { SecurityService, TwoFactorSetup } from '../services/security';
+import { SecurityService } from '../services/security';
+import type { TwoFactorSetup } from '../services/security';
 import { useUserProfile } from '../hooks/useUserProfile';
 
 export default function ProfilePage() {
