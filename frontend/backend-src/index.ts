@@ -22,10 +22,6 @@ const PORT = process.env.PORT || 5000;
 // Security middleware (apply first)
 app.use(securityHeaders);
 app.use(requestId);
-
-// Handle CORS preflight OPTIONS requests before CORS middleware
-app.options('*', cors(corsOptions));
-
 app.use(cors(corsOptions));
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
