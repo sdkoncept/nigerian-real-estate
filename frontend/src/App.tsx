@@ -16,6 +16,7 @@ import FavoritesPage from './pages/FavoritesPage'
 import ProfilePage from './pages/ProfilePage'
 import AdminDashboard from './pages/AdminDashboard'
 import AdminUsersPage from './pages/AdminUsersPage'
+import AdminSubscriptionsPage from './pages/AdminSubscriptionsPage'
 import AdminVerificationsPage from './pages/AdminVerificationsPage'
 import AdminReportsPage from './pages/AdminReportsPage'
 import AdminSettingsPage from './pages/AdminSettingsPage'
@@ -126,6 +127,14 @@ function App() {
         element={
           <ProtectedRoute>
             <AdminUsersPage />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/admin/subscriptions"
+        element={
+          <ProtectedRoute>
+            <AdminSubscriptionsPage />
           </ProtectedRoute>
         }
       />

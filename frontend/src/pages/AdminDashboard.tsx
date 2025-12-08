@@ -30,7 +30,7 @@ export default function AdminDashboard() {
     verifiedProperties: 0,
   });
   const [loading, setLoading] = useState(true);
-  const [activeTab, setActiveTab] = useState<'overview' | 'users' | 'verifications' | 'reports' | 'settings'>('overview');
+  const [activeTab, setActiveTab] = useState<'overview' | 'users' | 'verifications' | 'reports' | 'settings' | 'subscriptions'>('overview');
 
   useEffect(() => {
     if (user && isAdmin) {
