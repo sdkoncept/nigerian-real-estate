@@ -30,6 +30,7 @@ import ReviewsPage from './pages/ReviewsPage'
 import TestimonialsPage from './pages/TestimonialsPage'
 import ComparisonPage from './pages/ComparisonPage'
 import VerifyEmailPage from './pages/VerifyEmailPage'
+import ContactPage from './pages/ContactPage'
 
 function App() {
   const { user, loading } = useAuth()
@@ -52,6 +53,7 @@ function App() {
       <Route path="/properties" element={<PropertyListingPage />} />
       <Route path="/properties/:id" element={<PropertyDetailPage />} />
       <Route path="/about" element={<AboutPage />} />
+      <Route path="/contact" element={<ContactPage />} />
       <Route path="/pricing" element={<PricingPage />} />
       <Route path="/agents" element={<AgentsPage />} />
       <Route path="/agents/:id" element={<AgentDetailPage />} />
