@@ -80,3 +80,4 @@ If deployment fails:
 2. Verify environment variables are set
 3. Check that `frontend` is set as root directory in Vercel settings
 
+

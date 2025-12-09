@@ -117,3 +117,33 @@ body {
     background-color: #ffffff;
   }
 }
+
+/* Image Protection Styles - Prevent downloading and screenshots */
+img {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  -webkit-user-drag: none;
+  -khtml-user-drag: none;
+  -moz-user-drag: none;
+  -o-user-drag: none;
+  user-drag: none;
+  pointer-events: auto;
+}
+
+/* Prevent text selection on images */
+img::selection {
+  background: transparent;
+}
+
+img::-moz-selection {
+  background: transparent;
+}
+
+/* Additional protection for property images */
+[class*="property"] img,
+[class*="Property"] img {
+  -webkit-touch-callout: none;
+  -webkit-tap-highlight-color: transparent;
+}

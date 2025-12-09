@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import Layout from '../components/Layout';
+import ProtectedImage from '../components/ProtectedImage';
 import { supabase } from '../lib/supabase';
 import type { Property } from '../components/PropertyCard';
 import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
@@ -242,7 +243,7 @@ export default function MapViewPage() {
                   </Link>
                 </div>
                 {selectedProperty.images && selectedProperty.images.length > 0 && (
-                  <img
+                  <ProtectedImage
                     src={selectedProperty.images[0]}
                     alt={selectedProperty.title}
                     className="w-32 h-32 object-cover rounded-lg ml-4"

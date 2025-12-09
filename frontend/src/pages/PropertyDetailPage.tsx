@@ -4,9 +4,11 @@ import Layout from '../components/Layout';
 import { useAuth } from '../contexts/AuthContext';
 import VerificationBadge from '../components/VerificationBadge';
 import SecureInput from '../components/SecureInput';
+import ProtectedImage from '../components/ProtectedImage';
 import { validatePropertyForm } from '../utils/validation';
 import { detectSuspiciousPatterns } from '../utils/security';
 import { supabase } from '../lib/supabase';
+import { sampleProperties } from '../data/sampleProperties';
 
 interface Property {
   id: string;
@@ -140,9 +142,15 @@ export default function PropertyDetailPage() {
         console.log('Transformed property:', transformedProperty);
         setProperty(transformedProperty);
       } else {
-        // Not a valid UUID - property not found
-        console.warn('Invalid property ID format:', id);
-        setError('Property not found. Invalid property ID format.');
+        // Not a valid UUID - check if it's a sample property ID
+        const sampleProperty = sampleProperties.find(p => p.id === id);
+        if (sampleProperty) {
+          console.log('Found sample property:', sampleProperty);
+          setProperty(sampleProperty);
+        } else {
+          console.warn('Property not found:', id);
+          setError('Property not found.');
+        }
       }
     } catch (error: any) {
       console.error('Error loading property:', error);
@@ -349,7 +357,7 @@ export default function PropertyDetailPage() {
               {/* Image Gallery */}
               <div className="bg-white rounded-lg shadow-md overflow-hidden mb-6">
                 <div className="relative h-96 bg-gray-200">
-                  <img
+                  <ProtectedImage
                     src={mainImage}
                     alt={property.title}
                     className="w-full h-full object-cover"
@@ -381,7 +389,7 @@ export default function PropertyDetailPage() {
                             : 'border-transparent hover:border-gray-300'
                         }`}
                       >
-                        <img
+                        <ProtectedImage
                           src={image}
                           alt={`${property.title} ${index + 1}`}
                           className="w-full h-full object-cover"

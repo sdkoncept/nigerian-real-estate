@@ -5,6 +5,7 @@ import type { Property } from '../components/PropertyCard';
 import Layout from '../components/Layout';
 import { supabase } from '../lib/supabase';
 import { useOrientation } from '../hooks/useOrientation';
+import { sampleProperties } from '../data/sampleProperties';
 
 export default function PropertyListingPage() {
   const [properties, setProperties] = useState<Property[]>([]);
@@ -80,10 +81,15 @@ export default function PropertyListingPage() {
           return 0; // Will be sorted by sortBy later
         });
 
-        setProperties(transformedProperties);
+        // Combine database properties with sample properties
+        const allProperties = [...transformedProperties, ...sampleProperties];
+        console.log(`✅ Combined ${allProperties.length} total properties (${transformedProperties.length} from database + ${sampleProperties.length} sample)`);
+        
+        setProperties(allProperties);
       } else {
-        // No properties in database
-        setProperties([]);
+        // No properties in database, use sample properties only
+        console.log('ℹ️ No properties in database, using sample properties');
+        setProperties(sampleProperties);
       }
     } catch (error) {
       console.error('Error loading properties:', error);

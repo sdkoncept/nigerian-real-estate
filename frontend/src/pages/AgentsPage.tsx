@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import Layout from '../components/Layout';
 import AgentCard from '../components/AgentCard';
 import { supabase } from '../lib/supabase';
+import { sampleAgents } from '../data/sampleAgents';
 
 // Agent interface - moved here to avoid importing from sampleAgents
 interface Agent {
@@ -36,7 +37,6 @@ export default function AgentsPage() {
 
   useEffect(() => {
     console.log('🚀 AgentsPage component mounted');
-    console.log('🚀 FORCING DATABASE LOAD - NO SAMPLE DATA');
     // Clear any cached data
     setAgents([]);
     setLoading(true);
@@ -178,12 +178,12 @@ export default function AgentsPage() {
         rejected: agentsWithProfiles.filter(a => a.verification_status === 'rejected').length,
       });
       console.log('👤 Agent names:', agentsWithProfiles.map(a => a.full_name));
-      console.log('🎯 SETTING AGENTS FROM DATABASE - NOT SAMPLE DATA');
-      console.log('🎯 First agent ID:', agentsWithProfiles[0]?.id);
-      console.log('🎯 First agent name:', agentsWithProfiles[0]?.full_name);
 
-      // FORCE SET - This is from database, not sample data
-      setAgents(agentsWithProfiles);
+      // Combine database agents with sample agents
+      const allAgents = [...agentsWithProfiles, ...sampleAgents];
+      console.log(`✅ Combined ${allAgents.length} total agents (${agentsWithProfiles.length} from database + ${sampleAgents.length} sample)`);
+      
+      setAgents(allAgents);
       
       // Double check - log what we just set
       setTimeout(() => {
@@ -364,13 +364,8 @@ export default function AgentsPage() {
               {/* Results Count */}
               <div className="mb-6">
                 <p className="text-gray-600">
-                  Found <span className="font-semibold text-gray-900">{sortedAgents.length}</span> agent{sortedAgents.length !== 1 ? 's' : ''} from database
+                  Found <span className="font-semibold text-gray-900">{sortedAgents.length}</span> agent{sortedAgents.length !== 1 ? 's' : ''}
                 </p>
-                {sortedAgents.length > 0 && (
-                  <p className="text-xs text-gray-500 mt-1">
-                    ✅ Loaded from Supabase database (not sample data)
-                  </p>
-                )}
               </div>
 
               {/* Agents Grid */}

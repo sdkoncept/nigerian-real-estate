@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
+import ProtectedImage from './ProtectedImage';
 
 export interface Property {
   id: string;
@@ -52,7 +53,7 @@ export default function PropertyCard({ property }: PropertyCardProps) {
       <div className="bg-white rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 overflow-hidden">
         {/* Image */}
         <div className="relative h-48 overflow-hidden bg-gray-200">
-          <img
+          <ProtectedImage
             src={mainImage}
             alt={property.title}
             onError={handleImageError}
