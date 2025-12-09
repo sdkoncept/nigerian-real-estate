@@ -238,43 +238,88 @@ export default function AdminPropertiesPage() {
 
       // Delete related records first (cascade should handle this, but being explicit)
       // Delete favorites
-      await supabase
+      const { error: favoritesError } = await supabase
         .from('favorites')
         .delete()
         .eq('property_id', propertyId);
+      
+      if (favoritesError) {
+        console.warn('Error deleting favorites (may not exist):', favoritesError);
+        // Don't throw - favorites might not exist
+      }
 
       // Delete reviews
-      await supabase
+      const { error: reviewsError } = await supabase
         .from('reviews')
         .delete()
         .eq('property_id', propertyId);
+      
+      if (reviewsError) {
+        console.warn('Error deleting reviews (may not exist):', reviewsError);
+        // Don't throw - reviews might not exist
+      }
 
       // Delete contacts
-      await supabase
+      const { error: contactsError } = await supabase
         .from('contacts')
         .delete()
         .eq('property_id', propertyId);
+      
+      if (contactsError) {
+        console.warn('Error deleting contacts (may not exist):', contactsError);
+        // Don't throw - contacts might not exist
+      }
 
       // Delete featured listings
-      await supabase
+      const { error: featuredError } = await supabase
         .from('featured_listings')
         .delete()
         .eq('property_id', propertyId);
+      
+      if (featuredError) {
+        console.warn('Error deleting featured listings (may not exist):', featuredError);
+        // Don't throw - featured listings might not exist
+      }
 
       // Finally, delete the property itself
-      const { error } = await supabase
+      const { error, data } = await supabase
         .from('properties')
         .delete()
-        .eq('id', propertyId);
+        .eq('id', propertyId)
+        .select();
 
-      if (error) throw error;
+      if (error) {
+        console.error('Property deletion error:', error);
+        console.error('Error details:', {
+          code: error.code,
+          message: error.message,
+          details: error.details,
+          hint: error.hint,
+        });
+        
+        // Check if it's an RLS policy error
+        if (error.code === '42501' || error.message?.includes('policy') || error.message?.includes('permission')) {
+          throw new Error(
+            'Permission denied. Please ensure admin DELETE policies are set up in the database. ' +
+            'Run the ADD_ADMIN_DELETE_POLICY.sql script in Supabase SQL Editor.'
+          );
+        }
+        
+        throw error;
+      }
+
+      // Verify deletion succeeded
+      if (!data || data.length === 0) {
+        throw new Error('Property deletion returned no data. The property may not exist or you may not have permission to delete it.');
+      }
 
       await loadProperties();
       setSelectedProperty(null);
       alert('Property deleted successfully!');
     } catch (error: any) {
       console.error('Error deleting property:', error);
-      alert(`Failed to delete property: ${error.message}`);
+      const errorMessage = error.message || 'Failed to delete property. Please check the console for details.';
+      alert(`Failed to delete property: ${errorMessage}`);
     } finally {
       setProcessing(null);
     }
