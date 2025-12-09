@@ -1,0 +1,28 @@
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://housedirect.ng/sitemap.xml
+
+# Disallow admin and private pages
+Disallow: /admin/
+Disallow: /agent/dashboard
+Disallow: /seller/dashboard
+Disallow: /admin/
+Disallow: /api/
+Disallow: /subscription
+Disallow: /payments
+
+# Allow important pages
+Allow: /
+Allow: /properties
+Allow: /properties/*
+Allow: /agents
+Allow: /agents/*
+Allow: /about
+Allow: /contact
+Allow: /pricing
+
+# Crawl delay (optional, helps prevent server overload)
+Crawl-delay: 1
+
