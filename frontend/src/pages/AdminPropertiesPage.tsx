@@ -225,6 +225,61 @@ export default function AdminPropertiesPage() {
     }
   };
 
+  const handleDelete = async (propertyId: string, propertyTitle: string) => {
+    // Confirm deletion
+    const confirmed = window.confirm(
+      `Are you sure you want to delete "${propertyTitle}"?\n\nThis will permanently delete:\n- The property listing\n- All favorites\n- All reviews\n- All contact inquiries\n\nThis action cannot be undone.`
+    );
+
+    if (!confirmed) return;
+
+    try {
+      setProcessing(propertyId);
+
+      // Delete related records first (cascade should handle this, but being explicit)
+      // Delete favorites
+      await supabase
+        .from('favorites')
+        .delete()
+        .eq('property_id', propertyId);
+
+      // Delete reviews
+      await supabase
+        .from('reviews')
+        .delete()
+        .eq('property_id', propertyId);
+
+      // Delete contacts
+      await supabase
+        .from('contacts')
+        .delete()
+        .eq('property_id', propertyId);
+
+      // Delete featured listings
+      await supabase
+        .from('featured_listings')
+        .delete()
+        .eq('property_id', propertyId);
+
+      // Finally, delete the property itself
+      const { error } = await supabase
+        .from('properties')
+        .delete()
+        .eq('id', propertyId);
+
+      if (error) throw error;
+
+      await loadProperties();
+      setSelectedProperty(null);
+      alert('Property deleted successfully!');
+    } catch (error: any) {
+      console.error('Error deleting property:', error);
+      alert(`Failed to delete property: ${error.message}`);
+    } finally {
+      setProcessing(null);
+    }
+  };
+
   const filteredProperties = properties.filter((prop) => {
     if (searchTerm) {
       const searchLower = searchTerm.toLowerCase();
@@ -390,7 +445,7 @@ export default function AdminPropertiesPage() {
                           </span>
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                          <div className="flex gap-2">
+                          <div className="flex flex-wrap gap-2">
                             <button
                               onClick={() => setSelectedProperty(prop)}
                               className="text-primary-600 hover:text-primary-900"
@@ -416,11 +471,18 @@ export default function AdminPropertiesPage() {
                               <button
                                 onClick={() => handleVerify(prop.id, 'rejected')}
                                 disabled={processing === prop.id}
-                                className="text-red-600 hover:text-red-900 disabled:opacity-50"
+                                className="text-orange-600 hover:text-orange-900 disabled:opacity-50"
                               >
                                 Reject
                               </button>
                             )}
+                            <button
+                              onClick={() => handleDelete(prop.id, prop.title)}
+                              disabled={processing === prop.id}
+                              className="text-red-600 hover:text-red-900 disabled:opacity-50 font-semibold"
+                            >
+                              {processing === prop.id ? 'Deleting...' : 'Delete'}
+                            </button>
                           </div>
                         </td>
                       </tr>
@@ -616,7 +678,7 @@ export default function AdminPropertiesPage() {
                     </div>
                   </div>
 
-                  <div className="flex gap-4 pt-4">
+                  <div className="flex flex-wrap gap-4 pt-4">
                     {selectedProperty.verification_status !== 'verified' && (
                       <button
                         onClick={() => {
@@ -636,11 +698,18 @@ export default function AdminPropertiesPage() {
                           setSelectedProperty(null);
                         }}
                         disabled={processing === selectedProperty.id}
-                        className="flex-1 px-6 py-3 bg-red-600 text-white rounded-lg hover:bg-red-700 disabled:opacity-50 font-semibold"
+                        className="flex-1 px-6 py-3 bg-orange-600 text-white rounded-lg hover:bg-orange-700 disabled:opacity-50 font-semibold"
                       >
                         Reject Property
                       </button>
                     )}
+                    <button
+                      onClick={() => handleDelete(selectedProperty.id, selectedProperty.title)}
+                      disabled={processing === selectedProperty.id}
+                      className="flex-1 px-6 py-3 bg-red-600 text-white rounded-lg hover:bg-red-700 disabled:opacity-50 font-semibold"
+                    >
+                      {processing === selectedProperty.id ? 'Deleting...' : 'Delete Property'}
+                    </button>
                     <button
                       onClick={() => setSelectedProperty(null)}
                       className="px-6 py-3 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 font-semibold"
