@@ -9,6 +9,7 @@ import { validatePropertyForm } from '../utils/validation';
 import { detectSuspiciousPatterns } from '../utils/security';
 import { supabase } from '../lib/supabase';
 import { sampleProperties } from '../data/sampleProperties';
+import type { Property as PropertyType } from '../components/PropertyCard';
 
 interface Property {
   id: string;
@@ -143,7 +144,7 @@ export default function PropertyDetailPage() {
         setProperty(transformedProperty);
       } else {
         // Not a valid UUID - check if it's a sample property ID
-        const sampleProperty = sampleProperties.find(p => p.id === id);
+        const sampleProperty = sampleProperties.find((p: PropertyType) => p.id === id) as Property | undefined;
         if (sampleProperty) {
           console.log('Found sample property:', sampleProperty);
           setProperty(sampleProperty);
