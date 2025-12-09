@@ -1,7 +1,9 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import type { FormEvent } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate, Link, useSearchParams } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
+import { supabase } from '../lib/supabase';
+import { trackEvent } from '../utils/analytics';
 
 type UserType = 'buyer' | 'seller' | 'agent';
 
@@ -14,8 +16,19 @@ export default function SignupPage() {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
+  const [referralCode, setReferralCode] = useState<string | null>(null);
   const { signUp } = useAuth();
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+
+  // Get referral code from URL
+  useEffect(() => {
+    const ref = searchParams.get('ref');
+    if (ref) {
+      setReferralCode(ref);
+      trackEvent('Referral', 'Signup Page Visit', ref);
+    }
+  }, [searchParams]);
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
@@ -47,6 +60,31 @@ export default function SignupPage() {
       setError(error.message);
       setLoading(false);
     } else {
+      // Process referral if code exists
+      // Get user from session after a short delay to allow profile creation
+      if (referralCode) {
+        setTimeout(async () => {
+          try {
+            const { data: { session } } = await supabase.auth.getSession();
+            if (session?.user) {
+              // Call the database function to process referral
+              const { error: refError } = await supabase.rpc('process_referral_signup', {
+                p_referral_code: referralCode,
+                p_referred_id: session.user.id,
+              });
+              
+              if (!refError) {
+                trackEvent('Referral', 'Signup Complete', referralCode);
+              }
+            }
+          } catch (refErr) {
+            console.error('Error processing referral:', refErr);
+            // Don't fail signup if referral processing fails
+          }
+        }, 1000);
+      }
+
+      trackEvent('User', 'Signup', userType);
       setSuccess(true);
       setTimeout(() => {
         navigate('/login');
@@ -202,6 +240,14 @@ export default function SignupPage() {
               placeholder="••••••••"
             />
           </div>
+
+          {referralCode && (
+            <div className="p-3 bg-green-50 border border-green-200 rounded-lg">
+              <p className="text-sm text-green-800">
+                🎁 You're signing up with a referral code! You'll receive special benefits.
+              </p>
+            </div>
+          )}
 
           {userType === 'agent' && (
             <div className="p-4 bg-blue-50 border border-blue-200 rounded-lg">

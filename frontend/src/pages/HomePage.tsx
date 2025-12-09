@@ -1,8 +1,10 @@
 import { Link } from 'react-router-dom';
 import Layout from '../components/Layout';
+import SEO from '../components/SEO';
 import { useAuth } from '../contexts/AuthContext';
 import { supabase } from '../lib/supabase';
 import { useState, useEffect } from 'react';
+import { trackPageView } from '../utils/analytics';
 
 export default function HomePage() {
   const { user } = useAuth();
@@ -15,6 +17,7 @@ export default function HomePage() {
 
   useEffect(() => {
     loadStats();
+    trackPageView('/', 'Home - House Direct NG');
   }, []);
 
   const loadStats = async () => {
@@ -59,6 +62,10 @@ export default function HomePage() {
 
   return (
     <Layout>
+      <SEO
+        title="House Direct NG - 100% Verified Properties in Nigeria"
+        description="Find your perfect property in Nigeria. Verified real estate listings, trusted agents, and secure transactions. Buy, sell, rent, or lease properties across Nigeria."
+      />
       <div className="min-h-screen">
         {/* Hero Section */}
         <div className="relative bg-gradient-to-br from-primary-600 via-primary-700 to-primary-800 text-white overflow-hidden">

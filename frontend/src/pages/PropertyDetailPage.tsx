@@ -5,11 +5,14 @@ import { useAuth } from '../contexts/AuthContext';
 import VerificationBadge from '../components/VerificationBadge';
 import SecureInput from '../components/SecureInput';
 import ProtectedImage from '../components/ProtectedImage';
+import SEO from '../components/SEO';
+import SocialShareButtons from '../components/SocialShareButtons';
 import { validatePropertyForm } from '../utils/validation';
 import { detectSuspiciousPatterns } from '../utils/security';
 import { supabase } from '../lib/supabase';
 import { sampleProperties } from '../data/sampleProperties';
 import type { Property as PropertyType } from '../components/PropertyCard';
+import { trackPageView, trackPropertyView, trackContactForm, trackFavorite } from '../utils/analytics';
 
 interface Property {
   id: string;
@@ -60,6 +63,14 @@ export default function PropertyDetailPage() {
       checkFavorite();
     }
   }, [user, id, property]);
+
+  // Track page view and property view
+  useEffect(() => {
+    if (property) {
+      trackPageView(`/properties/${property.id}`, property.title);
+      trackPropertyView(property.id, property.title);
+    }
+  }, [property]);
 
   const loadProperty = async () => {
     if (!id) return;
@@ -309,6 +320,7 @@ export default function PropertyDetailPage() {
         throw error;
       }
 
+      trackContactForm(property.id);
       alert('Message sent successfully! The property owner will be notified.');
       setShowContactForm(false);
       setContactForm({ ...contactForm, message: '' });
@@ -318,25 +330,52 @@ export default function PropertyDetailPage() {
     }
   };
 
-  const handleShare = () => {
-    if (navigator.share) {
-      navigator.share({
-        title: property.title,
-        text: property.description,
-        url: window.location.href,
-      });
-    } else {
-      navigator.clipboard.writeText(window.location.href);
-      alert('Link copied to clipboard!');
-    }
-  };
+  // handleShare removed - using SocialShareButtons component instead
 
   const mainImage = property.images && property.images.length > 0 
     ? property.images[selectedImageIndex] 
     : 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iODAwIiBoZWlnaHQ9IjYwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZGRkIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtc2l6ZT0iMjQiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGR5PSIuM2VtIiBmaWxsPSIjOTk5Ij5Qcm9wZXJ0eSBJbWFnZTwvdGV4dD48L3N2Zz4=';
 
+  // Create structured data for SEO
+  const structuredData = property ? {
+    '@context': 'https://schema.org',
+    '@type': 'RealEstateAgent',
+    name: property.title,
+    description: property.description,
+    image: mainImage,
+    address: {
+      '@type': 'PostalAddress',
+      addressLocality: property.city,
+      addressRegion: property.state,
+      addressCountry: 'NG',
+    },
+    offers: {
+      '@type': 'Offer',
+      price: property.price,
+      priceCurrency: property.currency || 'NGN',
+      availability: 'https://schema.org/InStock',
+    },
+    numberOfRooms: property.bedrooms,
+    numberOfBathroomsTotal: property.bathrooms,
+    floorSize: property.sqm ? {
+      '@type': 'QuantitativeValue',
+      value: property.sqm,
+      unitCode: 'MTK',
+    } : undefined,
+  } : undefined;
+
+  const propertyUrl = typeof window !== 'undefined' ? window.location.href : '';
+
   return (
     <Layout>
+      <SEO
+        title={property.title}
+        description={property.description}
+        image={mainImage}
+        url={propertyUrl}
+        type="article"
+        structuredData={structuredData}
+      />
       <div className="min-h-screen bg-gray-50">
         {/* Breadcrumb */}
         <div className="bg-white border-b">
@@ -549,6 +588,7 @@ export default function PropertyDetailPage() {
 
                           if (error) throw error;
                           setIsFavorite(false);
+                          trackFavorite('remove', property.id);
                         } else {
                           // Add to favorites
                           const { error } = await supabase
@@ -560,6 +600,7 @@ export default function PropertyDetailPage() {
 
                           if (error) throw error;
                           setIsFavorite(true);
+                          trackFavorite('add', property.id);
                         }
                       } catch (error: any) {
                         console.error('Error updating favorite:', error);
@@ -575,12 +616,17 @@ export default function PropertyDetailPage() {
                     {isFavorite ? '❤️ Remove from Favorites' : '🤍 Add to Favorites'}
                   </button>
 
-                  <button
-                    onClick={handleShare}
-                    className="w-full px-6 py-3 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors font-semibold"
-                  >
-                    📤 Share Property
-                  </button>
+                  {/* Social Share Buttons */}
+                  <div className="w-full">
+                    <SocialShareButtons
+                      url={propertyUrl}
+                      title={property.title}
+                      description={property.description}
+                      image={mainImage}
+                      size={36}
+                      className="justify-center py-3"
+                    />
+                  </div>
                 </div>
 
                 {/* Contact Form */}
