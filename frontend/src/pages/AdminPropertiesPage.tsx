@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import Layout from '../components/Layout';
 import { supabase } from '../lib/supabase';
 import { useUserProfile } from '../hooks/useUserProfile';
@@ -382,8 +383,18 @@ export default function AdminPropertiesPage() {
         {/* Header */}
         <div className="bg-gradient-to-r from-purple-600 to-purple-800 text-white py-12">
           <div className="container mx-auto px-4">
-            <h1 className="text-4xl font-bold mb-2">Property Management</h1>
-            <p className="text-xl text-purple-100">Verify and manage all properties</p>
+            <div className="flex items-center justify-between">
+              <div>
+                <h1 className="text-4xl font-bold mb-2">Property Management</h1>
+                <p className="text-xl text-purple-100">Verify and manage all properties</p>
+              </div>
+              <Link
+                to="/admin/dashboard"
+                className="px-6 py-3 bg-white text-purple-600 rounded-lg hover:bg-purple-50 transition-colors font-semibold"
+              >
+                ← Back to Dashboard
+              </Link>
+            </div>
           </div>
         </div>
 
