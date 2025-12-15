@@ -15,6 +15,7 @@ import reportsRoutes from './routes/reports.js';
 import paymentsRoutes from './routes/payments.js';
 import verificationRoutes from './routes/verification.js';
 import agentRoutes from './routes/agent.js';
+import scheduledRoutes from './routes/scheduled.js';
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -92,6 +93,8 @@ app.use('/api/verification', verificationRoutes);
 app.use('/verification', verificationRoutes);
 app.use('/api/agent', agentRoutes);
 app.use('/agent', agentRoutes);
+app.use('/api/scheduled', scheduledRoutes);
+app.use('/scheduled', scheduledRoutes);
 
 // 404 handler - log for debugging
 app.use((req: Request, res: Response) => {

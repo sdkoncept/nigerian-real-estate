@@ -30,6 +30,12 @@
       "destination": "/index.html"
     }
   ],
+  "crons": [
+    {
+      "path": "/api/scheduled/verification-reminders",
+      "schedule": "0 9 1,15 * *"
+    }
+  ],
   "env": {
     "NODE_ENV": "production"
   }

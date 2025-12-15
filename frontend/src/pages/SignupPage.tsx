@@ -108,6 +108,17 @@ export default function SignupPage() {
               </p>
             </div>
           )}
+          <div className="mb-4">
+            <p className="text-sm text-gray-600 mb-2">
+              Didn't receive the email?
+            </p>
+            <Link
+              to="/request-verification"
+              className="text-sm text-primary-600 hover:text-primary-700 font-medium underline"
+            >
+              Request a new verification email
+            </Link>
+          </div>
           <p className="text-sm text-gray-500">Redirecting to login...</p>
         </div>
       </div>

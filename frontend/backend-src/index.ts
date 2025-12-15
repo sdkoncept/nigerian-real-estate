@@ -16,6 +16,7 @@ import paymentsRoutes from './routes/payments.js';
 import verificationRoutes from './routes/verification.js';
 import agentRoutes from './routes/agent.js';
 import securityRoutes from './routes/security.js';
+import scheduledRoutes from './routes/scheduled.js';
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -92,6 +93,7 @@ app.get('/', (req: Request, res: Response) => {
       payments: '/api/payments',
       verification: '/api/verification',
       agent: '/api/agent',
+      scheduled: '/api/scheduled',
     },
   });
 });
@@ -129,6 +131,8 @@ app.use('/api/agent', agentRoutes);
 app.use('/agent', agentRoutes);
 app.use('/api/security', securityRoutes);
 app.use('/security', securityRoutes);
+app.use('/api/scheduled', scheduledRoutes);
+app.use('/scheduled', scheduledRoutes);
 
 // 404 handler - log for debugging
 app.use((req: Request, res: Response) => {

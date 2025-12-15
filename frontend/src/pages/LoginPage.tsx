@@ -11,15 +11,38 @@ export default function LoginPage() {
   const { signIn } = useAuth();
   const navigate = useNavigate();
 
+  const [showVerificationLink, setShowVerificationLink] = useState(false);
+
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     setError(null);
+    setShowVerificationLink(false);
     setLoading(true);
 
     const { error } = await signIn(email, password);
 
     if (error) {
       setError(error.message);
+      // Check if error is related to email verification
+      const errorLower = error.message?.toLowerCase() || '';
+      const isVerificationError = 
+        errorLower.includes('email') && 
+        (errorLower.includes('verify') || 
+         errorLower.includes('confirm') ||
+         errorLower.includes('not verified') ||
+         errorLower.includes('unverified') ||
+         errorLower.includes('verification'));
+      
+      // Also check for common Supabase auth errors that indicate unverified email
+      const isAuthError = 
+        errorLower.includes('invalid login') ||
+        errorLower.includes('invalid credentials') ||
+        errorLower.includes('email not confirmed') ||
+        errorLower.includes('user not found');
+      
+      if (isVerificationError || isAuthError) {
+        setShowVerificationLink(true);
+      }
       setLoading(false);
     } else {
       navigate('/');
@@ -36,7 +59,18 @@ export default function LoginPage() {
 
         {error && (
           <div className="mb-4 p-3 bg-red-100 border border-red-400 text-red-700 rounded">
-            {error}
+            <p>{error}</p>
+            {showVerificationLink && (
+              <div className="mt-3 pt-3 border-t border-red-300">
+                <p className="text-sm mb-2">Need a new verification email?</p>
+                <Link
+                  to="/request-verification"
+                  className="text-sm text-primary-600 hover:text-primary-700 font-medium underline"
+                >
+                  Request verification email
+                </Link>
+              </div>
+            )}
           </div>
         )}
 
@@ -97,13 +131,24 @@ export default function LoginPage() {
           </button>
         </form>
 
-        <div className="mt-6 text-center">
+        <div className="mt-6 space-y-3 text-center">
           <p className="text-sm text-gray-600">
             Don't have an account?{' '}
             <Link to="/signup" className="text-primary-600 hover:text-primary-700 font-medium">
               Sign up
             </Link>
           </p>
+          <div className="pt-3 border-t border-gray-200">
+            <p className="text-sm text-gray-600 mb-2">
+              Haven't verified your email?
+            </p>
+            <Link
+              to="/request-verification"
+              className="text-sm text-primary-600 hover:text-primary-700 font-medium underline"
+            >
+              Request verification email
+            </Link>
+          </div>
         </div>
       </div>
     </div>

@@ -13,21 +13,30 @@ export default function Layout({ children }: LayoutProps) {
     const protectAllImages = () => {
       const images = document.querySelectorAll('img');
       images.forEach((img) => {
-        // Prevent right-click
-        img.addEventListener('contextmenu', (e) => e.preventDefault());
-        // Prevent drag
-        img.addEventListener('dragstart', (e) => e.preventDefault());
-        // Set draggable to false
-        img.setAttribute('draggable', 'false');
+        // Only add listeners if not already protected (prevent duplicate listeners)
+        if (!img.hasAttribute('data-protected')) {
+          // Prevent right-click
+          img.addEventListener('contextmenu', (e) => e.preventDefault());
+          // Prevent drag
+          img.addEventListener('dragstart', (e) => e.preventDefault());
+          // Set draggable to false
+          img.setAttribute('draggable', 'false');
+          img.setAttribute('data-protected', 'true');
+        }
       });
     };
 
-    // Run on mount and whenever DOM changes
+    // Run on mount
     protectAllImages();
     
-    // Use MutationObserver to protect dynamically added images
+    // Use MutationObserver with debouncing to protect dynamically added images
+    let timeoutId: NodeJS.Timeout;
     const observer = new MutationObserver(() => {
-      protectAllImages();
+      // Debounce to avoid running on every tiny DOM change
+      clearTimeout(timeoutId);
+      timeoutId = setTimeout(() => {
+        protectAllImages();
+      }, 100); // Wait 100ms before running
     });
 
     observer.observe(document.body, {

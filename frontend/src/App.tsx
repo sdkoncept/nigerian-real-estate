@@ -31,6 +31,7 @@ import ReviewsPage from './pages/ReviewsPage'
 import TestimonialsPage from './pages/TestimonialsPage'
 import ComparisonPage from './pages/ComparisonPage'
 import VerifyEmailPage from './pages/VerifyEmailPage'
+import RequestVerificationPage from './pages/RequestVerificationPage'
 import ContactPage from './pages/ContactPage'
 
 function App() {
@@ -52,6 +53,7 @@ function App() {
       <Route path="/login" element={user ? <Navigate to="/" replace /> : <LoginPage />} />
       <Route path="/signup" element={user ? <Navigate to="/" replace /> : <SignupPage />} />
       <Route path="/verify-email" element={<VerifyEmailPage />} />
+      <Route path="/request-verification" element={<RequestVerificationPage />} />
       <Route path="/" element={<HomePage />} />
       <Route path="/properties" element={<PropertyListingPage />} />
       <Route path="/properties/:id" element={<PropertyDetailPage />} />

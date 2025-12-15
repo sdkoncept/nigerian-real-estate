@@ -44,7 +44,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const signUp = async (email: string, password: string, metadata?: { name?: string; user_type?: string }) => {
     // Get the frontend URL from environment or use current origin
-    const frontendUrl = import.meta.env.VITE_FRONTEND_URL || window.location.origin;
+    // In production, always use the environment variable or current origin (never localhost)
+    let frontendUrl = import.meta.env.VITE_FRONTEND_URL || window.location.origin;
+    
+    // Ensure we never use localhost in production
+    if (frontendUrl.includes('localhost') && window.location.hostname !== 'localhost') {
+      // If we're in production but got localhost, use current origin
+      frontendUrl = window.location.origin;
+    }
+    
     const redirectTo = `${frontendUrl}/verify-email`;
     
     // The trigger function will automatically create the profile with user_type from metadata

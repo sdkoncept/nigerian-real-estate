@@ -71,10 +71,18 @@ export default function AgentsPage() {
       console.log('✅ Supabase connection test passed');
       console.log('🔄 Loading all agents from database...');
       
-      // Load only verified agents from database
+      // Load agents with profiles in a single query using Supabase join (much faster!)
       const { data: agentsData, error: agentsError } = await supabase
         .from('agents')
-        .select('*')
+        .select(`
+          *,
+          profiles:user_id (
+            full_name,
+            email,
+            phone,
+            avatar_url
+          )
+        `)
         .eq('verification_status', 'verified') // Only show verified agents
         .order('rating', { ascending: false });
 
@@ -103,54 +111,39 @@ export default function AgentsPage() {
         return;
       }
 
-      console.log(`✅ Loaded ${agentsData.length} agents from database`);
-      console.log('📊 Agent summary:', agentsData.map(a => ({
-        id: a.id,
-        user_id: a.user_id,
-        is_active: a.is_active,
-        verification_status: a.verification_status,
-        rating: a.rating
-      })));
+      console.log(`✅ Loaded ${agentsData.length} agents from database with profiles`);
 
       // Filter out inactive agents (but keep NULL as active)
       const activeAgents = agentsData.filter(agent => agent.is_active !== false);
       console.log(`✅ ${activeAgents.length} active agents after filtering`);
 
-      // Get profile information for each agent
-      console.log('🔄 Loading profiles for agents...');
-      const agentsWithProfiles = await Promise.all(
-        activeAgents.map(async (agent: any) => {
-          try {
-            const { data: profile, error: profileError } = await supabase
-              .from('profiles')
-              .select('full_name, email, phone, avatar_url')
-              .eq('id', agent.user_id)
-              .single();
+      // Transform agents with profile data (already loaded via join)
+      const agentsWithProfiles = activeAgents.map((agent: any) => {
+        // Handle profile data - Supabase returns it as an array or object depending on relationship
+        const profile = Array.isArray(agent.profiles) 
+          ? agent.profiles[0] 
+          : agent.profiles;
 
-            if (profileError) {
-              console.warn(`⚠️ Error loading profile for agent ${agent.id} (user_id: ${agent.user_id}):`, profileError);
-            }
+        const transformedAgent = {
+          ...agent,
+          full_name: profile?.full_name || 'Agent',
+          email: profile?.email || '',
+          phone: profile?.phone || '',
+          avatar_url: profile?.avatar_url || undefined,
+          // Ensure required fields have defaults
+          specialties: agent.specialties || [],
+          years_experience: agent.years_experience || 0,
+          properties_sold: agent.properties_sold || 0,
+          rating: agent.rating || 0,
+          total_reviews: agent.total_reviews || 0,
+          verification_status: agent.verification_status || 'pending',
+          is_active: agent.is_active !== undefined ? agent.is_active : true,
+          // Optional location fields
+          city: undefined,
+          state: undefined,
+        };
 
-            const transformedAgent = {
-              ...agent,
-              full_name: profile?.full_name || 'Agent',
-              email: profile?.email || '',
-              phone: profile?.phone || '',
-              avatar_url: profile?.avatar_url || undefined,
-              // Ensure required fields have defaults
-              specialties: agent.specialties || [],
-              years_experience: agent.years_experience || 0,
-              properties_sold: agent.properties_sold || 0,
-              rating: agent.rating || 0,
-              total_reviews: agent.total_reviews || 0,
-              verification_status: agent.verification_status || 'pending',
-              is_active: agent.is_active !== undefined ? agent.is_active : true,
-              // Optional location fields
-              city: undefined,
-              state: undefined,
-            };
-
-            return transformedAgent;
+        return transformedAgent;
           } catch (error) {
             console.error(`❌ Error processing agent ${agent.id}:`, error);
             // Return agent with minimal data if profile fetch fails
