@@ -32,6 +32,8 @@ import TestimonialsPage from './pages/TestimonialsPage'
 import ComparisonPage from './pages/ComparisonPage'
 import VerifyEmailPage from './pages/VerifyEmailPage'
 import RequestVerificationPage from './pages/RequestVerificationPage'
+import ForgotPasswordPage from './pages/ForgotPasswordPage'
+import ResetPasswordPage from './pages/ResetPasswordPage'
 import ContactPage from './pages/ContactPage'
 
 function App() {
@@ -52,6 +54,8 @@ function App() {
       {/* Public routes */}
       <Route path="/login" element={user ? <Navigate to="/" replace /> : <LoginPage />} />
       <Route path="/signup" element={user ? <Navigate to="/" replace /> : <SignupPage />} />
+      <Route path="/forgot-password" element={user ? <Navigate to="/" replace /> : <ForgotPasswordPage />} />
+      <Route path="/reset-password" element={<ResetPasswordPage />} />
       <Route path="/verify-email" element={<VerifyEmailPage />} />
       <Route path="/request-verification" element={<RequestVerificationPage />} />
       <Route path="/" element={<HomePage />} />

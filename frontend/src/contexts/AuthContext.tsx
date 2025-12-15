@@ -81,9 +81,24 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   };
 
   const resetPassword = async (email: string) => {
-    const { error } = await supabase.auth.resetPasswordForEmail(email, {
-      redirectTo: `${window.location.origin}/reset-password`,
+    // Get the frontend URL from environment or use current origin
+    let frontendUrl = import.meta.env.VITE_FRONTEND_URL || window.location.origin;
+    
+    // Ensure we never use localhost in production
+    if (frontendUrl.includes('localhost') && window.location.hostname !== 'localhost') {
+      frontendUrl = window.location.origin;
+    }
+    
+    const redirectTo = `${frontendUrl}/reset-password`;
+    
+    console.log('AuthContext - resetPassword called:', { email, redirectTo });
+    
+    const { data, error } = await supabase.auth.resetPasswordForEmail(email, {
+      redirectTo: redirectTo,
     });
+    
+    console.log('AuthContext - resetPassword result:', { data, error: error?.message });
+    
     return { error };
   };
 
