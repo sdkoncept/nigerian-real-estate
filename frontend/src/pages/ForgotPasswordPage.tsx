@@ -31,7 +31,7 @@ export default function ForgotPasswordPage() {
     }, 100);
   }, []);
 
-  // Check if Supabase is configured
+  // Check if Supabase is configured and test connectivity
   useEffect(() => {
     const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
     const supabaseKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
@@ -39,13 +39,29 @@ export default function ForgotPasswordPage() {
     console.log('ForgotPasswordPage - Checking Supabase config:', {
       hasUrl: !!supabaseUrl,
       hasKey: !!supabaseKey,
-      urlPreview: supabaseUrl ? `${supabaseUrl.substring(0, 20)}...` : 'missing'
+      urlPreview: supabaseUrl ? `${supabaseUrl.substring(0, 20)}...` : 'missing',
+      supabaseClientExists: !!supabase
     });
     
     if (!supabaseUrl || !supabaseKey) {
       console.error('Supabase not configured!', { supabaseUrl: !!supabaseUrl, supabaseKey: !!supabaseKey });
       setError('Application configuration error. Please contact support.');
+      return;
     }
+
+    // Test Supabase connectivity
+    console.log('ForgotPasswordPage - Testing Supabase connectivity...');
+    supabase.auth.getSession()
+      .then(({ data, error }) => {
+        if (error) {
+          console.error('ForgotPasswordPage - Supabase connectivity test failed:', error);
+        } else {
+          console.log('ForgotPasswordPage - Supabase connectivity test passed');
+        }
+      })
+      .catch((err) => {
+        console.error('ForgotPasswordPage - Supabase connectivity test exception:', err);
+      });
   }, []);
 
   const handleSubmit = async (e: FormEvent) => {
@@ -138,20 +154,31 @@ export default function ForgotPasswordPage() {
         setLoading(false);
       } else {
         console.log('ForgotPasswordPage - Success! Supabase call completed without error.');
-        console.log('ForgotPasswordPage - Note: If email service is not configured in Supabase, emails may not be sent.');
-        console.log('ForgotPasswordPage - Check Supabase Dashboard → Settings → Auth → Email Templates');
+        console.log('ForgotPasswordPage - Supabase returned:', JSON.stringify(supabaseResult.data));
         
-        // Always show success (security - don't reveal if email exists)
-        // Note: Supabase might succeed even if email service isn't configured
-        setSuccess(true);
-        setEmail(''); // Clear email for security
-        setLoading(false);
+        // IMPORTANT: Supabase returns success even if email service isn't configured
+        // We need to check if email was actually sent by looking at the response
+        // If data is null/undefined, email might not have been sent
         
-        // Show additional info in success message
-        console.log('ForgotPasswordPage - If you don\'t receive an email, check:');
-        console.log('1. Spam folder');
-        console.log('2. Supabase Dashboard → Authentication → Email Templates');
-        console.log('3. Supabase Dashboard → Settings → Auth → SMTP Settings');
+        if (!supabaseResult.data) {
+          console.warn('ForgotPasswordPage - WARNING: Supabase returned success but no data. Email service might not be configured.');
+          console.warn('ForgotPasswordPage - Check Supabase Dashboard → Settings → Auth → SMTP Settings');
+          
+          // Show warning but still show success (security - don't reveal if email exists)
+          setSuccess(true);
+          setEmail('');
+          setLoading(false);
+          
+          // Add a note about checking email service
+          setTimeout(() => {
+            console.warn('ForgotPasswordPage - If no email received, verify Supabase email service is configured');
+          }, 1000);
+        } else {
+          // Normal success
+          setSuccess(true);
+          setEmail('');
+          setLoading(false);
+        }
       }
     } catch (err: any) {
       console.error('ForgotPasswordPage - Exception:', err);
@@ -178,6 +205,9 @@ export default function ForgotPasswordPage() {
           <p className="text-gray-600">
             Enter your email address and we'll send you a link to reset your password.
           </p>
+          <p className="mt-2 text-xs text-gray-500">
+            Page loaded at: {new Date().toLocaleTimeString()}
+          </p>
         </div>
 
         {success && (
@@ -188,10 +218,13 @@ export default function ForgotPasswordPage() {
               </svg>
               <div className="flex-1">
                 <p className="text-sm font-medium text-green-800">
-                  Password reset email sent!
+                  Password reset request processed!
                 </p>
                 <p className="mt-1 text-sm text-green-700">
-                  Please check your inbox and click the link to reset your password. If you don't see it, check your spam folder.
+                  If an account exists with this email, a password reset link has been sent. Please check your inbox and spam folder.
+                </p>
+                <p className="mt-2 text-xs text-gray-600">
+                  <strong>Note:</strong> If you don't receive an email within a few minutes, check that Supabase email service is configured in your Supabase Dashboard.
                 </p>
               </div>
             </div>
@@ -240,17 +273,27 @@ export default function ForgotPasswordPage() {
                 console.log('=== BUTTON CLICKED ===');
                 console.log('Button clicked!', { loading, email, disabled: loading || !email });
                 console.log('Event type:', e.type);
+                // Don't prevent default - let form handle submission
                 if (!email) {
-                  console.log('No email, preventing default');
-                  e.preventDefault();
+                  console.log('No email, will be handled by form validation');
                   setError('Please enter your email address');
-                  return false;
+                } else {
+                  console.log('Email present, form will submit');
                 }
-                console.log('Email present, allowing form submission');
               }}
               className="w-full bg-primary-600 text-white py-2 px-4 rounded-lg hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
             >
-              {loading ? 'Sending...' : 'Send Reset Link'}
+              {loading ? (
+                <span className="flex items-center justify-center">
+                  <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                  </svg>
+                  Sending...
+                </span>
+              ) : (
+                'Send Reset Link'
+              )}
             </button>
             
             {loading && (
@@ -269,6 +312,13 @@ export default function ForgotPasswordPage() {
                 Click the button above to send a password reset link to {email}
               </p>
             )}
+
+            <div className="mt-4 p-3 bg-blue-50 border border-blue-200 rounded-lg">
+              <p className="text-xs text-blue-800 font-medium mb-1">💡 Troubleshooting:</p>
+              <p className="text-xs text-blue-700">
+                If no email arrives, check your browser console (F12) and verify Supabase SMTP is configured in Dashboard → Settings → Auth → SMTP Settings
+              </p>
+            </div>
           </form>
         )}
 
