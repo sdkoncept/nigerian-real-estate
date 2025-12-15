@@ -9,7 +9,7 @@ export default function ForgotPasswordPage() {
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const { resetPassword, user } = useAuth();
+  const { user } = useAuth();
   const navigate = useNavigate();
 
   // Redirect if already logged in (optional - can remove if you want logged-in users to access)
@@ -68,7 +68,7 @@ export default function ForgotPasswordPage() {
     // Test Supabase connectivity
     console.log('ForgotPasswordPage - Testing Supabase connectivity...');
     supabase.auth.getSession()
-      .then(({ data, error }) => {
+      .then(({ error }) => {
         if (error) {
           console.error('ForgotPasswordPage - Supabase connectivity test failed:', error);
         } else {

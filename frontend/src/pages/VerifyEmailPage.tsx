@@ -11,7 +11,8 @@ export default function VerifyEmailPage() {
 
   useEffect(() => {
     let mounted = true;
-    let timeoutId: NodeJS.Timeout;
+    let timeoutId: ReturnType<typeof setTimeout>;
+    let subscription: any = null;
 
     const verifyEmail = async () => {
       try {
@@ -139,8 +140,6 @@ export default function VerifyEmailPage() {
 
         // Supabase's detectSessionInUrl automatically processes tokens from URL hash
         // We need to wait for it to complete and then check the session
-        
-        let subscription: any = null;
         
         // Listen for auth state changes (Supabase will update when verification completes)
         const setupAuthListener = () => {

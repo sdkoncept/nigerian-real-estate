@@ -30,7 +30,7 @@ export default function Layout({ children }: LayoutProps) {
     protectAllImages();
     
     // Use MutationObserver with debouncing to protect dynamically added images
-    let timeoutId: NodeJS.Timeout;
+    let timeoutId: ReturnType<typeof setTimeout>;
     const observer = new MutationObserver(() => {
       // Debounce to avoid running on every tiny DOM change
       clearTimeout(timeoutId);
