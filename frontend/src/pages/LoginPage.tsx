@@ -117,7 +117,15 @@ export default function LoginPage() {
                 Remember me
               </label>
             </div>
-            <Link to="/forgot-password" className="text-sm text-primary-600 hover:text-primary-700">
+            <Link 
+              to="/forgot-password" 
+              className="text-sm text-primary-600 hover:text-primary-700"
+              onClick={(e) => {
+                console.log('Forgot password link clicked');
+                // Ensure navigation happens
+                e.stopPropagation();
+              }}
+            >
               Forgot password?
             </Link>
           </div>

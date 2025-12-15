@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import type { FormEvent } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { supabase } from '../lib/supabase';
 
@@ -9,7 +9,16 @@ export default function ForgotPasswordPage() {
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const { resetPassword } = useAuth();
+  const { resetPassword, user } = useAuth();
+  const navigate = useNavigate();
+
+  // Redirect if already logged in (optional - can remove if you want logged-in users to access)
+  useEffect(() => {
+    if (user) {
+      console.log('User is logged in, redirecting to home');
+      navigate('/', { replace: true });
+    }
+  }, [user, navigate]);
 
   // Log when component mounts
   useEffect(() => {
@@ -17,19 +26,26 @@ export default function ForgotPasswordPage() {
     console.log('Current URL:', window.location.href);
     console.log('Path:', window.location.pathname);
     console.log('Component state:', { email, loading, success, error });
+    console.log('User logged in:', !!user);
     
     // Test if form element exists
     setTimeout(() => {
       const form = document.querySelector('form');
       const button = document.querySelector('button[type="submit"]');
+      const emailInput = document.querySelector('input[type="email"]');
       console.log('DOM check:', {
         formExists: !!form,
         buttonExists: !!button,
+        emailInputExists: !!emailInput,
         buttonDisabled: button ? (button as HTMLButtonElement).disabled : 'N/A',
         buttonText: button ? button.textContent : 'N/A'
       });
+      
+      // Verify page is visible
+      const pageContainer = document.querySelector('.min-h-screen');
+      console.log('Page container visible:', pageContainer ? window.getComputedStyle(pageContainer).display !== 'none' : 'not found');
     }, 100);
-  }, []);
+  }, [user]);
 
   // Check if Supabase is configured and test connectivity
   useEffect(() => {
