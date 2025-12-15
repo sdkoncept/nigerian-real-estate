@@ -221,9 +221,6 @@ export default function ForgotPasswordPage() {
           <p className="text-gray-600">
             Enter your email address and we'll send you a link to reset your password.
           </p>
-          <p className="mt-2 text-xs text-gray-500">
-            Page loaded at: {new Date().toLocaleTimeString()}
-          </p>
         </div>
 
         {success && (
