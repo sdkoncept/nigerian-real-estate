@@ -328,13 +328,6 @@ export default function ForgotPasswordPage() {
                 Click the button above to send a password reset link to {email}
               </p>
             )}
-
-            <div className="mt-4 p-3 bg-blue-50 border border-blue-200 rounded-lg">
-              <p className="text-xs text-blue-800 font-medium mb-1">💡 Troubleshooting:</p>
-              <p className="text-xs text-blue-700">
-                If no email arrives, check your browser console (F12) and verify Supabase SMTP is configured in Dashboard → Settings → Auth → SMTP Settings
-              </p>
-            </div>
           </form>
         )}
 
