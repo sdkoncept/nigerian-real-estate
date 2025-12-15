@@ -119,50 +119,50 @@ export default function AgentsPage() {
 
       // Transform agents with profile data (already loaded via join)
       const agentsWithProfiles = activeAgents.map((agent: any) => {
-        // Handle profile data - Supabase returns it as an array or object depending on relationship
-        const profile = Array.isArray(agent.profiles) 
-          ? agent.profiles[0] 
-          : agent.profiles;
+        try {
+          // Handle profile data - Supabase returns it as an array or object depending on relationship
+          const profile = Array.isArray(agent.profiles) 
+            ? agent.profiles[0] 
+            : agent.profiles;
 
-        const transformedAgent = {
-          ...agent,
-          full_name: profile?.full_name || 'Agent',
-          email: profile?.email || '',
-          phone: profile?.phone || '',
-          avatar_url: profile?.avatar_url || undefined,
-          // Ensure required fields have defaults
-          specialties: agent.specialties || [],
-          years_experience: agent.years_experience || 0,
-          properties_sold: agent.properties_sold || 0,
-          rating: agent.rating || 0,
-          total_reviews: agent.total_reviews || 0,
-          verification_status: agent.verification_status || 'pending',
-          is_active: agent.is_active !== undefined ? agent.is_active : true,
-          // Optional location fields
-          city: undefined,
-          state: undefined,
-        };
+          const transformedAgent = {
+            ...agent,
+            full_name: profile?.full_name || 'Agent',
+            email: profile?.email || '',
+            phone: profile?.phone || '',
+            avatar_url: profile?.avatar_url || undefined,
+            // Ensure required fields have defaults
+            specialties: agent.specialties || [],
+            years_experience: agent.years_experience || 0,
+            properties_sold: agent.properties_sold || 0,
+            rating: agent.rating || 0,
+            total_reviews: agent.total_reviews || 0,
+            verification_status: agent.verification_status || 'pending',
+            is_active: agent.is_active !== undefined ? agent.is_active : true,
+            // Optional location fields
+            city: undefined,
+            state: undefined,
+          };
 
-        return transformedAgent;
-          } catch (error) {
-            console.error(`❌ Error processing agent ${agent.id}:`, error);
-            // Return agent with minimal data if profile fetch fails
-            return {
-              ...agent,
-              full_name: 'Agent',
-              email: '',
-              phone: '',
-              specialties: agent.specialties || [],
-              years_experience: agent.years_experience || 0,
-              properties_sold: agent.properties_sold || 0,
-              rating: agent.rating || 0,
-              total_reviews: agent.total_reviews || 0,
-              verification_status: agent.verification_status || 'pending',
-              is_active: agent.is_active !== undefined ? agent.is_active : true,
-            };
-          }
-        })
-      );
+          return transformedAgent;
+        } catch (error) {
+          console.error(`❌ Error processing agent ${agent.id}:`, error);
+          // Return agent with minimal data if profile fetch fails
+          return {
+            ...agent,
+            full_name: 'Agent',
+            email: '',
+            phone: '',
+            specialties: agent.specialties || [],
+            years_experience: agent.years_experience || 0,
+            properties_sold: agent.properties_sold || 0,
+            rating: agent.rating || 0,
+            total_reviews: agent.total_reviews || 0,
+            verification_status: agent.verification_status || 'pending',
+            is_active: agent.is_active !== undefined ? agent.is_active : true,
+          };
+        }
+      });
 
       console.log(`✅ Successfully loaded ${agentsWithProfiles.length} agents with profiles`);
       console.log('📋 Verification status breakdown:', {
