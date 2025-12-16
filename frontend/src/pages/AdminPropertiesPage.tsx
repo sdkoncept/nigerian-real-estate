@@ -408,7 +408,7 @@ export default function AdminPropertiesPage() {
 
     try {
       setSendingMessage(true);
-      const { error } = await supabase
+      const { data: messageData, error } = await supabase
         .from('messages')
         .insert({
           sender_id: user.id,
@@ -416,9 +416,37 @@ export default function AdminPropertiesPage() {
           property_id: chattingProperty.id,
           subject: `Re: ${chattingProperty.title}`,
           message: newMessage.trim(),
-        });
+        })
+        .select()
+        .single();
 
       if (error) throw error;
+
+      // Send email notification with transcript
+      try {
+        const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+        const response = await fetch(`${API_URL}/api/admin/messages/send-email`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${(await supabase.auth.getSession()).data.session?.access_token}`,
+          },
+          body: JSON.stringify({
+            recipientId: chattingProperty.user!.id,
+            propertyId: chattingProperty.id,
+            messageId: messageData.id,
+          }),
+        });
+
+        if (!response.ok) {
+          const errorData = await response.json();
+          console.warn('Failed to send email notification:', errorData.error);
+          // Don't fail the message send if email fails
+        }
+      } catch (emailError) {
+        console.error('Error sending email notification:', emailError);
+        // Don't fail the message send if email fails
+      }
 
       setNewMessage('');
       await loadMessages(chattingProperty.user!.id, chattingProperty.id);

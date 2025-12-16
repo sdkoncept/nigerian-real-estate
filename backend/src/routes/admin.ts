@@ -475,5 +475,202 @@ router.get('/stats', async (req: AuthRequest, res: Response) => {
   }
 });
 
+/**
+ * Send email notification for admin message
+ */
+const sendMessageEmailSchema = z.object({
+  recipientId: z.string().uuid(),
+  propertyId: z.string().uuid(),
+  messageId: z.string().uuid(),
+});
+
+router.post('/messages/send-email', validate(sendMessageEmailSchema), async (req: AuthRequest, res: Response) => {
+  try {
+    const { recipientId, propertyId, messageId } = req.body;
+
+    // Get recipient profile
+    const { data: recipient, error: recipientError } = await supabaseAdmin
+      .from('profiles')
+      .select('email, full_name')
+      .eq('id', recipientId)
+      .single();
+
+    if (recipientError || !recipient) {
+      return res.status(404).json({ error: 'Recipient not found' });
+    }
+
+    // Get property details
+    const { data: property, error: propertyError } = await supabaseAdmin
+      .from('properties')
+      .select('title, id')
+      .eq('id', propertyId)
+      .single();
+
+    if (propertyError || !property) {
+      return res.status(404).json({ error: 'Property not found' });
+    }
+
+    // Get all messages in this conversation
+    const { data: messages, error: messagesError } = await supabaseAdmin
+      .from('messages')
+      .select('*')
+      .eq('property_id', propertyId)
+      .or(`sender_id.eq.${req.user!.id},recipient_id.eq.${req.user!.id}`)
+      .order('created_at', { ascending: true });
+
+    // Get sender/recipient details for each message
+    let messagesWithDetails: any[] = [];
+    if (messages && messages.length > 0) {
+      messagesWithDetails = await Promise.all(
+        messages.map(async (msg: any) => {
+          const [senderResult, recipientResult] = await Promise.all([
+            supabaseAdmin
+              .from('profiles')
+              .select('full_name, email')
+              .eq('id', msg.sender_id)
+              .single(),
+            supabaseAdmin
+              .from('profiles')
+              .select('full_name, email')
+              .eq('id', msg.recipient_id)
+              .single(),
+          ]);
+
+          return {
+            ...msg,
+            sender: senderResult.data || null,
+            recipient: recipientResult.data || null,
+          };
+        })
+      );
+    }
+
+    if (messagesError) {
+      console.error('Error loading messages:', messagesError);
+      return res.status(500).json({ error: 'Failed to load messages' });
+    }
+
+    // Get admin profile
+    const { data: adminProfile } = await supabaseAdmin
+      .from('profiles')
+      .select('full_name, email')
+      .eq('id', req.user!.id)
+      .single();
+
+    const adminName = adminProfile?.full_name || 'Admin';
+    const frontendUrl = process.env.FRONTEND_URL || 'https://housedirectng.com';
+    const chatLink = `${frontendUrl}/messages?property=${propertyId}`;
+
+    // Build email HTML with transcript
+    const messagesHtml = messagesWithDetails.map((msg: any) => {
+      const isAdmin = msg.sender_id === req.user!.id;
+      const senderName = isAdmin ? adminName : (msg.sender?.full_name || 'Property Owner');
+      const timestamp = new Date(msg.created_at).toLocaleString('en-US', {
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit',
+      });
+
+      return `
+        <div style="margin-bottom: 20px; padding: 15px; background-color: ${isAdmin ? '#e3f2fd' : '#f5f5f5'}; border-left: 4px solid ${isAdmin ? '#2196f3' : '#757575'}; border-radius: 4px;">
+          <div style="font-weight: bold; color: #333; margin-bottom: 5px;">
+            ${senderName} ${isAdmin ? '(Admin)' : ''}
+          </div>
+          <div style="color: #666; font-size: 12px; margin-bottom: 10px;">
+            ${timestamp}
+          </div>
+          <div style="color: #333; white-space: pre-wrap; line-height: 1.6;">
+            ${msg.message.replace(/\n/g, '<br>')}
+          </div>
+        </div>
+      `;
+    }).join('');
+
+    const emailHtml = `
+      <!DOCTYPE html>
+      <html>
+      <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>New Message from Admin</title>
+      </head>
+      <body style="font-family: Arial, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: 0 auto; padding: 20px;">
+        <div style="background-color: #f8f9fa; padding: 20px; border-radius: 8px; margin-bottom: 20px;">
+          <h1 style="color: #2196f3; margin-top: 0;">New Message from Admin</h1>
+          <p style="margin-bottom: 0;">You have received a new message regarding your property listing.</p>
+        </div>
+
+        <div style="background-color: #fff; padding: 20px; border-radius: 8px; margin-bottom: 20px; border: 1px solid #e0e0e0;">
+          <h2 style="color: #333; margin-top: 0; font-size: 18px;">Property: ${property.title}</h2>
+        </div>
+
+        <div style="background-color: #fff; padding: 20px; border-radius: 8px; margin-bottom: 20px; border: 1px solid #e0e0e0;">
+          <h2 style="color: #333; margin-top: 0; font-size: 18px; margin-bottom: 15px;">Conversation Transcript</h2>
+          ${messagesHtml}
+        </div>
+
+        <div style="background-color: #e3f2fd; padding: 20px; border-radius: 8px; text-align: center; margin-bottom: 20px;">
+          <p style="margin-bottom: 15px; color: #333;">
+            <strong>View and reply to this conversation in your account:</strong>
+          </p>
+          <a href="${chatLink}" style="display: inline-block; background-color: #2196f3; color: white; padding: 12px 30px; text-decoration: none; border-radius: 5px; font-weight: bold; margin-top: 10px;">
+            View Chat Messages
+          </a>
+          <p style="margin-top: 15px; font-size: 12px; color: #666;">
+            You may need to log in to your account to view the conversation.
+          </p>
+        </div>
+
+        <div style="margin-top: 30px; padding-top: 20px; border-top: 1px solid #e0e0e0; font-size: 12px; color: #666; text-align: center;">
+          <p>This is an automated email from House Direct NG.</p>
+          <p>If you have any questions, please contact our support team.</p>
+        </div>
+      </body>
+      </html>
+    `;
+
+    const emailText = `
+New Message from Admin
+
+You have received a new message regarding your property listing: ${property.title}
+
+Conversation Transcript:
+${(messages || []).map((msg: any) => {
+  const isAdmin = msg.sender_id === req.user!.id;
+  const senderName = isAdmin ? adminName : (msg.sender?.full_name || 'Property Owner');
+  const timestamp = new Date(msg.created_at).toLocaleString();
+  return `\n${senderName} ${isAdmin ? '(Admin)' : ''} - ${timestamp}\n${msg.message}\n`;
+}).join('\n---\n')}
+
+View and reply to this conversation: ${chatLink}
+
+You may need to log in to your account to view the conversation.
+
+---
+This is an automated email from House Direct NG.
+    `;
+
+    // Send email
+    const emailSent = await emailService.sendEmail({
+      to: recipient.email,
+      subject: `New Message from Admin - ${property.title}`,
+      html: emailHtml,
+      text: emailText,
+    });
+
+    if (!emailSent) {
+      console.error('Failed to send email:', emailService.lastError);
+      return res.status(500).json({ error: 'Failed to send email notification' });
+    }
+
+    res.json({ success: true, message: 'Email notification sent successfully' });
+  } catch (error: any) {
+    console.error('Send message email error:', error);
+    res.status(500).json({ error: 'Failed to send email notification' });
+  }
+});
+
 export default router;
 

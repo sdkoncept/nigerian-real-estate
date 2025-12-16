@@ -1,9 +1,10 @@
 import { useState } from 'react';
 import type { FormEvent } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate, Link, useSearchParams } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 
 export default function LoginPage() {
+  const [searchParams] = useSearchParams();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
@@ -45,7 +46,9 @@ export default function LoginPage() {
       }
       setLoading(false);
     } else {
-      navigate('/');
+      // Redirect to the specified URL or home
+      const redirectTo = searchParams.get('redirect') || '/';
+      navigate(redirectTo);
     }
   };
 

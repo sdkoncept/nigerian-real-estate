@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useSearchParams, useNavigate } from 'react-router-dom';
 import Layout from '../components/Layout';
 import { useAuth } from '../contexts/AuthContext';
 import { supabase } from '../lib/supabase';
@@ -21,16 +21,36 @@ interface Message {
 
 export default function MessagesPage() {
   const { user } = useAuth();
+  const [searchParams] = useSearchParams();
+  const navigate = useNavigate();
   const [messages, setMessages] = useState<Message[]>([]);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState<'inbox' | 'sent'>('inbox');
   const [selectedMessage, setSelectedMessage] = useState<Message | null>(null);
+  const propertyId = searchParams.get('property');
 
   useEffect(() => {
     if (user) {
       loadMessages();
+    } else if (propertyId) {
+      // Redirect to login if not authenticated and property ID is provided
+      navigate(`/login?redirect=/messages?property=${propertyId}`);
     }
-  }, [user, activeTab]);
+  }, [user, activeTab, propertyId]);
+
+  useEffect(() => {
+    // Auto-select message if property ID is provided
+    if (propertyId && messages.length > 0 && !selectedMessage) {
+      const propertyMessage = messages.find(msg => msg.property_id === propertyId);
+      if (propertyMessage) {
+        setSelectedMessage(propertyMessage);
+        // Switch to inbox if message is in inbox
+        if (propertyMessage.recipient_id === user?.id) {
+          setActiveTab('inbox');
+        }
+      }
+    }
+  }, [propertyId, messages, user]);
 
   const loadMessages = async () => {
     if (!user) return;
@@ -46,6 +66,11 @@ export default function MessagesPage() {
         query = query.eq('recipient_id', user.id);
       } else {
         query = query.eq('sender_id', user.id);
+      }
+
+      // Filter by property if property ID is provided
+      if (propertyId) {
+        query = query.eq('property_id', propertyId);
       }
 
       const { data, error } = await query;
