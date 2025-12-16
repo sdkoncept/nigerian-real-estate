@@ -29,9 +29,7 @@ export default function PropertyListingPage() {
 
   useEffect(() => {
     loadProperties();
-  }, []);
-
-  useEffect(() => {
+    
     // Check for location query parameter and set filter
     const locationParam = searchParams.get('location');
     if (locationParam && locationMap[locationParam]) {
@@ -43,6 +41,22 @@ export default function PropertyListingPage() {
         setSearchTerm(location.city);
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+  
+  useEffect(() => {
+    // Update filters when location query parameter changes
+    const locationParam = searchParams.get('location');
+    if (locationParam && locationMap[locationParam]) {
+      const location = locationMap[locationParam];
+      if (location.state) {
+        setSelectedState(location.state);
+      }
+      if (location.city) {
+        setSearchTerm(location.city);
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchParams]);
 
   const loadProperties = async () => {
