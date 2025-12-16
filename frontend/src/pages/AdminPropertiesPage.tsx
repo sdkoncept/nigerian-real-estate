@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import Layout from '../components/Layout';
 import { supabase } from '../lib/supabase';
 import { useUserProfile } from '../hooks/useUserProfile';
+import { useAuth } from '../contexts/AuthContext';
 import { geocodeAddress } from '../utils/geocoding';
 
 interface Property {
@@ -29,11 +30,26 @@ interface Property {
   user?: {
     email: string;
     full_name: string;
+    id: string;
   };
 }
 
+interface Message {
+  id: string;
+  sender_id: string;
+  recipient_id: string;
+  property_id: string | null;
+  subject: string | null;
+  message: string;
+  is_read: boolean;
+  created_at: string;
+  sender_name?: string;
+  sender_email?: string;
+}
+
 export default function AdminPropertiesPage() {
-  const { isAdmin } = useUserProfile();
+  const { isAdmin, profile } = useUserProfile();
+  const { user } = useAuth();
   const [properties, setProperties] = useState<Property[]>([]);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState<'all' | 'pending' | 'verified' | 'rejected'>('all');
@@ -50,6 +66,11 @@ export default function AdminPropertiesPage() {
   });
   const [processing, setProcessing] = useState<string | null>(null);
   const [geocoding, setGeocoding] = useState(false);
+  const [chattingProperty, setChattingProperty] = useState<Property | null>(null);
+  const [messages, setMessages] = useState<Message[]>([]);
+  const [newMessage, setNewMessage] = useState('');
+  const [loadingMessages, setLoadingMessages] = useState(false);
+  const [sendingMessage, setSendingMessage] = useState(false);
 
   useEffect(() => {
     if (isAdmin) {
@@ -87,12 +108,12 @@ export default function AdminPropertiesPage() {
         return;
       }
 
-      // Load user info for each property
+          // Load user info for each property
       const propertiesWithUsers = await Promise.all(
         data.map(async (prop: any) => {
-          const { data: user } = await supabase
+          const { data: userData } = await supabase
             .from('profiles')
-            .select('email, full_name')
+            .select('email, full_name, id')
             .eq('id', prop.created_by)
             .single();
 
@@ -101,7 +122,7 @@ export default function AdminPropertiesPage() {
             price: parseFloat(prop.price),
             sqm: prop.sqm ? parseFloat(prop.sqm) : null,
             coordinates: prop.coordinates || null,
-            user: user || null,
+            user: userData || null,
           };
         })
       );
@@ -326,6 +347,86 @@ export default function AdminPropertiesPage() {
     }
   };
 
+  const formatDate = (dateString: string) => {
+    const date = new Date(dateString);
+    return {
+      date: date.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' }),
+      time: date.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }),
+      full: date.toLocaleString('en-US', { year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' }),
+    };
+  };
+
+  const handleOpenChat = async (property: Property) => {
+    if (!user || !property.user?.id) return;
+    setChattingProperty(property);
+    await loadMessages(property.user.id, property.id);
+  };
+
+  const loadMessages = async (ownerId: string, propertyId: string) => {
+    if (!user) return;
+    try {
+      setLoadingMessages(true);
+      const { data, error } = await supabase
+        .from('messages')
+        .select('*')
+        .or(`and(sender_id.eq.${user.id},recipient_id.eq.${ownerId}),and(sender_id.eq.${ownerId},recipient_id.eq.${user.id})`)
+        .eq('property_id', propertyId)
+        .order('created_at', { ascending: true });
+
+      if (error) throw error;
+
+      // Get sender details
+      const messagesWithDetails = await Promise.all(
+        (data || []).map(async (msg: any) => {
+          const { data: sender } = await supabase
+            .from('profiles')
+            .select('full_name, email')
+            .eq('id', msg.sender_id)
+            .single();
+
+          return {
+            ...msg,
+            sender_name: sender?.full_name || 'Unknown',
+            sender_email: sender?.email || '',
+          };
+        })
+      );
+
+      setMessages(messagesWithDetails);
+    } catch (error) {
+      console.error('Error loading messages:', error);
+    } finally {
+      setLoadingMessages(false);
+    }
+  };
+
+  const handleSendMessage = async () => {
+    if (!user || !chattingProperty || !newMessage.trim()) return;
+
+    try {
+      setSendingMessage(true);
+      const { error } = await supabase
+        .from('messages')
+        .insert({
+          sender_id: user.id,
+          recipient_id: chattingProperty.user!.id,
+          property_id: chattingProperty.id,
+          subject: `Re: ${chattingProperty.title}`,
+          message: newMessage.trim(),
+        });
+
+      if (error) throw error;
+
+      setNewMessage('');
+      await loadMessages(chattingProperty.user!.id, chattingProperty.id);
+    } catch (error: any) {
+      console.error('Error sending message:', error);
+      alert(`Failed to send message: ${error.message}`);
+    } finally {
+      setSendingMessage(false);
+    }
+  };
+
   const filteredProperties = properties.filter((prop) => {
     if (searchTerm) {
       const searchLower = searchTerm.toLowerCase();
@@ -449,7 +550,7 @@ export default function AdminPropertiesPage() {
                         Location
                       </th>
                       <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        Coordinates
+                        Listed At
                       </th>
                       <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                         Status
@@ -482,14 +583,12 @@ export default function AdminPropertiesPage() {
                           </div>
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap">
-                          {prop.coordinates ? (
-                            <div className="text-sm text-gray-900">
-                              <div>Lat: {prop.coordinates.lat.toFixed(4)}</div>
-                              <div>Lng: {prop.coordinates.lng.toFixed(4)}</div>
-                            </div>
-                          ) : (
-                            <span className="text-sm text-gray-400">No coordinates</span>
-                          )}
+                          <div className="text-sm text-gray-900 font-medium">
+                            {formatDate(prop.created_at).date}
+                          </div>
+                          <div className="text-xs text-gray-500">
+                            {formatDate(prop.created_at).time}
+                          </div>
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap">
                           <span
@@ -513,6 +612,12 @@ export default function AdminPropertiesPage() {
                               className="text-blue-600 hover:text-blue-900"
                             >
                               Edit
+                            </button>
+                            <button
+                              onClick={() => handleOpenChat(prop)}
+                              className="text-purple-600 hover:text-purple-900"
+                            >
+                              Chat
                             </button>
                             {prop.verification_status !== 'verified' && (
                               <button
@@ -727,10 +832,28 @@ export default function AdminPropertiesPage() {
                   </div>
 
                   <div>
-                    <h3 className="font-semibold text-gray-900 mb-2">Owner</h3>
-                    <div className="bg-gray-50 p-4 rounded-lg">
+                    <h3 className="font-semibold text-gray-900 mb-2">Owner Information</h3>
+                    <div className="bg-gray-50 p-4 rounded-lg space-y-2">
                       <p><span className="font-medium">Name:</span> {selectedProperty.user?.full_name || 'N/A'}</p>
                       <p><span className="font-medium">Email:</span> {selectedProperty.user?.email || 'N/A'}</p>
+                      <button
+                        onClick={() => handleOpenChat(selectedProperty)}
+                        className="mt-2 px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors text-sm font-semibold"
+                      >
+                        💬 Chat with Owner
+                      </button>
+                    </div>
+                  </div>
+
+                  <div>
+                    <h3 className="font-semibold text-gray-900 mb-2">Listing Information</h3>
+                    <div className="bg-gray-50 p-4 rounded-lg">
+                      <p><span className="font-medium">Listed At:</span> {formatDate(selectedProperty.created_at).full}</p>
+                      <p><span className="font-medium">Status:</span> 
+                        <span className={`ml-2 px-2 py-1 rounded-full text-xs font-semibold ${getStatusColor(selectedProperty.verification_status)}`}>
+                          {selectedProperty.verification_status.toUpperCase()}
+                        </span>
+                      </p>
                     </div>
                   </div>
 
@@ -774,6 +897,100 @@ export default function AdminPropertiesPage() {
                     </button>
                   </div>
                 </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Chat Modal */}
+        {chattingProperty && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+            <div className="bg-white rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] flex flex-col">
+              <div className="p-6 border-b border-gray-200">
+                <div className="flex justify-between items-center">
+                  <div>
+                    <h2 className="text-2xl font-bold text-gray-900">Chat with Owner</h2>
+                    <p className="text-sm text-gray-600 mt-1">
+                      {chattingProperty.user?.full_name || 'Unknown'} • {chattingProperty.title}
+                    </p>
+                  </div>
+                  <button
+                    onClick={() => {
+                      setChattingProperty(null);
+                      setMessages([]);
+                      setNewMessage('');
+                    }}
+                    className="text-gray-400 hover:text-gray-600 text-2xl"
+                  >
+                    ✕
+                  </button>
+                </div>
+              </div>
+
+              <div className="flex-1 overflow-y-auto p-6 space-y-4 bg-gray-50">
+                {loadingMessages ? (
+                  <div className="flex justify-center items-center h-64">
+                    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary-600"></div>
+                  </div>
+                ) : messages.length === 0 ? (
+                  <div className="text-center text-gray-500 py-8">
+                    <p>No messages yet. Start the conversation!</p>
+                  </div>
+                ) : (
+                  messages.map((msg) => {
+                    const isAdminMessage = msg.sender_id === user?.id;
+                    return (
+                      <div
+                        key={msg.id}
+                        className={`flex ${isAdminMessage ? 'justify-end' : 'justify-start'}`}
+                      >
+                        <div
+                          className={`max-w-xs lg:max-w-md px-4 py-2 rounded-lg ${
+                            isAdminMessage
+                              ? 'bg-primary-600 text-white'
+                              : 'bg-white text-gray-900 border border-gray-200'
+                          }`}
+                        >
+                          <div className="text-xs font-semibold mb-1 opacity-75">
+                            {isAdminMessage ? 'You' : msg.sender_name}
+                          </div>
+                          <div className="text-sm whitespace-pre-wrap">{msg.message}</div>
+                          <div className={`text-xs mt-1 ${isAdminMessage ? 'text-primary-100' : 'text-gray-500'}`}>
+                            {formatDate(msg.created_at).time}
+                          </div>
+                        </div>
+                      </div>
+                    );
+                  })
+                )}
+              </div>
+
+              <div className="p-6 border-t border-gray-200">
+                <div className="flex gap-2">
+                  <textarea
+                    value={newMessage}
+                    onChange={(e) => setNewMessage(e.target.value)}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter' && !e.shiftKey) {
+                        e.preventDefault();
+                        handleSendMessage();
+                      }
+                    }}
+                    placeholder="Type your message..."
+                    rows={3}
+                    className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent resize-none"
+                  />
+                  <button
+                    onClick={handleSendMessage}
+                    disabled={!newMessage.trim() || sendingMessage}
+                    className="px-6 py-3 bg-primary-600 text-white rounded-lg hover:bg-primary-700 disabled:opacity-50 disabled:cursor-not-allowed font-semibold"
+                  >
+                    {sendingMessage ? 'Sending...' : 'Send'}
+                  </button>
+                </div>
+                <p className="text-xs text-gray-500 mt-2">
+                  Press Enter to send, Shift+Enter for new line
+                </p>
               </div>
             </div>
           </div>
