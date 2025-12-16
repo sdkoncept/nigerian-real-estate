@@ -50,7 +50,7 @@ interface Message {
 }
 
 export default function AdminPropertiesPage() {
-  const { isAdmin, profile } = useUserProfile();
+  const { isAdmin } = useUserProfile();
   const { user } = useAuth();
   const [properties, setProperties] = useState<Property[]>([]);
   const [loading, setLoading] = useState(true);
