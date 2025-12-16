@@ -637,7 +637,7 @@ New Message from Admin
 You have received a new message regarding your property listing: ${property.title}
 
 Conversation Transcript:
-${(messages || []).map((msg: any) => {
+${messagesWithDetails.map((msg: any) => {
   const isAdmin = msg.sender_id === req.user!.id;
   const senderName = isAdmin ? adminName : (msg.sender?.full_name || 'Property Owner');
   const timestamp = new Date(msg.created_at).toLocaleString();
