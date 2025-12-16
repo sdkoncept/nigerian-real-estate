@@ -5,6 +5,7 @@ import { supabase } from '../lib/supabase';
 import { useUserProfile } from '../hooks/useUserProfile';
 import { useAuth } from '../contexts/AuthContext';
 import { geocodeAddress } from '../utils/geocoding';
+import ProtectedImage from '../components/ProtectedImage';
 
 interface Property {
   id: string;
@@ -22,6 +23,7 @@ interface Property {
   bedrooms: number | null;
   bathrooms: number | null;
   sqm: number | null;
+  images: string[] | null;
   verification_status: 'pending' | 'verified' | 'rejected';
   is_active: boolean;
   is_featured: boolean;
@@ -807,6 +809,40 @@ export default function AdminPropertiesPage() {
                 </div>
 
                 <div className="space-y-4">
+                  {/* Property Images */}
+                  {selectedProperty.images && selectedProperty.images.length > 0 && (
+                    <div>
+                      <h3 className="font-semibold text-gray-900 mb-2">Property Images ({selectedProperty.images.length})</h3>
+                      <div className="bg-gray-50 p-4 rounded-lg">
+                        <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                          {selectedProperty.images.map((imageUrl, index) => (
+                            <div key={index} className="relative aspect-square overflow-hidden rounded-lg bg-gray-200">
+                              <ProtectedImage
+                                src={imageUrl}
+                                alt={`${selectedProperty.title} - Image ${index + 1}`}
+                                className="w-full h-full object-cover cursor-pointer hover:opacity-90 transition-opacity"
+                                loading="lazy"
+                                onError={() => {
+                                  // Handle image error - could show placeholder
+                                  console.error(`Failed to load image ${index + 1}`);
+                                }}
+                              />
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
+                  {(!selectedProperty.images || selectedProperty.images.length === 0) && (
+                    <div>
+                      <h3 className="font-semibold text-gray-900 mb-2">Property Images</h3>
+                      <div className="bg-gray-50 p-4 rounded-lg text-center text-gray-500">
+                        <p>No images uploaded for this property</p>
+                      </div>
+                    </div>
+                  )}
+
                   <div>
                     <h3 className="font-semibold text-gray-900 mb-2">Property Details</h3>
                     <div className="bg-gray-50 p-4 rounded-lg space-y-2">
@@ -827,6 +863,15 @@ export default function AdminPropertiesPage() {
                       )}
                       {selectedProperty.bathrooms && (
                         <p><span className="font-medium">Bathrooms:</span> {selectedProperty.bathrooms}</p>
+                      )}
+                      {selectedProperty.sqm && (
+                        <p><span className="font-medium">Area:</span> {selectedProperty.sqm} m²</p>
+                      )}
+                      {selectedProperty.description && (
+                        <div className="mt-2">
+                          <p className="font-medium mb-1">Description:</p>
+                          <p className="text-sm text-gray-700 whitespace-pre-wrap">{selectedProperty.description}</p>
+                        </div>
                       )}
                     </div>
                   </div>
