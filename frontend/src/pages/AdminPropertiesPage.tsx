@@ -124,6 +124,7 @@ export default function AdminPropertiesPage() {
             price: parseFloat(prop.price),
             sqm: prop.sqm ? parseFloat(prop.sqm) : null,
             coordinates: prop.coordinates || null,
+            images: prop.images || [],
             user: userData || null,
           };
         })
