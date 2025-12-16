@@ -95,6 +95,11 @@ export default function Footer() {
                   Kano
                 </Link>
               </li>
+              <li>
+                <Link to="/properties?location=edo" className="hover:text-white transition-colors">
+                  Edo
+                </Link>
+              </li>
             </ul>
           </div>
 

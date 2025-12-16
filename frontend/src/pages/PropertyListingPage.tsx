@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
 import PropertyCard from '../components/PropertyCard';
 import type { Property } from '../components/PropertyCard';
 import Layout from '../components/Layout';
@@ -8,6 +8,7 @@ import { useOrientation } from '../hooks/useOrientation';
 import { sampleProperties } from '../data/sampleProperties';
 
 export default function PropertyListingPage() {
+  const [searchParams] = useSearchParams();
   const [properties, setProperties] = useState<Property[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
@@ -17,9 +18,32 @@ export default function PropertyListingPage() {
   const [sortBy, setSortBy] = useState<string>('newest');
   const { isLandscape } = useOrientation();
 
+  // Map location query parameter to city/state
+  const locationMap: Record<string, { city?: string; state?: string }> = {
+    'lagos': { city: 'Lagos', state: 'Lagos' },
+    'abuja': { city: 'Abuja', state: 'FCT' },
+    'port-harcourt': { city: 'Port Harcourt', state: 'Rivers' },
+    'kano': { city: 'Kano', state: 'Kano' },
+    'edo': { city: 'Benin City', state: 'Edo' },
+  };
+
   useEffect(() => {
     loadProperties();
   }, []);
+
+  useEffect(() => {
+    // Check for location query parameter and set filter
+    const locationParam = searchParams.get('location');
+    if (locationParam && locationMap[locationParam]) {
+      const location = locationMap[locationParam];
+      if (location.state) {
+        setSelectedState(location.state);
+      }
+      if (location.city) {
+        setSearchTerm(location.city);
+      }
+    }
+  }, [searchParams]);
 
   const loadProperties = async () => {
     try {
