@@ -14,7 +14,7 @@ CREATE POLICY "Admins can view all messages"
     EXISTS (
       SELECT 1 FROM public.profiles
       WHERE profiles.id = auth.uid()
-      AND profiles.role = 'admin'
+      AND profiles.user_type = 'admin'
     )
   );
 
@@ -27,7 +27,7 @@ CREATE POLICY "Admins can send messages"
     AND EXISTS (
       SELECT 1 FROM public.profiles
       WHERE profiles.id = auth.uid()
-      AND profiles.role = 'admin'
+      AND profiles.user_type = 'admin'
     )
   );
 
@@ -39,6 +39,6 @@ CREATE POLICY "Admins can update messages"
     EXISTS (
       SELECT 1 FROM public.profiles
       WHERE profiles.id = auth.uid()
-      AND profiles.role = 'admin'
+      AND profiles.user_type = 'admin'
     )
   );
