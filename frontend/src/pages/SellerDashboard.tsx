@@ -128,7 +128,7 @@ export default function SellerDashboard() {
 
   return (
     <Layout>
-      <div className="min-h-screen bg-gray-50">
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
         {/* Header */}
         <div className="bg-gradient-to-r from-primary-600 to-primary-800 text-white py-12">
           <div className="container mx-auto px-4">
@@ -150,32 +150,32 @@ export default function SellerDashboard() {
         <div className="container mx-auto px-4 py-8">
           {/* Stats Cards */}
           <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-            <div className="bg-white rounded-lg shadow-md p-6">
+            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
               <div className="text-3xl font-bold text-primary-600 mb-2">{stats.total}</div>
-              <div className="text-sm text-gray-600">Total Properties</div>
+              <div className="text-sm text-gray-600 dark:text-gray-300">Total Properties</div>
             </div>
-            <div className="bg-white rounded-lg shadow-md p-6">
+            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
               <div className="text-3xl font-bold text-green-600 mb-2">{stats.active}</div>
-              <div className="text-sm text-gray-600">Active Listings</div>
+              <div className="text-sm text-gray-600 dark:text-gray-300">Active Listings</div>
             </div>
-            <div className="bg-white rounded-lg shadow-md p-6">
+            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
               <div className="text-3xl font-bold text-yellow-600 mb-2">{stats.pending}</div>
-              <div className="text-sm text-gray-600">Pending Verification</div>
+              <div className="text-sm text-gray-600 dark:text-gray-300">Pending Verification</div>
             </div>
-            <div className="bg-white rounded-lg shadow-md p-6">
+            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
               <div className="text-3xl font-bold text-blue-600 mb-2">{stats.verified}</div>
-              <div className="text-sm text-gray-600">Verified Properties</div>
+              <div className="text-sm text-gray-600 dark:text-gray-300">Verified Properties</div>
             </div>
-            <div className="bg-white rounded-lg shadow-md p-6">
+            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
               <div className="text-3xl font-bold text-yellow-600 mb-2">{stats.featured}</div>
-              <div className="text-sm text-gray-600">Featured Listings</div>
+              <div className="text-sm text-gray-600 dark:text-gray-300">Featured Listings</div>
             </div>
           </div>
 
           {/* Properties List */}
-          <div className="bg-white rounded-lg shadow-md p-6">
+          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
             <div className="flex items-center justify-between mb-6">
-              <h2 className="text-2xl font-semibold text-gray-900">My Properties</h2>
+              <h2 className="text-2xl font-semibold text-gray-900 dark:text-white">My Properties</h2>
               <Link
                 to="/seller/properties/new"
                 className="px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors text-sm font-semibold"

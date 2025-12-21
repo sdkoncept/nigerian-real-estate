@@ -28,10 +28,10 @@ export default function AdminSettingsPage() {
   if (!isAdmin) {
     return (
       <Layout>
-        <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-          <div className="max-w-2xl mx-auto bg-white rounded-lg shadow-md p-8 text-center">
-            <h1 className="text-2xl font-bold text-gray-900 mb-4">Access Denied</h1>
-            <p className="text-gray-600">This page is only available for administrators.</p>
+        <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center">
+          <div className="max-w-2xl mx-auto bg-white dark:bg-gray-800 rounded-lg shadow-md p-8 text-center">
+            <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">Access Denied</h1>
+            <p className="text-gray-600 dark:text-gray-300">This page is only available for administrators.</p>
           </div>
         </div>
       </Layout>
@@ -40,7 +40,7 @@ export default function AdminSettingsPage() {
 
   return (
     <Layout>
-      <div className="min-h-screen bg-gray-50">
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
         {/* Header */}
         <div className="bg-gradient-to-r from-purple-600 to-purple-800 text-white py-12">
           <div className="container mx-auto px-4">
@@ -61,20 +61,20 @@ export default function AdminSettingsPage() {
 
         <div className="container mx-auto px-4 py-8">
           <div className="max-w-4xl mx-auto">
-            <div className="bg-white rounded-lg shadow-md p-8 space-y-6">
+            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-8 space-y-6">
               {/* General Settings */}
               <div>
-                <h2 className="text-xl font-semibold text-gray-900 mb-4">General Settings</h2>
+                <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">General Settings</h2>
                 <div className="space-y-4">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                       Platform Name
                     </label>
                     <input
                       type="text"
                       value={settings.platformName}
                       onChange={(e) => setSettings({ ...settings, platformName: e.target.value })}
-                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                      className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                     />
                   </div>
                 </div>
@@ -82,14 +82,14 @@ export default function AdminSettingsPage() {
 
               {/* Registration Settings */}
               <div>
-                <h2 className="text-xl font-semibold text-gray-900 mb-4">Registration Settings</h2>
+                <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">Registration Settings</h2>
                 <div className="space-y-4">
                   <div className="flex items-center justify-between">
                     <div>
-                      <label className="block text-sm font-medium text-gray-700">
+                      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
                         Allow New Registrations
                       </label>
-                      <p className="text-xs text-gray-500">Enable or disable new user signups</p>
+                      <p className="text-xs text-gray-500 dark:text-gray-400">Enable or disable new user signups</p>
                     </div>
                     <input
                       type="checkbox"
@@ -100,10 +100,10 @@ export default function AdminSettingsPage() {
                   </div>
                   <div className="flex items-center justify-between">
                     <div>
-                      <label className="block text-sm font-medium text-gray-700">
+                      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
                         Require Email Verification
                       </label>
-                      <p className="text-xs text-gray-500">Users must verify their email to use the platform</p>
+                      <p className="text-xs text-gray-500 dark:text-gray-400">Users must verify their email to use the platform</p>
                     </div>
                     <input
                       type="checkbox"
@@ -114,10 +114,10 @@ export default function AdminSettingsPage() {
                   </div>
                   <div className="flex items-center justify-between">
                     <div>
-                      <label className="block text-sm font-medium text-gray-700">
+                      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
                         Require Phone Verification
                       </label>
-                      <p className="text-xs text-gray-500">Users must verify their phone number</p>
+                      <p className="text-xs text-gray-500 dark:text-gray-400">Users must verify their phone number</p>
                     </div>
                     <input
                       type="checkbox"
@@ -131,28 +131,28 @@ export default function AdminSettingsPage() {
 
               {/* Property Settings */}
               <div>
-                <h2 className="text-xl font-semibold text-gray-900 mb-4">Property Settings</h2>
+                <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">Property Settings</h2>
                 <div className="space-y-4">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                       Max Properties Per User
                     </label>
                     <input
                       type="number"
                       value={settings.maxPropertiesPerUser}
                       onChange={(e) => setSettings({ ...settings, maxPropertiesPerUser: parseInt(e.target.value) })}
-                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                      className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                       Max Images Per Property
                     </label>
                     <input
                       type="number"
                       value={settings.maxImagesPerProperty}
                       onChange={(e) => setSettings({ ...settings, maxImagesPerProperty: parseInt(e.target.value) })}
-                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                      className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                     />
                   </div>
                 </div>
@@ -160,14 +160,14 @@ export default function AdminSettingsPage() {
 
               {/* System Settings */}
               <div>
-                <h2 className="text-xl font-semibold text-gray-900 mb-4">System Settings</h2>
+                <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">System Settings</h2>
                 <div className="space-y-4">
                   <div className="flex items-center justify-between">
                     <div>
-                      <label className="block text-sm font-medium text-gray-700">
+                      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
                         Maintenance Mode
                       </label>
-                      <p className="text-xs text-gray-500">Put the platform in maintenance mode</p>
+                      <p className="text-xs text-gray-500 dark:text-gray-400">Put the platform in maintenance mode</p>
                     </div>
                     <input
                       type="checkbox"

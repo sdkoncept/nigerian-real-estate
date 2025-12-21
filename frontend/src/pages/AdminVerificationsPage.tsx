@@ -221,10 +221,10 @@ export default function AdminVerificationsPage() {
   if (!isAdmin) {
     return (
       <Layout>
-        <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-          <div className="max-w-2xl mx-auto bg-white rounded-lg shadow-md p-8 text-center">
-            <h1 className="text-2xl font-bold text-gray-900 mb-4">Access Denied</h1>
-            <p className="text-gray-600">This page is only available for administrators.</p>
+        <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center">
+          <div className="max-w-2xl mx-auto bg-white dark:bg-gray-800 rounded-lg shadow-md p-8 text-center">
+            <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">Access Denied</h1>
+            <p className="text-gray-600 dark:text-gray-300">This page is only available for administrators.</p>
           </div>
         </div>
       </Layout>
@@ -234,7 +234,7 @@ export default function AdminVerificationsPage() {
   if (loading) {
     return (
       <Layout>
-        <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-600"></div>
         </div>
       </Layout>
@@ -248,7 +248,7 @@ export default function AdminVerificationsPage() {
 
   return (
     <Layout>
-      <div className="min-h-screen bg-gray-50">
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
         {/* Header */}
         <div className="bg-gradient-to-r from-purple-600 to-purple-800 text-white py-12">
           <div className="container mx-auto px-4">
@@ -269,7 +269,7 @@ export default function AdminVerificationsPage() {
 
         <div className="container mx-auto px-4 py-8">
           {/* Filters */}
-          <div className="bg-white rounded-lg shadow-md p-6 mb-6">
+          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 mb-6">
             <div className="flex gap-2">
               {(['all', 'pending', 'approved', 'rejected'] as const).map((status) => (
                 <button
@@ -289,15 +289,15 @@ export default function AdminVerificationsPage() {
           </div>
 
           {/* Verifications List */}
-          <div className="bg-white rounded-lg shadow-md overflow-hidden">
+          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden">
             {filteredVerifications.length === 0 ? (
               <div className="p-12 text-center">
                 <div className="text-6xl mb-4">✓</div>
                 <h3 className="text-xl font-semibold text-gray-900 mb-2">No Verifications Found</h3>
-                <p className="text-gray-600">All verifications have been reviewed.</p>
+                <p className="text-gray-600 dark:text-gray-300">All verifications have been reviewed.</p>
               </div>
             ) : (
-              <div className="divide-y divide-gray-200">
+              <div className="divide-y divide-gray-200 dark:divide-gray-700">
                 {filteredVerifications.map((verification) => (
                   <div
                     key={verification.id}
@@ -368,14 +368,14 @@ export default function AdminVerificationsPage() {
         {/* Review Modal */}
         {selectedVerification && (
           <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-            <div className="bg-white rounded-lg shadow-xl max-w-2xl w-full p-6">
+            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-xl max-w-2xl w-full p-6">
               <h2 className="text-2xl font-bold text-gray-900 mb-4">Review Verification</h2>
               <div className="space-y-4 mb-6">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
                     Entity: {selectedVerification.entity_name}
                   </label>
-                  <p className="text-sm text-gray-600">
+                  <p className="text-sm text-gray-600 dark:text-gray-300">
                     Type: {selectedVerification.entity_type} | Document: {selectedVerification.document_type}
                   </p>
                 </div>

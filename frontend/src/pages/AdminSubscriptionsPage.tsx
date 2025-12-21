@@ -164,7 +164,7 @@ export default function AdminSubscriptionsPage() {
         <div className="min-h-screen bg-gray-50 flex items-center justify-center">
           <div className="text-center">
             <h1 className="text-2xl font-bold text-gray-900 mb-2">Access Denied</h1>
-            <p className="text-gray-600">You need admin privileges to access this page.</p>
+            <p className="text-gray-600 dark:text-gray-300">You need admin privileges to access this page.</p>
           </div>
         </div>
       </Layout>
@@ -187,7 +187,7 @@ export default function AdminSubscriptionsPage() {
 
   return (
     <Layout>
-      <div className="min-h-screen bg-gray-50">
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
         {/* Header */}
         <div className="bg-gradient-to-r from-purple-600 to-purple-800 text-white py-12">
           <div className="container mx-auto px-4">
@@ -209,7 +209,7 @@ export default function AdminSubscriptionsPage() {
         <div className="container mx-auto px-4 py-8">
           {/* Stats Cards */}
           <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
-            <div className="bg-white rounded-lg shadow-md p-6">
+            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-gray-600 text-sm font-medium">Total Subscriptions</p>
@@ -218,7 +218,7 @@ export default function AdminSubscriptionsPage() {
                 <div className="text-4xl">📊</div>
               </div>
             </div>
-            <div className="bg-white rounded-lg shadow-md p-6">
+            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-gray-600 text-sm font-medium">Active</p>
@@ -227,7 +227,7 @@ export default function AdminSubscriptionsPage() {
                 <div className="text-4xl">✅</div>
               </div>
             </div>
-            <div className="bg-white rounded-lg shadow-md p-6">
+            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-gray-600 text-sm font-medium">Expired</p>
@@ -236,7 +236,7 @@ export default function AdminSubscriptionsPage() {
                 <div className="text-4xl">⏰</div>
               </div>
             </div>
-            <div className="bg-white rounded-lg shadow-md p-6">
+            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-gray-600 text-sm font-medium">Cancelled</p>
@@ -248,7 +248,7 @@ export default function AdminSubscriptionsPage() {
           </div>
 
           {/* Filters and Search */}
-          <div className="bg-white rounded-lg shadow-md p-6 mb-6">
+          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 mb-6">
             <div className="flex flex-col md:flex-row gap-4">
               <div className="flex-1">
                 <input
@@ -279,10 +279,10 @@ export default function AdminSubscriptionsPage() {
 
           {/* Subscriptions Table */}
           {filteredSubscriptions.length === 0 ? (
-            <div className="bg-white rounded-lg shadow-md p-12 text-center">
+            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-12 text-center">
               <div className="text-6xl mb-4">📦</div>
               <h3 className="text-xl font-semibold text-gray-900 mb-2">No Subscriptions Found</h3>
-              <p className="text-gray-600">
+              <p className="text-gray-600 dark:text-gray-300">
                 {searchTerm
                   ? 'No subscriptions match your search criteria.'
                   : filter === 'all'
@@ -291,10 +291,10 @@ export default function AdminSubscriptionsPage() {
               </p>
             </div>
           ) : (
-            <div className="bg-white rounded-lg shadow-md overflow-hidden">
+            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden">
               <div className="overflow-x-auto">
                 <table className="w-full">
-                  <thead className="bg-gray-50">
+                  <thead className="bg-gray-50 dark:bg-gray-700">
                     <tr>
                       <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                         User
@@ -322,16 +322,16 @@ export default function AdminSubscriptionsPage() {
                       </th>
                     </tr>
                   </thead>
-                  <tbody className="bg-white divide-y divide-gray-200">
+                  <tbody className="bg-white divide-y divide-gray-200 dark:divide-gray-700">
                     {filteredSubscriptions.map((subscription) => {
                       const daysRemaining = getDaysRemaining(subscription.expires_at);
                       const expired = isExpired(subscription.expires_at);
 
                       return (
-                        <tr key={subscription.id} className="hover:bg-gray-50">
+                        <tr key={subscription.id} className="hover:bg-gray-50 dark:bg-gray-700">
                           <td className="px-6 py-4 whitespace-nowrap">
                             <div>
-                              <div className="text-sm font-medium text-gray-900">
+                              <div className="text-sm font-medium text-gray-900 dark:text-white">
                                 {subscription.user?.full_name || 'N/A'}
                               </div>
                               <div className="text-sm text-gray-500">{subscription.user?.email || 'N/A'}</div>
@@ -341,7 +341,7 @@ export default function AdminSubscriptionsPage() {
                             </div>
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap">
-                            <span className="text-sm font-semibold text-gray-900">
+                            <span className="text-sm font-semibold text-gray-900 dark:text-white">
                               {getPlanName(subscription.plan_type)}
                             </span>
                           </td>
@@ -355,14 +355,14 @@ export default function AdminSubscriptionsPage() {
                               {subscription.status === 'active' && expired && ' (EXPIRED)'}
                             </span>
                           </td>
-                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
                             {new Date(subscription.started_at).toLocaleDateString()}
                             <br />
                             <span className="text-gray-500 text-xs">
                               {new Date(subscription.started_at).toLocaleTimeString()}
                             </span>
                           </td>
-                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
                             {subscription.expires_at ? (
                               <>
                                 {new Date(subscription.expires_at).toLocaleDateString()}
@@ -394,7 +394,7 @@ export default function AdminSubscriptionsPage() {
                               <span className="text-gray-400">N/A</span>
                             )}
                           </td>
-                          <td className="px-6 py-4 whitespace-nowrap text-sm font-semibold text-gray-900">
+                          <td className="px-6 py-4 whitespace-nowrap text-sm font-semibold text-gray-900 dark:text-white">
                             {subscription.currency} {subscription.amount_paid.toLocaleString()}
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 font-mono">

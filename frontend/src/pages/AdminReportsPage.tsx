@@ -138,9 +138,9 @@ export default function AdminReportsPage() {
     return (
       <Layout>
         <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-          <div className="max-w-2xl mx-auto bg-white rounded-lg shadow-md p-8 text-center">
+          <div className="max-w-2xl mx-auto bg-white dark:bg-gray-800 rounded-lg shadow-md p-8 text-center">
             <h1 className="text-2xl font-bold text-gray-900 mb-4">Access Denied</h1>
-            <p className="text-gray-600">This page is only available for administrators.</p>
+            <p className="text-gray-600 dark:text-gray-300">This page is only available for administrators.</p>
           </div>
         </div>
       </Layout>
@@ -164,7 +164,7 @@ export default function AdminReportsPage() {
 
   return (
     <Layout>
-      <div className="min-h-screen bg-gray-50">
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
         {/* Header */}
         <div className="bg-gradient-to-r from-purple-600 to-purple-800 text-white py-12">
           <div className="container mx-auto px-4">
@@ -185,7 +185,7 @@ export default function AdminReportsPage() {
 
         <div className="container mx-auto px-4 py-8">
           {/* Filters */}
-          <div className="bg-white rounded-lg shadow-md p-6 mb-6">
+          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 mb-6">
             <div className="flex gap-2">
               {(['all', 'new', 'investigating', 'resolved', 'dismissed'] as const).map((status) => (
                 <button
@@ -205,15 +205,15 @@ export default function AdminReportsPage() {
           </div>
 
           {/* Reports List */}
-          <div className="bg-white rounded-lg shadow-md overflow-hidden">
+          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden">
             {filteredReports.length === 0 ? (
               <div className="p-12 text-center">
                 <div className="text-6xl mb-4">🚨</div>
                 <h3 className="text-xl font-semibold text-gray-900 mb-2">No Reports Found</h3>
-                <p className="text-gray-600">All reports have been reviewed.</p>
+                <p className="text-gray-600 dark:text-gray-300">All reports have been reviewed.</p>
               </div>
             ) : (
-              <div className="divide-y divide-gray-200">
+              <div className="divide-y divide-gray-200 dark:divide-gray-700">
                 {filteredReports.map((report) => (
                   <div
                     key={report.id}
@@ -274,7 +274,7 @@ export default function AdminReportsPage() {
         {/* Update Status Modal */}
         {selectedReport && (
           <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-            <div className="bg-white rounded-lg shadow-xl max-w-2xl w-full p-6">
+            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-xl max-w-2xl w-full p-6">
               <h2 className="text-2xl font-bold text-gray-900 mb-4">Update Report Status</h2>
               <div className="space-y-4 mb-6">
                 <div>
