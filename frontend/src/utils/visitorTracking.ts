@@ -37,12 +37,19 @@ const getBrowser = (): string => {
 };
 
 // Track page visit
+// Only tracks anonymous visitors (not logged-in users)
 export const trackVisitor = async (pagePath: string, pageTitle?: string) => {
   try {
-    const sessionId = getSessionId();
-    
     // Get current user if logged in
     const { data: { user } } = await supabase.auth.getUser();
+    
+    // Skip tracking if user is logged in (agents, buyers, sellers, admins)
+    // Only track anonymous visitors
+    if (user) {
+      return;
+    }
+    
+    const sessionId = getSessionId();
     
     // Get device and browser info
     const userAgent = navigator.userAgent;
@@ -55,10 +62,10 @@ export const trackVisitor = async (pagePath: string, pageTitle?: string) => {
       sessionStorage.setItem('visitor_tracked', 'true');
     }
     
-    // Insert visitor tracking record
+    // Insert visitor tracking record (only for anonymous visitors)
     const { error } = await supabase.from('visitor_tracking').insert({
       session_id: sessionId,
-      user_id: user?.id || null,
+      user_id: null, // Always null since we only track anonymous visitors
       page_path: pagePath,
       page_title: pageTitle || document.title,
       referrer: document.referrer || null,

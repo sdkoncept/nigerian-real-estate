@@ -74,6 +74,8 @@ export default function AdminVisitorAnalyticsPage() {
         query = query.eq('device_type', deviceFilter);
       }
 
+      // Since we only track anonymous visitors now, user_id should always be null
+      // But keep the filter for backward compatibility with existing data
       if (userFilter === 'logged_in') {
         query = query.not('user_id', 'is', null);
       } else if (userFilter === 'anonymous') {
@@ -211,9 +213,9 @@ export default function AdminVisitorAnalyticsPage() {
               <p className="text-xs text-gray-500 mt-1">In selected period</p>
             </div>
             <div className="bg-white rounded-lg shadow-md p-6">
-              <p className="text-sm text-gray-600 mb-1">Logged In Users</p>
-              <p className="text-3xl font-bold text-green-600">{visitors.filter(v => v.user_id).length}</p>
-              <p className="text-xs text-gray-500 mt-1">Authenticated visits</p>
+              <p className="text-sm text-gray-600 mb-1">Anonymous Visitors</p>
+              <p className="text-3xl font-bold text-green-600">{visitors.filter(v => !v.user_id).length}</p>
+              <p className="text-xs text-gray-500 mt-1">Non-authenticated visits</p>
             </div>
             <div className="bg-white rounded-lg shadow-md p-6">
               <p className="text-sm text-gray-600 mb-1">New Visitors</p>
@@ -268,9 +270,9 @@ export default function AdminVisitorAnalyticsPage() {
                   }}
                   className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                 >
-                  <option value="all">All Users</option>
-                  <option value="logged_in">Logged In</option>
-                  <option value="anonymous">Anonymous</option>
+                  <option value="all">All Visitors</option>
+                  <option value="anonymous">Anonymous Only</option>
+                  <option value="logged_in">Logged In (Legacy)</option>
                 </select>
               </div>
               <div>
