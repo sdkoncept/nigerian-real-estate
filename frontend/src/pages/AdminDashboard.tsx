@@ -141,7 +141,7 @@ export default function AdminDashboard() {
                   { id: 'properties', label: 'Properties', icon: '🏠', link: '/admin/properties' },
                   { id: 'subscriptions', label: 'Subscriptions', icon: '💳', link: '/admin/subscriptions' },
                   { id: 'verifications', label: 'Verifications', icon: '✓' },
-                  { id: 'reports', label: 'Reports', icon: '🚨' },
+                  { id: 'reports', label: 'Dispute Resolution', icon: '🚨' },
                   { id: 'settings', label: 'Settings', icon: '⚙️' },
                 ].map((tab: any) => (
                   tab.link ? (
@@ -220,7 +220,7 @@ export default function AdminDashboard() {
                 <div className="bg-white rounded-lg shadow-md p-6">
                   <div className="flex items-center justify-between">
                     <div>
-                      <p className="text-sm text-gray-600 mb-1">Pending Reports</p>
+                      <p className="text-sm text-gray-600 mb-1">Pending Disputes</p>
                       <p className="text-3xl font-bold text-red-600">{stats.pendingReports}</p>
                     </div>
                     <div className="text-4xl">🚨</div>
@@ -285,7 +285,7 @@ export default function AdminDashboard() {
                     className="p-4 border-2 border-gray-200 rounded-lg hover:border-purple-600 hover:bg-purple-50 transition-colors"
                   >
                     <div className="text-2xl mb-2">🚨</div>
-                    <div className="font-semibold text-gray-900">View Reports</div>
+                    <div className="font-semibold text-gray-900">Dispute Resolution</div>
                     <div className="text-sm text-gray-600">{stats.pendingReports} new</div>
                   </Link>
                 </div>
@@ -326,15 +326,15 @@ export default function AdminDashboard() {
           {/* Reports Tab */}
           {activeTab === 'reports' && (
             <div className="bg-white rounded-lg shadow-md p-6">
-              <h2 className="text-2xl font-semibold text-gray-900 mb-4">Report Management</h2>
+              <h2 className="text-2xl font-semibold text-gray-900 mb-4">Dispute Resolution</h2>
               <p className="text-gray-600 mb-4">
-                {stats.pendingReports} new reports
+                {stats.pendingReports} new disputes
               </p>
               <Link
                 to="/admin/reports"
                 className="inline-block px-6 py-3 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors font-semibold"
               >
-                View Reports →
+                View Disputes →
               </Link>
             </div>
           )}
