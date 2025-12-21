@@ -103,10 +103,10 @@ export default function AdminDashboard() {
   if (profile && !isAdmin) {
     return (
       <Layout>
-        <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-          <div className="max-w-2xl mx-auto bg-white rounded-lg shadow-md p-8 text-center">
-            <h1 className="text-2xl font-bold text-gray-900 mb-4">Access Denied</h1>
-            <p className="text-gray-600 mb-6">
+        <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center">
+          <div className="max-w-2xl mx-auto bg-white dark:bg-gray-800 rounded-lg shadow-md p-8 text-center">
+            <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">Access Denied</h1>
+            <p className="text-gray-600 dark:text-gray-300 mb-6">
               This page is only available for administrators.
             </p>
           </div>
@@ -118,7 +118,7 @@ export default function AdminDashboard() {
   if (loading) {
     return (
       <Layout>
-        <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600"></div>
         </div>
       </Layout>
@@ -127,7 +127,7 @@ export default function AdminDashboard() {
 
   return (
     <Layout>
-      <div className="min-h-screen bg-gray-50">
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
         {/* Header */}
         <div className="bg-gradient-to-r from-purple-600 to-purple-800 text-white py-12">
           <div className="container mx-auto px-4">
@@ -147,7 +147,7 @@ export default function AdminDashboard() {
 
         <div className="container mx-auto px-4 py-8">
           {/* Navigation Tabs */}
-          <div className="bg-white rounded-lg shadow-md mb-6">
+          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md mb-6">
             <div className="border-b border-gray-200">
               <nav className="flex -mb-px">
                 {[
@@ -192,120 +192,120 @@ export default function AdminDashboard() {
             <div className="space-y-6">
               {/* Stats Grid */}
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                <div className="bg-white rounded-lg shadow-md p-6">
+                <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
                   <div className="flex items-center justify-between">
                     <div>
-                      <p className="text-sm text-gray-600 mb-1">Total Users</p>
-                      <p className="text-3xl font-bold text-gray-900">{stats.totalUsers}</p>
+                      <p className="text-sm text-gray-600 dark:text-gray-400 mb-1">Total Users</p>
+                      <p className="text-3xl font-bold text-gray-900 dark:text-white">{stats.totalUsers}</p>
                     </div>
                     <div className="text-4xl">👥</div>
                   </div>
                 </div>
 
-                <div className="bg-white rounded-lg shadow-md p-6">
+                <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
                   <div className="flex items-center justify-between">
                     <div>
-                      <p className="text-sm text-gray-600 mb-1">Total Properties</p>
-                      <p className="text-3xl font-bold text-gray-900">{stats.totalProperties}</p>
+                      <p className="text-sm text-gray-600 dark:text-gray-400 mb-1">Total Properties</p>
+                      <p className="text-3xl font-bold text-gray-900 dark:text-white">{stats.totalProperties}</p>
                     </div>
                     <div className="text-4xl">🏠</div>
                   </div>
                 </div>
 
-                <div className="bg-white rounded-lg shadow-md p-6">
+                <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
                   <div className="flex items-center justify-between">
                     <div>
-                      <p className="text-sm text-gray-600 mb-1">Total Agents</p>
-                      <p className="text-3xl font-bold text-gray-900">{stats.totalAgents}</p>
+                      <p className="text-sm text-gray-600 dark:text-gray-400 mb-1">Total Agents</p>
+                      <p className="text-3xl font-bold text-gray-900 dark:text-white">{stats.totalAgents}</p>
                     </div>
                     <div className="text-4xl">👨‍💼</div>
                   </div>
                 </div>
 
-                <div className="bg-white rounded-lg shadow-md p-6">
+                <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
                   <div className="flex items-center justify-between">
                     <div>
-                      <p className="text-sm text-gray-600 mb-1">Pending Verifications</p>
+                      <p className="text-sm text-gray-600 dark:text-gray-400 mb-1">Pending Verifications</p>
                       <p className="text-3xl font-bold text-yellow-600">{stats.pendingVerifications}</p>
                     </div>
                     <div className="text-4xl">⏳</div>
                   </div>
                 </div>
 
-                <div className="bg-white rounded-lg shadow-md p-6">
+                <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
                   <div className="flex items-center justify-between">
                     <div>
-                      <p className="text-sm text-gray-600 mb-1">Pending Disputes</p>
+                      <p className="text-sm text-gray-600 dark:text-gray-400 mb-1">Pending Disputes</p>
                       <p className="text-3xl font-bold text-red-600">{stats.pendingReports}</p>
                     </div>
                     <div className="text-4xl">🚨</div>
                   </div>
                 </div>
 
-                <div className="bg-white rounded-lg shadow-md p-6">
+                <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
                   <div className="flex items-center justify-between">
                     <div>
-                      <p className="text-sm text-gray-600 mb-1">Active Properties</p>
+                      <p className="text-sm text-gray-600 dark:text-gray-400 mb-1">Active Properties</p>
                       <p className="text-3xl font-bold text-green-600">{stats.activeProperties}</p>
                     </div>
                     <div className="text-4xl">✅</div>
                   </div>
                 </div>
 
-                <div className="bg-white rounded-lg shadow-md p-6">
+                <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
                   <div className="flex items-center justify-between">
                     <div>
-                      <p className="text-sm text-gray-600 mb-1">Verified Agents</p>
+                      <p className="text-sm text-gray-600 dark:text-gray-400 mb-1">Verified Agents</p>
                       <p className="text-3xl font-bold text-blue-600">{stats.verifiedAgents}</p>
                     </div>
                     <div className="text-4xl">✓</div>
                   </div>
                 </div>
 
-                <div className="bg-white rounded-lg shadow-md p-6">
+                <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
                   <div className="flex items-center justify-between">
                     <div>
-                      <p className="text-sm text-gray-600 mb-1">Verified Properties</p>
+                      <p className="text-sm text-gray-600 dark:text-gray-400 mb-1">Verified Properties</p>
                       <p className="text-3xl font-bold text-blue-600">{stats.verifiedProperties}</p>
                     </div>
                     <div className="text-4xl">✓</div>
                   </div>
                 </div>
 
-                <div className="bg-white rounded-lg shadow-md p-6">
+                <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
                   <div className="flex items-center justify-between">
                     <div>
-                      <p className="text-sm text-gray-600 mb-1">Visitors (24h)</p>
+                      <p className="text-sm text-gray-600 dark:text-gray-400 mb-1">Visitors (24h)</p>
                       <p className="text-3xl font-bold text-purple-600">{stats.visitorsLast24h}</p>
                     </div>
                     <div className="text-4xl">👁️</div>
                   </div>
                 </div>
 
-                <div className="bg-white rounded-lg shadow-md p-6">
+                <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
                   <div className="flex items-center justify-between">
                     <div>
-                      <p className="text-sm text-gray-600 mb-1">Visitors (7d)</p>
+                      <p className="text-sm text-gray-600 dark:text-gray-400 mb-1">Visitors (7d)</p>
                       <p className="text-3xl font-bold text-indigo-600">{stats.visitorsLast7d}</p>
                     </div>
                     <div className="text-4xl">📊</div>
                   </div>
                 </div>
 
-                <div className="bg-white rounded-lg shadow-md p-6">
+                <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
                   <div className="flex items-center justify-between">
                     <div>
-                      <p className="text-sm text-gray-600 mb-1">Visitors (30d)</p>
+                      <p className="text-sm text-gray-600 dark:text-gray-400 mb-1">Visitors (30d)</p>
                       <p className="text-3xl font-bold text-teal-600">{stats.visitorsLast30d}</p>
                     </div>
                     <div className="text-4xl">📈</div>
                   </div>
                 </div>
 
-                <div className="bg-white rounded-lg shadow-md p-6">
+                <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
                   <div className="flex items-center justify-between">
                     <div>
-                      <p className="text-sm text-gray-600 mb-1">Total Page Views</p>
+                      <p className="text-sm text-gray-600 dark:text-gray-400 mb-1">Total Page Views</p>
                       <p className="text-3xl font-bold text-cyan-600">{stats.totalPageViews}</p>
                     </div>
                     <div className="text-4xl">🔍</div>
@@ -314,16 +314,16 @@ export default function AdminDashboard() {
               </div>
 
               {/* Quick Actions */}
-              <div className="bg-white rounded-lg shadow-md p-6">
-                <h2 className="text-xl font-semibold text-gray-900 mb-4">Quick Actions</h2>
+              <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+                <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">Quick Actions</h2>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                   <Link
                     to="/admin/users"
                     className="p-4 border-2 border-gray-200 rounded-lg hover:border-purple-600 hover:bg-purple-50 transition-colors"
                   >
                     <div className="text-2xl mb-2">👥</div>
-                    <div className="font-semibold text-gray-900">Manage Users</div>
-                    <div className="text-sm text-gray-600">View and edit all users</div>
+                    <div className="font-semibold text-gray-900 dark:text-white">Manage Users</div>
+                    <div className="text-sm text-gray-600 dark:text-gray-300">View and edit all users</div>
                   </Link>
 
                   <Link
@@ -331,8 +331,8 @@ export default function AdminDashboard() {
                     className="p-4 border-2 border-gray-200 rounded-lg hover:border-purple-600 hover:bg-purple-50 transition-colors"
                   >
                     <div className="text-2xl mb-2">✓</div>
-                    <div className="font-semibold text-gray-900">Review Verifications</div>
-                    <div className="text-sm text-gray-600">{stats.pendingVerifications} pending</div>
+                    <div className="font-semibold text-gray-900 dark:text-white">Review Verifications</div>
+                    <div className="text-sm text-gray-600 dark:text-gray-300">{stats.pendingVerifications} pending</div>
                   </Link>
 
                   <Link
@@ -340,8 +340,8 @@ export default function AdminDashboard() {
                     className="p-4 border-2 border-gray-200 rounded-lg hover:border-purple-600 hover:bg-purple-50 transition-colors"
                   >
                     <div className="text-2xl mb-2">🚨</div>
-                    <div className="font-semibold text-gray-900">Dispute Resolution</div>
-                    <div className="text-sm text-gray-600">{stats.pendingReports} new</div>
+                    <div className="font-semibold text-gray-900 dark:text-white">Dispute Resolution</div>
+                    <div className="text-sm text-gray-600 dark:text-gray-300">{stats.pendingReports} new</div>
                   </Link>
 
                   <Link
@@ -349,8 +349,8 @@ export default function AdminDashboard() {
                     className="p-4 border-2 border-gray-200 rounded-lg hover:border-purple-600 hover:bg-purple-50 transition-colors"
                   >
                     <div className="text-2xl mb-2">📊</div>
-                    <div className="font-semibold text-gray-900">Visitor Analytics</div>
-                    <div className="text-sm text-gray-600">Deep dive into visitor data</div>
+                    <div className="font-semibold text-gray-900 dark:text-white">Visitor Analytics</div>
+                    <div className="text-sm text-gray-600 dark:text-gray-300">Deep dive into visitor data</div>
                   </Link>
                 </div>
               </div>
@@ -359,9 +359,9 @@ export default function AdminDashboard() {
 
           {/* Users Tab */}
           {activeTab === 'users' && (
-            <div className="bg-white rounded-lg shadow-md p-6">
-              <h2 className="text-2xl font-semibold text-gray-900 mb-4">User Management</h2>
-              <p className="text-gray-600 mb-4">View and manage all platform users</p>
+            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+              <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-4">User Management</h2>
+              <p className="text-gray-600 dark:text-gray-300 mb-4">View and manage all platform users</p>
               <Link
                 to="/admin/users"
                 className="inline-block px-6 py-3 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors font-semibold"
@@ -373,9 +373,9 @@ export default function AdminDashboard() {
 
           {/* Verifications Tab */}
           {activeTab === 'verifications' && (
-            <div className="bg-white rounded-lg shadow-md p-6">
-              <h2 className="text-2xl font-semibold text-gray-900 mb-4">Verification Management</h2>
-              <p className="text-gray-600 mb-4">
+            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+              <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-4">Verification Management</h2>
+              <p className="text-gray-600 dark:text-gray-300 mb-4">
                 {stats.pendingVerifications} pending verifications
               </p>
               <Link
@@ -389,9 +389,9 @@ export default function AdminDashboard() {
 
           {/* Reports Tab */}
           {activeTab === 'reports' && (
-            <div className="bg-white rounded-lg shadow-md p-6">
-              <h2 className="text-2xl font-semibold text-gray-900 mb-4">Dispute Resolution</h2>
-              <p className="text-gray-600 mb-4">
+            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+              <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-4">Dispute Resolution</h2>
+              <p className="text-gray-600 dark:text-gray-300 mb-4">
                 {stats.pendingReports} new disputes
               </p>
               <Link
@@ -405,9 +405,9 @@ export default function AdminDashboard() {
 
           {/* Settings Tab */}
           {activeTab === 'settings' && (
-            <div className="bg-white rounded-lg shadow-md p-6">
-              <h2 className="text-2xl font-semibold text-gray-900 mb-4">System Settings</h2>
-              <p className="text-gray-600 mb-4">Configure platform settings</p>
+            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+              <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-4">System Settings</h2>
+              <p className="text-gray-600 dark:text-gray-300 mb-4">Configure platform settings</p>
               <Link
                 to="/admin/settings"
                 className="inline-block px-6 py-3 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors font-semibold"

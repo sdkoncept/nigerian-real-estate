@@ -66,7 +66,7 @@ export default function HomePage() {
         title="House Direct NG - 100% Verified Properties in Nigeria"
         description="Find your perfect property in Nigeria. Verified real estate listings, trusted agents, and secure transactions. Buy, sell, rent, or lease properties across Nigeria."
       />
-      <div className="min-h-screen">
+      <div className="min-h-screen bg-white dark:bg-gray-900">
         {/* Hero Section */}
         <div className="relative bg-gradient-to-br from-primary-600 via-primary-700 to-primary-800 text-white overflow-hidden">
           {/* Background Pattern */}

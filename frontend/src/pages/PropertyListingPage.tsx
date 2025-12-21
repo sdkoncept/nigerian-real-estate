@@ -170,7 +170,7 @@ export default function PropertyListingPage() {
   if (loading) {
     return (
       <Layout>
-        <div className="bg-gray-50 min-h-screen flex items-center justify-center">
+        <div className="bg-gray-50 dark:bg-gray-900 min-h-screen flex items-center justify-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600"></div>
         </div>
       </Layout>
@@ -179,7 +179,7 @@ export default function PropertyListingPage() {
 
   return (
     <Layout>
-      <div className="bg-gray-50 min-h-screen">
+      <div className="bg-gray-50 dark:bg-gray-900 min-h-screen">
         {/* Hero Section */}
         <div className="bg-gradient-to-r from-primary-600 to-primary-800 text-white py-12">
           <div className="container mx-auto px-4">
@@ -217,7 +217,7 @@ export default function PropertyListingPage() {
 
         <div className="container mx-auto px-4 py-8">
           {/* Search and Filters */}
-          <div className="bg-white rounded-lg shadow-md p-6 mb-8">
+          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 mb-8">
             {/* Search Bar */}
             <div className="mb-6">
               <div className="relative">
@@ -335,7 +335,7 @@ export default function PropertyListingPage() {
               ))}
             </div>
           ) : (
-            <div className="bg-white rounded-lg shadow-md p-12 text-center">
+            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-12 text-center">
               <svg
                 className="mx-auto h-12 w-12 text-gray-400 mb-4"
                 fill="none"

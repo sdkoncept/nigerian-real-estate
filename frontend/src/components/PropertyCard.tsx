@@ -50,7 +50,7 @@ export default function PropertyCard({ property }: PropertyCardProps) {
 
   return (
     <Link to={`/properties/${property.id}`} className="block">
-      <div className="bg-white rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 overflow-hidden">
+      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 overflow-hidden">
         {/* Image */}
         <div className="relative h-48 overflow-hidden bg-gray-200">
           <ProtectedImage
@@ -99,7 +99,7 @@ export default function PropertyCard({ property }: PropertyCardProps) {
 
         {/* Content */}
         <div className="p-4">
-          <h3 className="text-lg font-semibold text-gray-900 mb-2 line-clamp-1">
+          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2 line-clamp-1">
             {property.title}
           </h3>
           
@@ -107,7 +107,7 @@ export default function PropertyCard({ property }: PropertyCardProps) {
             {formatPrice(property.price)}
           </p>
 
-          <div className="flex items-center text-gray-600 text-sm mb-3">
+          <div className="flex items-center text-gray-600 dark:text-gray-300 text-sm mb-3">
             <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
@@ -116,7 +116,7 @@ export default function PropertyCard({ property }: PropertyCardProps) {
           </div>
 
           {/* Property Details */}
-          <div className="flex items-center justify-between text-sm text-gray-600 border-t pt-3">
+          <div className="flex items-center justify-between text-sm text-gray-600 dark:text-gray-300 border-t dark:border-gray-700 pt-3">
             {property.bedrooms && (
               <div className="flex items-center">
                 <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">

@@ -37,49 +37,49 @@ export default function Header() {
           <div className={`hidden ${orientation.isLandscape ? 'lg:flex' : 'md:flex'} items-center ${orientation.isLandscape ? 'space-x-3' : 'space-x-6'}`}>
             <Link
               to="/"
-              className="text-gray-700 hover:text-primary-600 font-medium transition-colors"
+              className="text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 font-medium transition-colors"
             >
               Home
             </Link>
             <Link
               to="/properties"
-              className="text-gray-700 hover:text-primary-600 font-medium transition-colors"
+              className="text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 font-medium transition-colors"
             >
               Properties
             </Link>
             <Link
               to="/map"
-              className="text-gray-700 hover:text-primary-600 font-medium transition-colors"
+              className="text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 font-medium transition-colors"
             >
               Map View
             </Link>
             <Link
               to="/agents"
-              className="text-gray-700 hover:text-primary-600 font-medium transition-colors"
+              className="text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 font-medium transition-colors"
             >
               Agents
             </Link>
             <Link
               to="/about"
-              className="text-gray-700 hover:text-primary-600 font-medium transition-colors"
+              className="text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 font-medium transition-colors"
             >
               About
             </Link>
             <Link
               to="/pricing"
-              className="text-gray-700 hover:text-primary-600 font-medium transition-colors"
+              className="text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 font-medium transition-colors"
             >
               Pricing
             </Link>
             <Link
               to="/comparison"
-              className="text-gray-700 hover:text-primary-600 font-medium transition-colors"
+              className="text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 font-medium transition-colors"
             >
               Why Verified?
             </Link>
             <Link
               to="/testimonials"
-              className="text-gray-700 hover:text-primary-600 font-medium transition-colors"
+              className="text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 font-medium transition-colors"
             >
               Success Stories
             </Link>
@@ -92,16 +92,16 @@ export default function Header() {
               <div className="relative">
                 <button
                   onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
-                  className="flex items-center space-x-2 px-3 py-2 rounded-lg hover:bg-gray-100 transition-colors"
+                  className="flex items-center space-x-2 px-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
                 >
                   <div className="w-8 h-8 bg-primary-600 text-white rounded-full flex items-center justify-center font-semibold text-sm">
                     {userInitials}
                   </div>
-                  <span className="text-gray-700 font-medium hidden lg:block">
+                  <span className="text-gray-700 dark:text-gray-300 font-medium hidden lg:block">
                     {user.user_metadata?.name || user.email?.split('@')[0]}
                   </span>
                   <svg
-                    className={`w-4 h-4 text-gray-600 transition-transform ${isUserMenuOpen ? 'rotate-180' : ''}`}
+                    className={`w-4 h-4 text-gray-600 dark:text-gray-400 transition-transform ${isUserMenuOpen ? 'rotate-180' : ''}`}
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -112,10 +112,10 @@ export default function Header() {
 
                 {/* Dropdown Menu */}
                 {isUserMenuOpen && (
-                  <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg py-2 z-50">
+                  <div className="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-800 rounded-lg shadow-lg py-2 z-50">
                     <Link
                       to="/profile"
-                      className="block px-4 py-2 text-gray-700 hover:bg-gray-100 transition-colors"
+                      className="block px-4 py-2 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
                       onClick={() => setIsUserMenuOpen(false)}
                     >
                       My Profile
@@ -132,7 +132,7 @@ export default function Header() {
                     {profile?.user_type === 'agent' && (
                       <Link
                         to="/agent/dashboard"
-                        className="block px-4 py-2 text-gray-700 hover:bg-gray-100 transition-colors"
+                        className="block px-4 py-2 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
                         onClick={() => setIsUserMenuOpen(false)}
                       >
                         Agent Dashboard
@@ -141,7 +141,7 @@ export default function Header() {
                     {(profile?.user_type === 'seller' || profile?.user_type === 'agent') && (
                       <Link
                         to="/seller/dashboard"
-                        className="block px-4 py-2 text-gray-700 hover:bg-gray-100 transition-colors"
+                        className="block px-4 py-2 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
                         onClick={() => setIsUserMenuOpen(false)}
                       >
                         Seller Dashboard
@@ -149,35 +149,35 @@ export default function Header() {
                     )}
                     <Link
                       to="/favorites"
-                      className="block px-4 py-2 text-gray-700 hover:bg-gray-100 transition-colors"
+                      className="block px-4 py-2 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
                       onClick={() => setIsUserMenuOpen(false)}
                     >
                       Favorites
                     </Link>
                     <Link
                       to="/messages"
-                      className="block px-4 py-2 text-gray-700 hover:bg-gray-100 transition-colors"
+                      className="block px-4 py-2 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
                       onClick={() => setIsUserMenuOpen(false)}
                     >
                       Messages
                     </Link>
                     <Link
                       to="/map"
-                      className="block px-4 py-2 text-gray-700 hover:bg-gray-100 transition-colors"
+                      className="block px-4 py-2 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
                       onClick={() => setIsUserMenuOpen(false)}
                     >
                       Map View
                     </Link>
                     <Link
                       to="/subscription"
-                      className="block px-4 py-2 text-gray-700 hover:bg-gray-100 transition-colors"
+                      className="block px-4 py-2 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
                       onClick={() => setIsUserMenuOpen(false)}
                     >
                       My Subscription
                     </Link>
                     <Link
                       to="/payments"
-                      className="block px-4 py-2 text-gray-700 hover:bg-gray-100 transition-colors"
+                      className="block px-4 py-2 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
                       onClick={() => setIsUserMenuOpen(false)}
                     >
                       Payment History
@@ -185,7 +185,7 @@ export default function Header() {
                     <hr className="my-2" />
                     <button
                       onClick={handleSignOut}
-                      className="block w-full text-left px-4 py-2 text-red-600 hover:bg-gray-100 transition-colors"
+                      className="block w-full text-left px-4 py-2 text-red-600 dark:text-red-400 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
                     >
                       Sign Out
                     </button>
@@ -205,10 +205,10 @@ export default function Header() {
           {/* Mobile Menu Button */}
           <button
             onClick={() => setIsMenuOpen(!isMenuOpen)}
-            className="md:hidden p-2 rounded-lg hover:bg-gray-100 transition-colors"
+            className="md:hidden p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
           >
             <svg
-              className="w-6 h-6 text-gray-700"
+              className="w-6 h-6 text-gray-700 dark:text-gray-300"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -224,49 +224,49 @@ export default function Header() {
 
         {/* Mobile Menu */}
         {isMenuOpen && (
-          <div className="md:hidden py-4 border-t">
+          <div className="md:hidden py-4 border-t dark:border-gray-700">
             <div className="flex flex-col space-y-2 px-4 mb-4">
               <ThemeToggle />
             </div>
             <div className="flex flex-col space-y-2">
               <Link
                 to="/"
-                className="px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors"
+                className="px-4 py-2 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors"
                 onClick={() => setIsMenuOpen(false)}
               >
                 Home
               </Link>
               <Link
                 to="/properties"
-                className="px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors"
+                className="px-4 py-2 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors"
                 onClick={() => setIsMenuOpen(false)}
               >
                 Properties
               </Link>
               <Link
                 to="/map"
-                className="px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors"
+                className="px-4 py-2 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors"
                 onClick={() => setIsMenuOpen(false)}
               >
                 Map View
               </Link>
               <Link
                 to="/agents"
-                className="px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors"
+                className="px-4 py-2 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors"
                 onClick={() => setIsMenuOpen(false)}
               >
                 Agents
               </Link>
               <Link
                 to="/about"
-                className="px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors"
+                className="px-4 py-2 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors"
                 onClick={() => setIsMenuOpen(false)}
               >
                 About
               </Link>
               <Link
                 to="/pricing"
-                className="px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors"
+                className="px-4 py-2 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors"
                 onClick={() => setIsMenuOpen(false)}
               >
                 Pricing
@@ -280,7 +280,7 @@ export default function Header() {
                   )}
                   <Link
                     to="/profile"
-                    className="px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors"
+                    className="px-4 py-2 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors"
                     onClick={() => setIsMenuOpen(false)}
                   >
                     My Profile
@@ -297,7 +297,7 @@ export default function Header() {
                   {profile?.user_type === 'agent' && (
                     <Link
                       to="/agent/dashboard"
-                      className="px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors"
+                      className="px-4 py-2 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors"
                       onClick={() => setIsMenuOpen(false)}
                     >
                       Agent Dashboard
@@ -306,7 +306,7 @@ export default function Header() {
                   {(profile?.user_type === 'seller' || profile?.user_type === 'agent') && (
                     <Link
                       to="/seller/dashboard"
-                      className="px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors"
+                      className="px-4 py-2 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors"
                       onClick={() => setIsMenuOpen(false)}
                     >
                       Seller Dashboard
@@ -314,14 +314,14 @@ export default function Header() {
                   )}
                   <Link
                     to="/subscription"
-                    className="px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors"
+                    className="px-4 py-2 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors"
                     onClick={() => setIsMenuOpen(false)}
                   >
                     My Subscription
                   </Link>
                   <Link
                     to="/payments"
-                    className="px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors"
+                    className="px-4 py-2 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors"
                     onClick={() => setIsMenuOpen(false)}
                   >
                     Payment History
