@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useUserProfile } from '../hooks/useUserProfile';
 import { useOrientation } from '../hooks/useOrientation';
 import Logo from './Logo';
+import ThemeToggle from './ThemeToggle';
 
 export default function Header() {
   const { user, signOut } = useAuth();
@@ -26,7 +27,7 @@ export default function Header() {
     .slice(0, 2) || user?.email?.[0].toUpperCase() || 'U';
 
   return (
-    <header className="bg-white shadow-md sticky top-0 z-50">
+    <header className="bg-white dark:bg-gray-800 shadow-md sticky top-0 z-50">
       <nav className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
@@ -221,6 +222,9 @@ export default function Header() {
         {/* Mobile Menu */}
         {isMenuOpen && (
           <div className="md:hidden py-4 border-t">
+            <div className="flex flex-col space-y-2 px-4 mb-4">
+              <ThemeToggle />
+            </div>
             <div className="flex flex-col space-y-2">
               <Link
                 to="/"

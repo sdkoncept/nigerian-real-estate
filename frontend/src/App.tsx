@@ -1,5 +1,6 @@
 import { Routes, Route, Navigate } from 'react-router-dom'
 import { useAuth } from './contexts/AuthContext'
+import { ThemeProvider } from './contexts/ThemeContext'
 import { ProtectedRoute } from './components/ProtectedRoute'
 import PageTracker from './components/PageTracker'
 import LoginPage from './pages/LoginPage'
@@ -49,7 +50,7 @@ function App() {
   }
 
   return (
-    <>
+    <ThemeProvider>
       <PageTracker />
       <Routes>
       {/* Public routes */}
@@ -203,7 +204,7 @@ function App() {
       />
       <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
-    </>
+    </ThemeProvider>
   )
 }
 

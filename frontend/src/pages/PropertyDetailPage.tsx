@@ -13,6 +13,10 @@ import { supabase } from '../lib/supabase';
 import { sampleProperties } from '../data/sampleProperties';
 import type { Property as PropertyType } from '../components/PropertyCard';
 import { trackPageView, trackPropertyView, trackContactForm, trackFavorite } from '../utils/analytics';
+import { trackPropertyView as trackViewLimit } from '../utils/propertyViewLimit';
+import PropertyViewLimitBlocker from '../components/PropertyViewLimitBlocker';
+import SoftSignupModal from '../components/SoftSignupModal';
+import { useSignupTriggers } from '../hooks/useSignupTriggers';
 
 interface Property {
   id: string;
@@ -43,6 +47,7 @@ export default function PropertyDetailPage() {
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   const [isFavorite, setIsFavorite] = useState(false);
   const [showContactForm, setShowContactForm] = useState(false);
+  const { showModal, setShowModal, trigger } = useSignupTriggers();
 
   // Helper function to check if a string is a valid UUID
   const isValidUUID = (str: string): boolean => {
@@ -69,8 +74,12 @@ export default function PropertyDetailPage() {
     if (property) {
       trackPageView(`/properties/${property.id}`, property.title);
       trackPropertyView(property.id, property.title);
+      // Track for view limit (only for anonymous users)
+      if (!user) {
+        trackViewLimit(property.id);
+      }
     }
-  }, [property]);
+  }, [property, user]);
 
   const loadProperty = async () => {
     if (!id) return;
@@ -367,7 +376,14 @@ export default function PropertyDetailPage() {
   const propertyUrl = typeof window !== 'undefined' ? window.location.href : '';
 
   return (
-    <Layout>
+    <PropertyViewLimitBlocker propertyId={property?.id || id || ''}>
+      <SoftSignupModal
+        isOpen={showModal}
+        onClose={() => setShowModal(false)}
+        trigger={trigger}
+        propertyViews={trackViewLimit(property?.id || '')}
+      />
+      <Layout>
       <SEO
         title={property.title}
         description={property.description}
@@ -717,6 +733,7 @@ export default function PropertyDetailPage() {
         </div>
       </div>
     </Layout>
+    </PropertyViewLimitBlocker>
   );
 }
 
