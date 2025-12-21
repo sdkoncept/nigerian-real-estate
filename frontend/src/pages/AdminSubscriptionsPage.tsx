@@ -163,8 +163,8 @@ export default function AdminSubscriptionsPage() {
       <Layout>
         <div className="min-h-screen bg-gray-50 flex items-center justify-center">
           <div className="text-center">
-            <h1 className="text-2xl font-bold text-gray-900 mb-2">Access Denied</h1>
-            <p className="text-gray-600 dark:text-gray-300">You need admin privileges to access this page.</p>
+            <h1 className="text-2xl font-bold text-black dark:text-white mb-2">Access Denied</h1>
+            <p className="text-black dark:text-gray-300">You need admin privileges to access this page.</p>
           </div>
         </div>
       </Layout>
@@ -281,8 +281,8 @@ export default function AdminSubscriptionsPage() {
           {filteredSubscriptions.length === 0 ? (
             <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-12 text-center">
               <div className="text-6xl mb-4">📦</div>
-              <h3 className="text-xl font-semibold text-gray-900 mb-2">No Subscriptions Found</h3>
-              <p className="text-gray-600 dark:text-gray-300">
+              <h3 className="text-xl font-semibold text-black dark:text-white mb-2">No Subscriptions Found</h3>
+              <p className="text-black dark:text-gray-300">
                 {searchTerm
                   ? 'No subscriptions match your search criteria.'
                   : filter === 'all'
@@ -331,7 +331,7 @@ export default function AdminSubscriptionsPage() {
                         <tr key={subscription.id} className="hover:bg-gray-50 dark:bg-gray-700">
                           <td className="px-6 py-4 whitespace-nowrap">
                             <div>
-                              <div className="text-sm font-medium text-gray-900 dark:text-white">
+                              <div className="text-sm font-medium text-black dark:text-white">
                                 {subscription.user?.full_name || 'N/A'}
                               </div>
                               <div className="text-sm text-gray-500">{subscription.user?.email || 'N/A'}</div>
@@ -341,7 +341,7 @@ export default function AdminSubscriptionsPage() {
                             </div>
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap">
-                            <span className="text-sm font-semibold text-gray-900 dark:text-white">
+                            <span className="text-sm font-semibold text-black dark:text-white">
                               {getPlanName(subscription.plan_type)}
                             </span>
                           </td>
@@ -355,14 +355,14 @@ export default function AdminSubscriptionsPage() {
                               {subscription.status === 'active' && expired && ' (EXPIRED)'}
                             </span>
                           </td>
-                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
+                          <td className="px-6 py-4 whitespace-nowrap text-sm text-black dark:text-white">
                             {new Date(subscription.started_at).toLocaleDateString()}
                             <br />
                             <span className="text-gray-500 text-xs">
                               {new Date(subscription.started_at).toLocaleTimeString()}
                             </span>
                           </td>
-                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
+                          <td className="px-6 py-4 whitespace-nowrap text-sm text-black dark:text-white">
                             {subscription.expires_at ? (
                               <>
                                 {new Date(subscription.expires_at).toLocaleDateString()}
@@ -394,7 +394,7 @@ export default function AdminSubscriptionsPage() {
                               <span className="text-gray-400">N/A</span>
                             )}
                           </td>
-                          <td className="px-6 py-4 whitespace-nowrap text-sm font-semibold text-gray-900 dark:text-white">
+                          <td className="px-6 py-4 whitespace-nowrap text-sm font-semibold text-black dark:text-white">
                             {subscription.currency} {subscription.amount_paid.toLocaleString()}
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 font-mono">

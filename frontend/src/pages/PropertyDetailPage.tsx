@@ -229,7 +229,7 @@ export default function PropertyDetailPage() {
       <Layout>
         <div className="min-h-screen bg-gray-50 flex items-center justify-center">
           <div className="text-center max-w-2xl mx-auto px-4">
-            <h1 className="text-2xl font-bold text-gray-900 mb-4">Property Not Found</h1>
+            <h1 className="text-2xl font-bold text-black dark:text-white mb-4">Property Not Found</h1>
             <p className="text-gray-600 mb-2">{error || "The property you're looking for doesn't exist."}</p>
             {id && (
               <p className="text-sm text-gray-500 mb-4">
@@ -460,7 +460,7 @@ export default function PropertyDetailPage() {
               <div className="bg-white rounded-lg shadow-md p-6 mb-6">
                 <div className="flex items-start justify-between mb-4">
                   <div>
-                    <h1 className="text-3xl font-bold text-gray-900 mb-2">{property.title}</h1>
+                    <h1 className="text-3xl font-bold text-black dark:text-white mb-2">{property.title}</h1>
                     <div className="flex items-center text-gray-600">
                       <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
@@ -505,7 +505,7 @@ export default function PropertyDetailPage() {
                 </div>
 
                 <div>
-                  <h2 className="text-2xl font-semibold text-gray-900 mb-4">Description</h2>
+                  <h2 className="text-2xl font-semibold text-black dark:text-white mb-4">Description</h2>
                   <p className="text-gray-700 leading-relaxed whitespace-pre-line">
                     {property.description}
                   </p>
@@ -514,7 +514,7 @@ export default function PropertyDetailPage() {
 
               {/* Features & Amenities */}
               <div className="bg-white rounded-lg shadow-md p-6">
-                <h2 className="text-2xl font-semibold text-gray-900 mb-4">Property Features</h2>
+                <h2 className="text-2xl font-semibold text-black dark:text-white mb-4">Property Features</h2>
                 <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
                   {property.bedrooms && (
                     <div className="flex items-center">
@@ -704,11 +704,11 @@ export default function PropertyDetailPage() {
 
               {/* Property Info Card */}
               <div className="bg-white rounded-lg shadow-md p-6">
-                <h3 className="text-lg font-semibold text-gray-900 mb-4">Property Information</h3>
+                <h3 className="text-lg font-semibold text-black dark:text-white mb-4">Property Information</h3>
                 <div className="space-y-3 text-sm">
                   <div className="flex justify-between">
                     <span className="text-gray-600">Location:</span>
-                    <span className="font-medium text-gray-900 text-right">{property.location}{property.city ? `, ${property.city}` : ''}{property.state ? `, ${property.state}` : ''}</span>
+                    <span className="font-medium text-black dark:text-white text-right">{property.location}{property.city ? `, ${property.city}` : ''}{property.state ? `, ${property.state}` : ''}</span>
                   </div>
                   <div className="flex justify-between">
                     <span className="text-gray-600">Type:</span>

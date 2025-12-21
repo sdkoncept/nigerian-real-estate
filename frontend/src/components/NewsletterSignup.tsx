@@ -78,7 +78,7 @@ export default function NewsletterSignup({ className = '', variant = 'default' }
 
   return (
     <div className={`bg-white rounded-lg shadow-md p-6 ${className}`}>
-      <h3 className="text-xl font-bold text-gray-900 mb-2">📧 Stay Updated</h3>
+      <h3 className="text-xl font-bold text-black dark:text-white mb-2">📧 Stay Updated</h3>
       <p className="text-gray-600 mb-4">
         Get the latest property listings and real estate news delivered to your inbox.
       </p>

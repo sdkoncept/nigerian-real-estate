@@ -473,7 +473,7 @@ export default function VerifyEmailPage() {
           {status === 'verifying' && (
             <>
               <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600 mx-auto mb-4"></div>
-              <h1 className="text-2xl font-bold text-gray-900 mb-2">Verifying Email</h1>
+              <h1 className="text-2xl font-bold text-black dark:text-white mb-2">Verifying Email</h1>
               <p className="text-gray-600">{message}</p>
             </>
           )}
@@ -485,7 +485,7 @@ export default function VerifyEmailPage() {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                 </svg>
               </div>
-              <h1 className="text-2xl font-bold text-gray-900 mb-2">Email Verified!</h1>
+              <h1 className="text-2xl font-bold text-black dark:text-white mb-2">Email Verified!</h1>
               <p className="text-gray-600 mb-4">{message}</p>
             </>
           )}
@@ -497,7 +497,7 @@ export default function VerifyEmailPage() {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                 </svg>
               </div>
-              <h1 className="text-2xl font-bold text-gray-900 mb-2">Verification Failed</h1>
+              <h1 className="text-2xl font-bold text-black dark:text-white mb-2">Verification Failed</h1>
               <p className="text-gray-600 mb-6">{message}</p>
               <div className="space-y-3">
                 <button

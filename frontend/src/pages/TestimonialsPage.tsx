@@ -119,15 +119,15 @@ export default function TestimonialsPage() {
             <div className="grid md:grid-cols-3 gap-6">
               <div>
                 <div className="text-4xl font-bold text-primary-600 mb-2">{testimonials.length}+</div>
-                <div className="text-gray-600 dark:text-gray-300">Success Stories</div>
+                <div className="text-black dark:text-gray-300">Success Stories</div>
               </div>
               <div>
                 <div className="text-4xl font-bold text-primary-600 mb-2">5.0</div>
-                <div className="text-gray-600 dark:text-gray-300">Average Rating</div>
+                <div className="text-black dark:text-gray-300">Average Rating</div>
               </div>
               <div>
                 <div className="text-4xl font-bold text-primary-600 mb-2">100%</div>
-                <div className="text-gray-600 dark:text-gray-300">Verified Transactions</div>
+                <div className="text-black dark:text-gray-300">Verified Transactions</div>
               </div>
             </div>
           </div>
@@ -144,7 +144,7 @@ export default function TestimonialsPage() {
                     </div>
                     <div>
                       <h3 className="font-bold text-gray-900 dark:text-white text-lg">{testimonial.name}</h3>
-                      <p className="text-sm text-gray-600 dark:text-gray-300">{testimonial.location} • Buyer</p>
+                      <p className="text-sm text-black dark:text-gray-300">{testimonial.location} • Buyer</p>
                     </div>
                   </div>
                   <div className="flex mb-3">
@@ -169,7 +169,7 @@ export default function TestimonialsPage() {
 
           {/* Seller Testimonials */}
           <section className="mb-12">
-            <h2 className="text-3xl font-bold text-gray-900 mb-6">Seller Success Stories</h2>
+            <h2 className="text-3xl font-bold text-black dark:text-white mb-6">Seller Success Stories</h2>
             <div className="grid md:grid-cols-2 gap-6">
               {sellerTestimonials.map((testimonial) => (
                 <div key={testimonial.id} className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
@@ -179,7 +179,7 @@ export default function TestimonialsPage() {
                     </div>
                     <div>
                       <h3 className="font-bold text-gray-900 dark:text-white text-lg">{testimonial.name}</h3>
-                      <p className="text-sm text-gray-600 dark:text-gray-300">{testimonial.location} • Seller</p>
+                      <p className="text-sm text-black dark:text-gray-300">{testimonial.location} • Seller</p>
                     </div>
                   </div>
                   <div className="flex mb-3">
@@ -204,7 +204,7 @@ export default function TestimonialsPage() {
 
           {/* Agent Testimonials */}
           <section className="mb-12">
-            <h2 className="text-3xl font-bold text-gray-900 mb-6">Agent Success Stories</h2>
+            <h2 className="text-3xl font-bold text-black dark:text-white mb-6">Agent Success Stories</h2>
             <div className="grid md:grid-cols-2 gap-6">
               {agentTestimonials.map((testimonial) => (
                 <div key={testimonial.id} className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
@@ -214,7 +214,7 @@ export default function TestimonialsPage() {
                     </div>
                     <div>
                       <h3 className="font-bold text-gray-900 dark:text-white text-lg">{testimonial.name}</h3>
-                      <p className="text-sm text-gray-600 dark:text-gray-300">{testimonial.location} • Agent</p>
+                      <p className="text-sm text-black dark:text-gray-300">{testimonial.location} • Agent</p>
                     </div>
                   </div>
                   <div className="flex mb-3">

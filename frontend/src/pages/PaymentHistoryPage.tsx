@@ -224,7 +224,7 @@ export default function PaymentHistoryPage() {
             {payments.length === 0 ? (
               <div className="bg-white rounded-lg shadow-md p-12 text-center">
                 <div className="text-6xl mb-4">💳</div>
-                <h3 className="text-xl font-semibold text-gray-900 mb-2">No Payments Yet</h3>
+                <h3 className="text-xl font-semibold text-black dark:text-white mb-2">No Payments Yet</h3>
                 <p className="text-gray-600 mb-6">
                   Your payment history will appear here once you make a payment.
                 </p>

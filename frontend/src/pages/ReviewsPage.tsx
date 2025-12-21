@@ -178,7 +178,7 @@ export default function ReviewsPage() {
               <div className="bg-white rounded-lg shadow-md p-6 mb-6">
                 <div className="flex items-center justify-between">
                   <div>
-                    <div className="text-4xl font-bold text-gray-900 mb-1">
+                    <div className="text-4xl font-bold text-black dark:text-white mb-1">
                       {averageRating.toFixed(1)}
                     </div>
                     <div className="flex items-center mb-2">
@@ -213,7 +213,7 @@ export default function ReviewsPage() {
 
             {showForm && (
               <div className="bg-white rounded-lg shadow-md p-6 mb-6">
-                <h3 className="text-xl font-bold text-gray-900 mb-4">Write a Review</h3>
+                <h3 className="text-xl font-bold text-black dark:text-white mb-4">Write a Review</h3>
                 <form onSubmit={handleSubmitReview} className="space-y-4">
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">Rating</label>
@@ -271,7 +271,7 @@ export default function ReviewsPage() {
               {reviews.length === 0 ? (
                 <div className="bg-white rounded-lg shadow-md p-12 text-center">
                   <div className="text-6xl mb-4">⭐</div>
-                  <h3 className="text-xl font-semibold text-gray-900 mb-2">No Reviews Yet</h3>
+                  <h3 className="text-xl font-semibold text-black dark:text-white mb-2">No Reviews Yet</h3>
                   <p className="text-gray-600">Be the first to leave a review!</p>
                 </div>
               ) : (

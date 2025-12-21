@@ -356,8 +356,8 @@ export default function AgentsPage() {
             <>
               {/* Results Count */}
               <div className="mb-6">
-                <p className="text-gray-600 dark:text-gray-300">
-                  Found <span className="font-semibold text-gray-900 dark:text-white">{sortedAgents.length}</span> agent{sortedAgents.length !== 1 ? 's' : ''}
+                <p className="text-black dark:text-gray-300">
+                  Found <span className="font-semibold text-black dark:text-white">{sortedAgents.length}</span> agent{sortedAgents.length !== 1 ? 's' : ''}
                 </p>
               </div>
 
@@ -378,8 +378,8 @@ export default function AgentsPage() {
               >
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
-              <h3 className="text-lg font-medium text-gray-900 mb-2">No agents found</h3>
-              <p className="text-gray-600 dark:text-gray-300">
+              <h3 className="text-lg font-medium text-black dark:text-white mb-2">No agents found</h3>
+              <p className="text-black dark:text-gray-300">
                 Try adjusting your search or filter criteria
               </p>
             </div>

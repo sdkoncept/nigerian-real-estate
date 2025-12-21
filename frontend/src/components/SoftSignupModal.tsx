@@ -97,14 +97,14 @@ export default function SoftSignupModal({
           <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
             {message.title}
           </h3>
-          <p className="text-gray-600 dark:text-gray-300">
+          <p className="text-black dark:text-gray-300">
             {message.description}
           </p>
         </div>
 
         <ul className="space-y-2 mb-6">
           {message.benefits.map((benefit, index) => (
-            <li key={index} className="text-sm text-gray-700 dark:text-gray-300">
+            <li key={index} className="text-sm text-black dark:text-gray-300">
               {benefit}
             </li>
           ))}

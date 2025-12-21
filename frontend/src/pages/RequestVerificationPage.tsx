@@ -52,7 +52,7 @@ export default function RequestVerificationPage() {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
               </svg>
             </div>
-            <h1 className="text-2xl font-bold text-gray-900 mb-2">Resend Verification Email</h1>
+            <h1 className="text-2xl font-bold text-black dark:text-white mb-2">Resend Verification Email</h1>
             <p className="text-gray-600">
               Enter your email address and we'll send you a new verification link.
             </p>

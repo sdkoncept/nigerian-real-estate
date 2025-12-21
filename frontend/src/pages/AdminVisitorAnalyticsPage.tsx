@@ -160,7 +160,7 @@ export default function AdminVisitorAnalyticsPage() {
       <Layout>
         <div className="min-h-screen bg-gray-50 flex items-center justify-center">
           <div className="max-w-2xl mx-auto bg-white rounded-lg shadow-md p-8 text-center">
-            <h1 className="text-2xl font-bold text-gray-900 mb-4">Access Denied</h1>
+            <h1 className="text-2xl font-bold text-black dark:text-white mb-4">Access Denied</h1>
             <p className="text-gray-600 mb-6">This page is only available for administrators.</p>
           </div>
         </div>
@@ -226,7 +226,7 @@ export default function AdminVisitorAnalyticsPage() {
 
           {/* Filters */}
           <div className="bg-white rounded-lg shadow-md p-6 mb-8">
-            <h2 className="text-xl font-semibold text-gray-900 mb-4">Filters</h2>
+            <h2 className="text-xl font-semibold text-black dark:text-white mb-4">Filters</h2>
             <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">Date Range</label>
@@ -295,7 +295,7 @@ export default function AdminVisitorAnalyticsPage() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
             {/* Device Type Breakdown */}
             <div className="bg-white rounded-lg shadow-md p-6">
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">Device Type Breakdown</h3>
+              <h3 className="text-lg font-semibold text-black dark:text-white mb-4">Device Type Breakdown</h3>
               <div className="space-y-3">
                 <div>
                   <div className="flex justify-between mb-1">
@@ -338,7 +338,7 @@ export default function AdminVisitorAnalyticsPage() {
 
             {/* Top Pages */}
             <div className="bg-white rounded-lg shadow-md p-6">
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">Most Visited Pages</h3>
+              <h3 className="text-lg font-semibold text-black dark:text-white mb-4">Most Visited Pages</h3>
               <div className="space-y-2">
                 {topPages.map((page: any, index: number) => (
                   <div key={index} className="flex justify-between items-center p-2 hover:bg-gray-50 rounded">
@@ -515,7 +515,7 @@ export default function AdminVisitorAnalyticsPage() {
                   {selectedVisitor.user_agent && (
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-1">User Agent</label>
-                      <p className="text-gray-900 text-sm break-all">{selectedVisitor.user_agent}</p>
+                      <p className="text-black dark:text-white text-sm break-all">{selectedVisitor.user_agent}</p>
                     </div>
                   )}
                   <div>

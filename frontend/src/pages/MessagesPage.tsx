@@ -221,7 +221,7 @@ export default function MessagesPage() {
                         } ${selectedMessage?.id === message.id ? 'bg-primary-50' : ''}`}
                       >
                         <div className="flex items-start justify-between mb-2">
-                          <h4 className="font-semibold text-gray-900 text-sm">
+                          <h4 className="font-semibold text-black dark:text-white text-sm">
                             {activeTab === 'inbox' ? message.sender_name : 'You'}
                           </h4>
                           {!message.is_read && activeTab === 'inbox' && (
@@ -247,7 +247,7 @@ export default function MessagesPage() {
                   <div>
                     <div className="flex items-start justify-between mb-4 pb-4 border-b">
                       <div>
-                        <h2 className="text-2xl font-bold text-gray-900 mb-2">
+                        <h2 className="text-2xl font-bold text-black dark:text-white mb-2">
                           {selectedMessage.subject || 'No Subject'}
                         </h2>
                         <div className="text-sm text-gray-600">

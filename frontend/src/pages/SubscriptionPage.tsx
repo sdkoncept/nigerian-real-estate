@@ -101,7 +101,7 @@ export default function SubscriptionPage() {
           <div className="max-w-4xl mx-auto">
             {/* Current Subscription */}
             <div className="bg-white rounded-lg shadow-md p-8 mb-6">
-              <h2 className="text-2xl font-bold text-gray-900 mb-6">Current Plan</h2>
+              <h2 className="text-2xl font-bold text-black dark:text-white mb-6">Current Plan</h2>
               
               {subscription ? (
                 <div className="space-y-4">
@@ -164,7 +164,7 @@ export default function SubscriptionPage() {
               ) : (
                 <div className="text-center py-8">
                   <div className="text-6xl mb-4">📦</div>
-                  <h3 className="text-xl font-semibold text-gray-900 mb-2">No Active Subscription</h3>
+                  <h3 className="text-xl font-semibold text-black dark:text-white mb-2">No Active Subscription</h3>
                   <p className="text-gray-600 mb-6">
                     You're currently on the free plan. Upgrade to unlock premium features!
                   </p>
@@ -188,7 +188,7 @@ export default function SubscriptionPage() {
 
             {/* Payment History */}
             <div className="bg-white rounded-lg shadow-md p-8">
-              <h2 className="text-2xl font-bold text-gray-900 mb-6">Payment History</h2>
+              <h2 className="text-2xl font-bold text-black dark:text-white mb-6">Payment History</h2>
               <Link
                 to="/payments"
                 className="text-primary-600 hover:text-primary-700 font-semibold"

@@ -139,8 +139,8 @@ export default function AdminReportsPage() {
       <Layout>
         <div className="min-h-screen bg-gray-50 flex items-center justify-center">
           <div className="max-w-2xl mx-auto bg-white dark:bg-gray-800 rounded-lg shadow-md p-8 text-center">
-            <h1 className="text-2xl font-bold text-gray-900 mb-4">Access Denied</h1>
-            <p className="text-gray-600 dark:text-gray-300">This page is only available for administrators.</p>
+            <h1 className="text-2xl font-bold text-black dark:text-white mb-4">Access Denied</h1>
+            <p className="text-black dark:text-gray-300">This page is only available for administrators.</p>
           </div>
         </div>
       </Layout>
@@ -209,8 +209,8 @@ export default function AdminReportsPage() {
             {filteredReports.length === 0 ? (
               <div className="p-12 text-center">
                 <div className="text-6xl mb-4">🚨</div>
-                <h3 className="text-xl font-semibold text-gray-900 mb-2">No Reports Found</h3>
-                <p className="text-gray-600 dark:text-gray-300">All reports have been reviewed.</p>
+                <h3 className="text-xl font-semibold text-black dark:text-white mb-2">No Reports Found</h3>
+                <p className="text-black dark:text-gray-300">All reports have been reviewed.</p>
               </div>
             ) : (
               <div className="divide-y divide-gray-200 dark:divide-gray-700">
@@ -244,7 +244,7 @@ export default function AdminReportsPage() {
                             {report.entity_type.toUpperCase()}
                           </span>
                         </div>
-                        <h3 className="text-lg font-semibold text-gray-900 mb-1">
+                        <h3 className="text-lg font-semibold text-black dark:text-white mb-1">
                           {report.reason}
                         </h3>
                         <p className="text-sm text-gray-600 mb-2 line-clamp-2">
@@ -275,7 +275,7 @@ export default function AdminReportsPage() {
         {selectedReport && (
           <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
             <div className="bg-white dark:bg-gray-800 rounded-lg shadow-xl max-w-2xl w-full p-6">
-              <h2 className="text-2xl font-bold text-gray-900 mb-4">Update Report Status</h2>
+              <h2 className="text-2xl font-bold text-black dark:text-white mb-4">Update Report Status</h2>
               <div className="space-y-4 mb-6">
                 <div>
                   <p className="text-sm text-gray-600 mb-2">

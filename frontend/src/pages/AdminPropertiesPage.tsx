@@ -491,8 +491,8 @@ export default function AdminPropertiesPage() {
       <Layout>
         <div className="min-h-screen bg-gray-50 flex items-center justify-center">
           <div className="text-center">
-            <h1 className="text-2xl font-bold text-gray-900 mb-2">Access Denied</h1>
-            <p className="text-gray-600 dark:text-gray-300">You need admin privileges to access this page.</p>
+            <h1 className="text-2xl font-bold text-black dark:text-white mb-2">Access Denied</h1>
+            <p className="text-black dark:text-gray-300">You need admin privileges to access this page.</p>
           </div>
         </div>
       </Layout>
@@ -562,8 +562,8 @@ export default function AdminPropertiesPage() {
           {filteredProperties.length === 0 ? (
             <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-12 text-center">
               <div className="text-6xl mb-4">🏠</div>
-              <h3 className="text-xl font-semibold text-gray-900 mb-2">No Properties Found</h3>
-              <p className="text-gray-600 dark:text-gray-300">Adjust your filters or search terms to find properties.</p>
+              <h3 className="text-xl font-semibold text-black dark:text-white mb-2">No Properties Found</h3>
+              <p className="text-black dark:text-gray-300">Adjust your filters or search terms to find properties.</p>
             </div>
           ) : (
             <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden">
@@ -595,7 +595,7 @@ export default function AdminPropertiesPage() {
                     {filteredProperties.map((prop) => (
                       <tr key={prop.id} className="hover:bg-gray-50 dark:bg-gray-700">
                         <td className="px-6 py-4 whitespace-nowrap">
-                          <div className="text-sm font-medium text-gray-900 dark:text-white">{prop.title}</div>
+                          <div className="text-sm font-medium text-black dark:text-white">{prop.title}</div>
                           <div className="text-sm text-gray-500">
                             {prop.property_type} • {prop.listing_type}
                           </div>
@@ -604,11 +604,11 @@ export default function AdminPropertiesPage() {
                           </div>
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap">
-                          <div className="text-sm text-gray-900 dark:text-white">{prop.user?.full_name || 'N/A'}</div>
+                          <div className="text-sm text-black dark:text-white">{prop.user?.full_name || 'N/A'}</div>
                           <div className="text-sm text-gray-500">{prop.user?.email || 'N/A'}</div>
                         </td>
                         <td className="px-6 py-4">
-                          <div className="text-sm text-gray-900 dark:text-white">{prop.location}</div>
+                          <div className="text-sm text-black dark:text-white">{prop.location}</div>
                           <div className="text-sm text-gray-500">
                             {prop.city}, {prop.state}
                           </div>
@@ -692,7 +692,7 @@ export default function AdminPropertiesPage() {
             <div className="bg-white dark:bg-gray-800 rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
               <div className="p-6">
                 <div className="flex justify-between items-center mb-4">
-                  <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Edit Property: {editingProperty.title}</h2>
+                  <h2 className="text-2xl font-bold text-black dark:text-white">Edit Property: {editingProperty.title}</h2>
                   <button
                     onClick={() => {
                       setEditingProperty(null);
@@ -705,7 +705,7 @@ export default function AdminPropertiesPage() {
                         location: '',
                       });
                     }}
-                    className="text-gray-400 hover:text-gray-600 dark:text-gray-300"
+                    className="text-gray-400 hover:text-black dark:text-gray-300"
                   >
                     ✕
                   </button>
@@ -753,7 +753,7 @@ export default function AdminPropertiesPage() {
 
                   <div className="border-t pt-4">
                     <div className="flex items-center justify-between mb-4">
-                      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Coordinates (for map)</label>
+                      <label className="block text-sm font-medium text-black dark:text-gray-300">Coordinates (for map)</label>
                       <button
                         onClick={handleGeocode}
                         disabled={geocoding}
@@ -828,10 +828,10 @@ export default function AdminPropertiesPage() {
             <div className="bg-white dark:bg-gray-800 rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
               <div className="p-6">
                 <div className="flex justify-between items-center mb-4">
-                  <h2 className="text-2xl font-bold text-gray-900 dark:text-white">{selectedProperty.title}</h2>
+                  <h2 className="text-2xl font-bold text-black dark:text-white">{selectedProperty.title}</h2>
                   <button
                     onClick={() => setSelectedProperty(null)}
-                    className="text-gray-400 hover:text-gray-600 dark:text-gray-300"
+                    className="text-gray-400 hover:text-black dark:text-gray-300"
                   >
                     ✕
                   </button>
@@ -841,7 +841,7 @@ export default function AdminPropertiesPage() {
                   {/* Property Images */}
                   {selectedProperty.images && selectedProperty.images.length > 0 && (
                     <div>
-                      <h3 className="font-semibold text-gray-900 mb-2">Property Images ({selectedProperty.images.length})</h3>
+                      <h3 className="font-semibold text-black dark:text-white mb-2">Property Images ({selectedProperty.images.length})</h3>
                       <div className="bg-gray-50 p-4 rounded-lg">
                         <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
                           {selectedProperty.images.map((imageUrl, index) => (
@@ -865,7 +865,7 @@ export default function AdminPropertiesPage() {
 
                   {(!selectedProperty.images || selectedProperty.images.length === 0) && (
                     <div>
-                      <h3 className="font-semibold text-gray-900 mb-2">Property Images</h3>
+                      <h3 className="font-semibold text-black dark:text-white mb-2">Property Images</h3>
                       <div className="bg-gray-50 p-4 rounded-lg text-center text-gray-500">
                         <p>No images uploaded for this property</p>
                       </div>
@@ -873,7 +873,7 @@ export default function AdminPropertiesPage() {
                   )}
 
                   <div>
-                    <h3 className="font-semibold text-gray-900 mb-2">Property Details</h3>
+                    <h3 className="font-semibold text-black dark:text-white mb-2">Property Details</h3>
                     <div className="bg-gray-50 p-4 rounded-lg space-y-2">
                       <p><span className="font-medium">Type:</span> {selectedProperty.property_type}</p>
                       <p><span className="font-medium">Listing:</span> {selectedProperty.listing_type}</p>
@@ -906,7 +906,7 @@ export default function AdminPropertiesPage() {
                   </div>
 
                   <div>
-                    <h3 className="font-semibold text-gray-900 mb-2">Owner Information</h3>
+                    <h3 className="font-semibold text-black dark:text-white mb-2">Owner Information</h3>
                     <div className="bg-gray-50 p-4 rounded-lg space-y-2">
                       <p><span className="font-medium">Name:</span> {selectedProperty.user?.full_name || 'N/A'}</p>
                       <p><span className="font-medium">Email:</span> {selectedProperty.user?.email || 'N/A'}</p>
@@ -920,7 +920,7 @@ export default function AdminPropertiesPage() {
                   </div>
 
                   <div>
-                    <h3 className="font-semibold text-gray-900 mb-2">Listing Information</h3>
+                    <h3 className="font-semibold text-black dark:text-white mb-2">Listing Information</h3>
                     <div className="bg-gray-50 p-4 rounded-lg">
                       <p><span className="font-medium">Listed At:</span> {formatDate(selectedProperty.created_at).full}</p>
                       <p><span className="font-medium">Status:</span> 
@@ -983,7 +983,7 @@ export default function AdminPropertiesPage() {
               <div className="p-6 border-b border-gray-200">
                 <div className="flex justify-between items-center">
                   <div>
-                    <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Chat with Owner</h2>
+                    <h2 className="text-2xl font-bold text-black dark:text-white">Chat with Owner</h2>
                     <p className="text-sm text-gray-600 mt-1">
                       {chattingProperty.user?.full_name || 'Unknown'} • {chattingProperty.title}
                     </p>

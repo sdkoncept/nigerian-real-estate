@@ -80,7 +80,7 @@ export default function ContactPage() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
             {/* Contact Form */}
             <div className="bg-white rounded-lg shadow-md p-8">
-              <h2 className="text-2xl font-bold text-gray-900 mb-6">Send us a Message</h2>
+              <h2 className="text-2xl font-bold text-black dark:text-white mb-6">Send us a Message</h2>
               
               {success && (
                 <div className="mb-6 p-4 bg-green-100 border border-green-400 text-green-700 rounded-lg">
@@ -194,7 +194,7 @@ export default function ContactPage() {
             {/* Contact Information */}
             <div className="space-y-6">
               <div className="bg-white rounded-lg shadow-md p-8">
-                <h2 className="text-2xl font-bold text-gray-900 mb-6">Get in Touch</h2>
+                <h2 className="text-2xl font-bold text-black dark:text-white mb-6">Get in Touch</h2>
                 <div className="space-y-6">
                   <div className="flex items-start">
                     <div className="flex-shrink-0">
@@ -245,7 +245,7 @@ export default function ContactPage() {
               </div>
 
               <div className="bg-primary-50 rounded-lg p-8">
-                <h3 className="text-xl font-bold text-gray-900 mb-4">Business Hours</h3>
+                <h3 className="text-xl font-bold text-black dark:text-white mb-4">Business Hours</h3>
                 <div className="space-y-2 text-gray-700">
                   <p><span className="font-semibold">Monday - Friday:</span> 9:00 AM - 6:00 PM</p>
                   <p><span className="font-semibold">Saturday:</span> 10:00 AM - 4:00 PM</p>
@@ -257,7 +257,7 @@ export default function ContactPage() {
               </div>
 
               <div className="bg-white rounded-lg shadow-md p-8">
-                <h3 className="text-xl font-bold text-gray-900 mb-4">Why Contact Us?</h3>
+                <h3 className="text-xl font-bold text-black dark:text-white mb-4">Why Contact Us?</h3>
                 <ul className="space-y-3 text-gray-700">
                   <li className="flex items-start">
                     <span className="mr-2">✓</span>

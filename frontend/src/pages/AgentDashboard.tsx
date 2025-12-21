@@ -312,7 +312,7 @@ export default function AgentDashboard() {
       <Layout>
         <div className="min-h-screen bg-gray-50 flex items-center justify-center">
           <div className="max-w-2xl mx-auto bg-white dark:bg-gray-800 rounded-lg shadow-md p-8 text-center">
-            <h1 className="text-2xl font-bold text-gray-900 mb-4">Access Denied</h1>
+            <h1 className="text-2xl font-bold text-black dark:text-white mb-4">Access Denied</h1>
             <p className="text-gray-600 mb-6">
               This page is only available for agents. You are registered as a <strong>{userProfile.user_type}</strong>.
             </p>
@@ -362,14 +362,14 @@ export default function AgentDashboard() {
               {/* Verification Status Card */}
               <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
                 <div className="flex items-center justify-between mb-4">
-                  <h2 className="text-2xl font-semibold text-gray-900 dark:text-white">Verification Status</h2>
+                  <h2 className="text-2xl font-semibold text-black dark:text-white">Verification Status</h2>
                   <VerificationBadge 
                     status={agentProfile.verification_status} 
                     type="agent"
                     size="md"
                   />
                 </div>
-                <p className="text-gray-600 dark:text-gray-300">
+                <p className="text-black dark:text-gray-300">
                   {agentProfile.verification_status === 'verified' && (
                     <>Your agent account is verified. You can now list properties and access all features.</>
                   )}
@@ -384,7 +384,7 @@ export default function AgentDashboard() {
 
               {/* Document Upload Form */}
               <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
-                <h2 className="text-2xl font-semibold text-gray-900 mb-4">Submit Verification Document</h2>
+                <h2 className="text-2xl font-semibold text-black dark:text-white mb-4">Submit Verification Document</h2>
                 
                 {uploadError && (
                   <div className="mb-4 p-4 bg-red-50 border border-red-200 rounded-lg">
@@ -503,7 +503,7 @@ export default function AgentDashboard() {
               {/* Previous Submissions */}
               {verificationSubmissions.length > 0 && (
                 <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
-                  <h2 className="text-2xl font-semibold text-gray-900 mb-4">Previous Submissions</h2>
+                  <h2 className="text-2xl font-semibold text-black dark:text-white mb-4">Previous Submissions</h2>
                   <div className="space-y-4">
                     {verificationSubmissions.map((submission) => (
                       <div
@@ -511,7 +511,7 @@ export default function AgentDashboard() {
                         className="border border-gray-200 rounded-lg p-4"
                       >
                         <div className="flex items-center justify-between mb-2">
-                          <h3 className="font-semibold text-gray-900 dark:text-white">
+                          <h3 className="font-semibold text-black dark:text-white">
                             {getDocumentTypeLabel(submission.document_type)}
                           </h3>
                           <span className={`px-3 py-1 rounded-full text-xs font-medium ${getStatusColor(submission.status)}`}>
@@ -547,7 +547,7 @@ export default function AgentDashboard() {
                         )}
                         {submission.review_notes && (
                           <div className="mt-2 p-3 bg-gray-50 rounded">
-                            <p className="text-sm text-gray-700 dark:text-gray-300">
+                            <p className="text-sm text-black dark:text-gray-300">
                               <strong>Review Notes:</strong> {submission.review_notes}
                             </p>
                           </div>
@@ -563,30 +563,30 @@ export default function AgentDashboard() {
             <div className="lg:col-span-1 space-y-6">
               {/* Agent Info */}
               <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
-                <h3 className="text-lg font-semibold text-gray-900 mb-4">Agent Information</h3>
+                <h3 className="text-lg font-semibold text-black dark:text-white mb-4">Agent Information</h3>
                 <div className="space-y-3 text-sm">
                   {agentProfile.license_number && (
                     <div>
-                      <span className="text-gray-600 dark:text-gray-300">License:</span>
-                      <span className="ml-2 font-medium text-gray-900 dark:text-white">{agentProfile.license_number}</span>
+                      <span className="text-black dark:text-gray-300">License:</span>
+                      <span className="ml-2 font-medium text-black dark:text-white">{agentProfile.license_number}</span>
                     </div>
                   )}
                   {agentProfile.company_name && (
                     <div>
-                      <span className="text-gray-600 dark:text-gray-300">Company:</span>
-                      <span className="ml-2 font-medium text-gray-900 dark:text-white">{agentProfile.company_name}</span>
+                      <span className="text-black dark:text-gray-300">Company:</span>
+                      <span className="ml-2 font-medium text-black dark:text-white">{agentProfile.company_name}</span>
                     </div>
                   )}
                   {agentProfile.years_experience !== undefined && (
                     <div>
-                      <span className="text-gray-600 dark:text-gray-300">Experience:</span>
-                      <span className="ml-2 font-medium text-gray-900 dark:text-white">{agentProfile.years_experience} years</span>
+                      <span className="text-black dark:text-gray-300">Experience:</span>
+                      <span className="ml-2 font-medium text-black dark:text-white">{agentProfile.years_experience} years</span>
                     </div>
                   )}
                   {agentProfile.properties_sold !== undefined && (
                     <div>
-                      <span className="text-gray-600 dark:text-gray-300">Properties Sold:</span>
-                      <span className="ml-2 font-medium text-gray-900 dark:text-white">{agentProfile.properties_sold}</span>
+                      <span className="text-black dark:text-gray-300">Properties Sold:</span>
+                      <span className="ml-2 font-medium text-black dark:text-white">{agentProfile.properties_sold}</span>
                     </div>
                   )}
                 </div>

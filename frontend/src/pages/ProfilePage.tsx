@@ -218,7 +218,7 @@ export default function ProfilePage() {
 
               {/* Account Info */}
               <div>
-                <h2 className="text-xl font-semibold text-gray-900 mb-4">Account Information</h2>
+                <h2 className="text-xl font-semibold text-black dark:text-white mb-4">Account Information</h2>
                 <div className="space-y-4">
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -250,7 +250,7 @@ export default function ProfilePage() {
 
               {/* Profile Details */}
               <div>
-                <h2 className="text-xl font-semibold text-gray-900 mb-4">Profile Details</h2>
+                <h2 className="text-xl font-semibold text-black dark:text-white mb-4">Profile Details</h2>
                 <div className="space-y-4">
                   <SecureInput
                     type="text"
@@ -379,7 +379,7 @@ export default function ProfilePage() {
                     )}
 
                     <div>
-                      <h3 className="font-semibold text-gray-900 mb-2">Step 2: Verify Setup</h3>
+                      <h3 className="font-semibold text-black dark:text-white mb-2">Step 2: Verify Setup</h3>
                       <p className="text-sm text-gray-600 mb-4">
                         Enter the 6-digit code from your authenticator app to complete setup:
                       </p>

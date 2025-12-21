@@ -196,7 +196,7 @@ export default function AdminDashboard() {
                   <div className="flex items-center justify-between">
                     <div>
                       <p className="text-sm text-gray-600 dark:text-gray-400 mb-1">Total Users</p>
-                      <p className="text-3xl font-bold text-gray-900 dark:text-white">{stats.totalUsers}</p>
+                      <p className="text-3xl font-bold text-black dark:text-white">{stats.totalUsers}</p>
                     </div>
                     <div className="text-4xl">👥</div>
                   </div>
@@ -206,7 +206,7 @@ export default function AdminDashboard() {
                   <div className="flex items-center justify-between">
                     <div>
                       <p className="text-sm text-gray-600 dark:text-gray-400 mb-1">Total Properties</p>
-                      <p className="text-3xl font-bold text-gray-900 dark:text-white">{stats.totalProperties}</p>
+                      <p className="text-3xl font-bold text-black dark:text-white">{stats.totalProperties}</p>
                     </div>
                     <div className="text-4xl">🏠</div>
                   </div>
@@ -216,7 +216,7 @@ export default function AdminDashboard() {
                   <div className="flex items-center justify-between">
                     <div>
                       <p className="text-sm text-gray-600 dark:text-gray-400 mb-1">Total Agents</p>
-                      <p className="text-3xl font-bold text-gray-900 dark:text-white">{stats.totalAgents}</p>
+                      <p className="text-3xl font-bold text-black dark:text-white">{stats.totalAgents}</p>
                     </div>
                     <div className="text-4xl">👨‍💼</div>
                   </div>
@@ -322,8 +322,8 @@ export default function AdminDashboard() {
                     className="p-4 border-2 border-gray-200 rounded-lg hover:border-purple-600 hover:bg-purple-50 transition-colors"
                   >
                     <div className="text-2xl mb-2">👥</div>
-                    <div className="font-semibold text-gray-900 dark:text-white">Manage Users</div>
-                    <div className="text-sm text-gray-600 dark:text-gray-300">View and edit all users</div>
+                    <div className="font-semibold text-black dark:text-white">Manage Users</div>
+                    <div className="text-sm text-black dark:text-gray-300">View and edit all users</div>
                   </Link>
 
                   <Link
@@ -331,8 +331,8 @@ export default function AdminDashboard() {
                     className="p-4 border-2 border-gray-200 rounded-lg hover:border-purple-600 hover:bg-purple-50 transition-colors"
                   >
                     <div className="text-2xl mb-2">✓</div>
-                    <div className="font-semibold text-gray-900 dark:text-white">Review Verifications</div>
-                    <div className="text-sm text-gray-600 dark:text-gray-300">{stats.pendingVerifications} pending</div>
+                    <div className="font-semibold text-black dark:text-white">Review Verifications</div>
+                    <div className="text-sm text-black dark:text-gray-300">{stats.pendingVerifications} pending</div>
                   </Link>
 
                   <Link
@@ -340,8 +340,8 @@ export default function AdminDashboard() {
                     className="p-4 border-2 border-gray-200 rounded-lg hover:border-purple-600 hover:bg-purple-50 transition-colors"
                   >
                     <div className="text-2xl mb-2">🚨</div>
-                    <div className="font-semibold text-gray-900 dark:text-white">Dispute Resolution</div>
-                    <div className="text-sm text-gray-600 dark:text-gray-300">{stats.pendingReports} new</div>
+                    <div className="font-semibold text-black dark:text-white">Dispute Resolution</div>
+                    <div className="text-sm text-black dark:text-gray-300">{stats.pendingReports} new</div>
                   </Link>
 
                   <Link
@@ -349,8 +349,8 @@ export default function AdminDashboard() {
                     className="p-4 border-2 border-gray-200 rounded-lg hover:border-purple-600 hover:bg-purple-50 transition-colors"
                   >
                     <div className="text-2xl mb-2">📊</div>
-                    <div className="font-semibold text-gray-900 dark:text-white">Visitor Analytics</div>
-                    <div className="text-sm text-gray-600 dark:text-gray-300">Deep dive into visitor data</div>
+                    <div className="font-semibold text-black dark:text-white">Visitor Analytics</div>
+                    <div className="text-sm text-black dark:text-gray-300">Deep dive into visitor data</div>
                   </Link>
                 </div>
               </div>

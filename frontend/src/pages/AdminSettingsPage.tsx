@@ -31,7 +31,7 @@ export default function AdminSettingsPage() {
         <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center">
           <div className="max-w-2xl mx-auto bg-white dark:bg-gray-800 rounded-lg shadow-md p-8 text-center">
             <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">Access Denied</h1>
-            <p className="text-gray-600 dark:text-gray-300">This page is only available for administrators.</p>
+            <p className="text-black dark:text-gray-300">This page is only available for administrators.</p>
           </div>
         </div>
       </Layout>
@@ -86,10 +86,10 @@ export default function AdminSettingsPage() {
                 <div className="space-y-4">
                   <div className="flex items-center justify-between">
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                      <label className="block text-sm font-medium text-black dark:text-gray-300">
                         Allow New Registrations
                       </label>
-                      <p className="text-xs text-gray-500 dark:text-gray-400">Enable or disable new user signups</p>
+                      <p className="text-xs text-black dark:text-gray-400">Enable or disable new user signups</p>
                     </div>
                     <input
                       type="checkbox"
@@ -100,10 +100,10 @@ export default function AdminSettingsPage() {
                   </div>
                   <div className="flex items-center justify-between">
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                      <label className="block text-sm font-medium text-black dark:text-gray-300">
                         Require Email Verification
                       </label>
-                      <p className="text-xs text-gray-500 dark:text-gray-400">Users must verify their email to use the platform</p>
+                      <p className="text-xs text-black dark:text-gray-400">Users must verify their email to use the platform</p>
                     </div>
                     <input
                       type="checkbox"
@@ -114,10 +114,10 @@ export default function AdminSettingsPage() {
                   </div>
                   <div className="flex items-center justify-between">
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                      <label className="block text-sm font-medium text-black dark:text-gray-300">
                         Require Phone Verification
                       </label>
-                      <p className="text-xs text-gray-500 dark:text-gray-400">Users must verify their phone number</p>
+                      <p className="text-xs text-black dark:text-gray-400">Users must verify their phone number</p>
                     </div>
                     <input
                       type="checkbox"
@@ -164,10 +164,10 @@ export default function AdminSettingsPage() {
                 <div className="space-y-4">
                   <div className="flex items-center justify-between">
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                      <label className="block text-sm font-medium text-black dark:text-gray-300">
                         Maintenance Mode
                       </label>
-                      <p className="text-xs text-gray-500 dark:text-gray-400">Put the platform in maintenance mode</p>
+                      <p className="text-xs text-black dark:text-gray-400">Put the platform in maintenance mode</p>
                     </div>
                     <input
                       type="checkbox"

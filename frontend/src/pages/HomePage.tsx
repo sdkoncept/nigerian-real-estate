@@ -136,7 +136,7 @@ export default function HomePage() {
         <div className="bg-white py-16">
           <div className="container mx-auto px-4">
             <div className="text-center mb-12">
-              <h2 className="text-4xl font-bold text-gray-900 mb-4">Property Types We Support</h2>
+              <h2 className="text-4xl font-bold text-black dark:text-white mb-4">Property Types We Support</h2>
               <p className="text-xl text-gray-600 max-w-2xl mx-auto">
                 Whether you're buying, renting, or looking for short-term stays, we've got you covered
               </p>
@@ -146,7 +146,7 @@ export default function HomePage() {
               {/* Buy/Sell */}
               <div className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-xl p-6 hover:shadow-lg transition-all">
                 <div className="text-4xl mb-4">🏠</div>
-                <h3 className="text-xl font-bold text-gray-900 mb-2">Buy & Sell</h3>
+                <h3 className="text-xl font-bold text-black dark:text-white mb-2">Buy & Sell</h3>
                 <p className="text-gray-700 mb-4">Houses, apartments, land, and commercial properties</p>
                 <Link to="/properties?type=sale" className="text-blue-600 font-semibold hover:text-blue-700">
                   Browse →
@@ -156,7 +156,7 @@ export default function HomePage() {
               {/* Rent/Lease */}
               <div className="bg-gradient-to-br from-green-50 to-green-100 rounded-xl p-6 hover:shadow-lg transition-all">
                 <div className="text-4xl mb-4">🏘️</div>
-                <h3 className="text-xl font-bold text-gray-900 mb-2">Rent & Lease</h3>
+                <h3 className="text-xl font-bold text-black dark:text-white mb-2">Rent & Lease</h3>
                 <p className="text-gray-700 mb-4">Long-term rentals and lease agreements</p>
                 <Link to="/properties?type=rent" className="text-green-600 font-semibold hover:text-green-700">
                   Browse →
@@ -166,7 +166,7 @@ export default function HomePage() {
               {/* Shortlets */}
               <div className="bg-gradient-to-br from-purple-50 to-purple-100 rounded-xl p-6 hover:shadow-lg transition-all">
                 <div className="text-4xl mb-4">🏡</div>
-                <h3 className="text-xl font-bold text-gray-900 mb-2">Shortlets</h3>
+                <h3 className="text-xl font-bold text-black dark:text-white mb-2">Shortlets</h3>
                 <p className="text-gray-700 mb-4">Short-term stays for business travelers and tourists</p>
                 <Link to="/properties?type=short_stay" className="text-purple-600 font-semibold hover:text-purple-700">
                   Browse →
@@ -176,7 +176,7 @@ export default function HomePage() {
               {/* Airbnb */}
               <div className="bg-gradient-to-br from-orange-50 to-orange-100 rounded-xl p-6 hover:shadow-lg transition-all">
                 <div className="text-4xl mb-4">🏖️</div>
-                <h3 className="text-xl font-bold text-gray-900 mb-2">Airbnb</h3>
+                <h3 className="text-xl font-bold text-black dark:text-white mb-2">Airbnb</h3>
                 <p className="text-gray-700 mb-4">Vacation rentals and holiday accommodations</p>
                 <Link to="/properties?type=airbnb" className="text-orange-600 font-semibold hover:text-orange-700">
                   Browse →
@@ -190,7 +190,7 @@ export default function HomePage() {
         <div className="bg-gray-50 py-16">
           <div className="container mx-auto px-4">
             <div className="text-center mb-12">
-              <h2 className="text-4xl font-bold text-gray-900 mb-4">Why Choose Our Platform?</h2>
+              <h2 className="text-4xl font-bold text-black dark:text-white mb-4">Why Choose Our Platform?</h2>
               <p className="text-xl text-gray-600 max-w-2xl mx-auto">
                 We're fixing what's wrong with real estate platforms in Nigeria
               </p>
@@ -199,7 +199,7 @@ export default function HomePage() {
             <div className="grid md:grid-cols-3 gap-8">
               <div className="bg-white rounded-xl p-8 shadow-md hover:shadow-xl transition-shadow">
                 <div className="text-5xl mb-4">✅</div>
-                <h3 className="text-2xl font-bold text-gray-900 mb-3">100% ID-Verified</h3>
+                <h3 className="text-2xl font-bold text-black dark:text-white mb-3">100% ID-Verified</h3>
                 <p className="text-gray-600 mb-4">
                   Every property and agent is verified. No scams, no fake listings. We verify ID documents, property ownership, and agent credentials.
                 </p>
@@ -213,7 +213,7 @@ export default function HomePage() {
 
               <div className="bg-white rounded-xl p-8 shadow-md hover:shadow-xl transition-shadow">
                 <div className="text-5xl mb-4">💰</div>
-                <h3 className="text-2xl font-bold text-gray-900 mb-3">Transparent Pricing</h3>
+                <h3 className="text-2xl font-bold text-black dark:text-white mb-3">Transparent Pricing</h3>
                 <p className="text-gray-600 mb-4">
                   All prices in Naira. No hidden fees. Clear listing costs. Fair commission structure. You know exactly what you're paying.
                 </p>
@@ -226,7 +226,7 @@ export default function HomePage() {
 
               <div className="bg-white rounded-xl p-8 shadow-md hover:shadow-xl transition-shadow">
                 <div className="text-5xl mb-4">🚀</div>
-                <h3 className="text-2xl font-bold text-gray-900 mb-3">All Property Types</h3>
+                <h3 className="text-2xl font-bold text-black dark:text-white mb-3">All Property Types</h3>
                 <p className="text-gray-600 mb-4">
                   Buy, sell, rent, lease, shortlets, Airbnb - we support everything. One platform for all your real estate needs.
                 </p>
@@ -244,7 +244,7 @@ export default function HomePage() {
         <div className="bg-white py-16">
           <div className="container mx-auto px-4">
             <div className="text-center mb-12">
-              <h2 className="text-4xl font-bold text-gray-900 mb-4">How It Works</h2>
+              <h2 className="text-4xl font-bold text-black dark:text-white mb-4">How It Works</h2>
             </div>
 
             <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
@@ -252,7 +252,7 @@ export default function HomePage() {
                 <div className="w-20 h-20 bg-primary-600 text-white rounded-full flex items-center justify-center text-3xl font-bold mx-auto mb-4">
                   1
                 </div>
-                <h3 className="text-xl font-bold text-gray-900 mb-2">Create Account</h3>
+                <h3 className="text-xl font-bold text-black dark:text-white mb-2">Create Account</h3>
                 <p className="text-gray-600">
                   Sign up as a buyer, seller, agent, or property owner. Choose what fits you best.
                 </p>
@@ -262,7 +262,7 @@ export default function HomePage() {
                 <div className="w-20 h-20 bg-primary-600 text-white rounded-full flex items-center justify-center text-3xl font-bold mx-auto mb-4">
                   2
                 </div>
-                <h3 className="text-xl font-bold text-gray-900 mb-2">List or Browse</h3>
+                <h3 className="text-xl font-bold text-black dark:text-white mb-2">List or Browse</h3>
                 <p className="text-gray-600">
                   List your property with photos and details, or browse thousands of verified listings.
                 </p>
@@ -272,7 +272,7 @@ export default function HomePage() {
                 <div className="w-20 h-20 bg-primary-600 text-white rounded-full flex items-center justify-center text-3xl font-bold mx-auto mb-4">
                   3
                 </div>
-                <h3 className="text-xl font-bold text-gray-900 mb-2">Connect & Close</h3>
+                <h3 className="text-xl font-bold text-black dark:text-white mb-2">Connect & Close</h3>
                 <p className="text-gray-600">
                   Connect with verified agents or property owners. Complete your transaction safely.
                 </p>
@@ -285,7 +285,7 @@ export default function HomePage() {
         <div className="bg-white py-16">
           <div className="container mx-auto px-4">
             <div className="text-center mb-12">
-              <h2 className="text-4xl font-bold text-gray-900 mb-4">Success Stories</h2>
+              <h2 className="text-4xl font-bold text-black dark:text-white mb-4">Success Stories</h2>
               <p className="text-xl text-gray-600 max-w-2xl mx-auto">
                 Real Nigerians sharing their real estate success stories
               </p>

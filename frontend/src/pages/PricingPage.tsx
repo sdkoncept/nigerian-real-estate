@@ -201,7 +201,7 @@ export default function PricingPage() {
           <div className="mb-16">
             <div className="text-center mb-12">
               <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">For Property Sellers & Owners</h2>
-              <p className="text-gray-600 dark:text-gray-300">List your properties, shortlets, and Airbnb rentals</p>
+              <p className="text-black dark:text-gray-300">List your properties, shortlets, and Airbnb rentals</p>
             </div>
 
             <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
@@ -223,21 +223,21 @@ export default function PricingPage() {
                   <div className="text-center mb-6">
                     <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">{plan.name}</h3>
                     <div className="mb-2">
-                      <span className="text-4xl font-bold text-gray-900 dark:text-white">
+                      <span className="text-4xl font-bold text-black dark:text-white">
                         ₦{plan.price.toLocaleString()}
                       </span>
                       {plan.price > 0 && (
-                        <span className="text-gray-600 dark:text-gray-300">/{plan.period}</span>
+                        <span className="text-black dark:text-gray-300">/{plan.period}</span>
                       )}
                     </div>
-                    <p className="text-sm text-gray-600 dark:text-gray-300">{plan.description}</p>
+                    <p className="text-sm text-black dark:text-gray-300">{plan.description}</p>
                   </div>
 
                   <ul className="space-y-3 mb-6">
                     {plan.features.map((feature, i) => (
                       <li key={i} className="flex items-start">
                         <span className="text-green-500 mr-2">✓</span>
-                        <span className="text-gray-700 dark:text-gray-300">{feature}</span>
+                        <span className="text-black dark:text-gray-300">{feature}</span>
                       </li>
                     ))}
                     {plan.limitations.map((limitation, i) => (
@@ -268,7 +268,7 @@ export default function PricingPage() {
           <div className="mb-16">
             <div className="text-center mb-12">
               <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">For Real Estate Agents</h2>
-              <p className="text-gray-600 dark:text-gray-300">Grow your business with verified agent profiles</p>
+              <p className="text-black dark:text-gray-300">Grow your business with verified agent profiles</p>
             </div>
 
             <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
@@ -290,21 +290,21 @@ export default function PricingPage() {
                   <div className="text-center mb-6">
                     <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">{plan.name}</h3>
                     <div className="mb-2">
-                      <span className="text-4xl font-bold text-gray-900 dark:text-white">
+                      <span className="text-4xl font-bold text-black dark:text-white">
                         ₦{plan.price.toLocaleString()}
                       </span>
                       {plan.price > 0 && (
-                        <span className="text-gray-600 dark:text-gray-300">/{plan.period}</span>
+                        <span className="text-black dark:text-gray-300">/{plan.period}</span>
                       )}
                     </div>
-                    <p className="text-sm text-gray-600 dark:text-gray-300">{plan.description}</p>
+                    <p className="text-sm text-black dark:text-gray-300">{plan.description}</p>
                   </div>
 
                   <ul className="space-y-3 mb-6">
                     {plan.features.map((feature, i) => (
                       <li key={i} className="flex items-start">
                         <span className="text-green-500 mr-2">✓</span>
-                        <span className="text-gray-700 dark:text-gray-300">{feature}</span>
+                        <span className="text-black dark:text-gray-300">{feature}</span>
                       </li>
                     ))}
                     {plan.limitations.map((limitation, i) => (
@@ -336,7 +336,7 @@ export default function PricingPage() {
             <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-6 text-center">Additional Services</h3>
             <div className="grid md:grid-cols-2 gap-6">
               <div className="border border-gray-200 rounded-lg p-6">
-                <h4 className="text-xl font-bold text-gray-900 mb-2">Featured Listing</h4>
+                <h4 className="text-xl font-bold text-black dark:text-white mb-2">Featured Listing</h4>
                 <p className="text-gray-600 mb-4">
                   Make your property stand out with featured placement
                 </p>
@@ -345,7 +345,7 @@ export default function PricingPage() {
               </div>
 
               <div className="border border-gray-200 rounded-lg p-6">
-                <h4 className="text-xl font-bold text-gray-900 mb-2">Priority Verification</h4>
+                <h4 className="text-xl font-bold text-black dark:text-white mb-2">Priority Verification</h4>
                 <p className="text-gray-600 mb-4">
                   Get your property verified within 24 hours
                 </p>
@@ -357,23 +357,23 @@ export default function PricingPage() {
 
           {/* FAQ */}
           <div className="mt-16 max-w-3xl mx-auto">
-            <h3 className="text-3xl font-bold text-gray-900 mb-8 text-center">Frequently Asked Questions</h3>
+            <h3 className="text-3xl font-bold text-black dark:text-white mb-8 text-center">Frequently Asked Questions</h3>
             <div className="space-y-6">
               <div className="bg-white rounded-lg p-6 shadow-md">
-                <h4 className="text-lg font-bold text-gray-900 mb-2">What payment methods do you accept?</h4>
-                <p className="text-gray-600 dark:text-gray-300">
+                <h4 className="text-lg font-bold text-black dark:text-white mb-2">What payment methods do you accept?</h4>
+                <p className="text-black dark:text-gray-300">
                   We accept all major payment methods through Paystack, including bank transfers, cards, and mobile money.
                 </p>
               </div>
               <div className="bg-white rounded-lg p-6 shadow-md">
-                <h4 className="text-lg font-bold text-gray-900 mb-2">Can I cancel my subscription anytime?</h4>
-                <p className="text-gray-600 dark:text-gray-300">
+                <h4 className="text-lg font-bold text-black dark:text-white mb-2">Can I cancel my subscription anytime?</h4>
+                <p className="text-black dark:text-gray-300">
                   Yes! You can cancel your subscription at any time. You'll continue to have access until the end of your billing period.
                 </p>
               </div>
               <div className="bg-white rounded-lg p-6 shadow-md">
-                <h4 className="text-lg font-bold text-gray-900 mb-2">What happens to my listings if I cancel?</h4>
-                <p className="text-gray-600 dark:text-gray-300">
+                <h4 className="text-lg font-bold text-black dark:text-white mb-2">What happens to my listings if I cancel?</h4>
+                <p className="text-black dark:text-gray-300">
                   Your listings remain active, but you'll lose premium features like featured placement and priority support.
                 </p>
               </div>

@@ -152,30 +152,30 @@ export default function SellerDashboard() {
           <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
             <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
               <div className="text-3xl font-bold text-primary-600 mb-2">{stats.total}</div>
-              <div className="text-sm text-gray-600 dark:text-gray-300">Total Properties</div>
+              <div className="text-sm text-black dark:text-gray-300">Total Properties</div>
             </div>
             <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
               <div className="text-3xl font-bold text-green-600 mb-2">{stats.active}</div>
-              <div className="text-sm text-gray-600 dark:text-gray-300">Active Listings</div>
+              <div className="text-sm text-black dark:text-gray-300">Active Listings</div>
             </div>
             <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
               <div className="text-3xl font-bold text-yellow-600 mb-2">{stats.pending}</div>
-              <div className="text-sm text-gray-600 dark:text-gray-300">Pending Verification</div>
+              <div className="text-sm text-black dark:text-gray-300">Pending Verification</div>
             </div>
             <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
               <div className="text-3xl font-bold text-blue-600 mb-2">{stats.verified}</div>
-              <div className="text-sm text-gray-600 dark:text-gray-300">Verified Properties</div>
+              <div className="text-sm text-black dark:text-gray-300">Verified Properties</div>
             </div>
             <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
               <div className="text-3xl font-bold text-yellow-600 mb-2">{stats.featured}</div>
-              <div className="text-sm text-gray-600 dark:text-gray-300">Featured Listings</div>
+              <div className="text-sm text-black dark:text-gray-300">Featured Listings</div>
             </div>
           </div>
 
           {/* Properties List */}
           <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
             <div className="flex items-center justify-between mb-6">
-              <h2 className="text-2xl font-semibold text-gray-900 dark:text-white">My Properties</h2>
+              <h2 className="text-2xl font-semibold text-black dark:text-white">My Properties</h2>
               <Link
                 to="/seller/properties/new"
                 className="px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors text-sm font-semibold"
@@ -187,7 +187,7 @@ export default function SellerDashboard() {
             {properties.length === 0 ? (
               <div className="text-center py-12">
                 <div className="text-6xl mb-4">🏠</div>
-                <h3 className="text-xl font-semibold text-gray-900 mb-2">No Properties Yet</h3>
+                <h3 className="text-xl font-semibold text-black dark:text-white mb-2">No Properties Yet</h3>
                 <p className="text-gray-600 mb-6">
                   Start listing your properties to reach potential buyers and renters.
                 </p>

@@ -215,24 +215,24 @@ export default function AdminUsersPage() {
           {/* Stats */}
           <div className="grid grid-cols-2 md:grid-cols-5 gap-4 mb-6">
             <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-4 text-center">
-              <div className="text-2xl font-bold text-gray-900 dark:text-white">{userTypeCounts.all}</div>
-              <div className="text-sm text-gray-600 dark:text-gray-300">Total Users</div>
+              <div className="text-2xl font-bold text-black dark:text-white">{userTypeCounts.all}</div>
+              <div className="text-sm text-black dark:text-gray-300">Total Users</div>
             </div>
             <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-4 text-center">
               <div className="text-2xl font-bold text-blue-600">{userTypeCounts.buyer}</div>
-              <div className="text-sm text-gray-600 dark:text-gray-300">Buyers</div>
+              <div className="text-sm text-black dark:text-gray-300">Buyers</div>
             </div>
             <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-4 text-center">
               <div className="text-2xl font-bold text-green-600">{userTypeCounts.seller}</div>
-              <div className="text-sm text-gray-600 dark:text-gray-300">Sellers</div>
+              <div className="text-sm text-black dark:text-gray-300">Sellers</div>
             </div>
             <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-4 text-center">
               <div className="text-2xl font-bold text-purple-600">{userTypeCounts.agent}</div>
-              <div className="text-sm text-gray-600 dark:text-gray-300">Agents</div>
+              <div className="text-sm text-black dark:text-gray-300">Agents</div>
             </div>
             <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-4 text-center">
               <div className="text-2xl font-bold text-red-600">{userTypeCounts.admin}</div>
-              <div className="text-sm text-gray-600 dark:text-gray-300">Admins</div>
+              <div className="text-sm text-black dark:text-gray-300">Admins</div>
             </div>
           </div>
 
@@ -297,10 +297,10 @@ export default function AdminUsersPage() {
                     <tr key={user.id} className="hover:bg-gray-50 dark:hover:bg-gray-700">
                       <td className="px-6 py-4 whitespace-nowrap">
                         <div>
-                          <div className="text-sm font-medium text-gray-900 dark:text-white">
+                          <div className="text-sm font-medium text-black dark:text-white">
                             {user.full_name || 'No name'}
                           </div>
-                          <div className="text-sm text-gray-500 dark:text-gray-400">{user.email}</div>
+                          <div className="text-sm text-black dark:text-gray-400">{user.email}</div>
                           {user.phone && (
                             <div className="text-xs text-gray-400 dark:text-gray-500">{user.phone}</div>
                           )}
@@ -332,10 +332,10 @@ export default function AdminUsersPage() {
                           </span>
                         )}
                       </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-black dark:text-white">
                         {user.properties_count || 0}
                       </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-black dark:text-gray-400">
                         {new Date(user.created_at).toLocaleDateString()}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
@@ -357,7 +357,7 @@ export default function AdminUsersPage() {
             <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-12 text-center">
               <div className="text-6xl mb-4">👥</div>
               <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">No Users Found</h3>
-              <p className="text-gray-600 dark:text-gray-300">Try adjusting your search or filter criteria.</p>
+              <p className="text-black dark:text-gray-300">Try adjusting your search or filter criteria.</p>
             </div>
           )}
         </div>
@@ -374,7 +374,7 @@ export default function AdminUsersPage() {
                     type="email"
                     value={editingUser.email}
                     disabled
-                    className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-gray-50 dark:bg-gray-700 text-gray-500 dark:text-gray-400"
+                    className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-gray-50 dark:bg-gray-700 text-black dark:text-gray-400"
                   />
                 </div>
 
@@ -418,7 +418,7 @@ export default function AdminUsersPage() {
                     onChange={(e) => setEditForm({ ...editForm, is_verified: e.target.checked })}
                     className="h-4 w-4 text-purple-600 focus:ring-purple-500 border-gray-300 rounded"
                   />
-                  <label htmlFor="is_verified" className="ml-2 block text-sm text-gray-900 dark:text-white">
+                  <label htmlFor="is_verified" className="ml-2 block text-sm text-black dark:text-white">
                     Verified
                   </label>
                 </div>

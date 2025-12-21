@@ -127,7 +127,7 @@ export default function AgentDetailPage() {
       <Layout>
         <div className="min-h-screen bg-gray-50 flex items-center justify-center">
           <div className="text-center">
-            <h1 className="text-2xl font-bold text-gray-900 mb-4">Agent Not Found</h1>
+            <h1 className="text-2xl font-bold text-black dark:text-white mb-4">Agent Not Found</h1>
             <p className="text-gray-600 mb-6">The agent you're looking for doesn't exist.</p>
             <Link
               to="/agents"
@@ -256,14 +256,14 @@ export default function AgentDetailPage() {
               {/* Bio */}
               {agent.bio && (
                 <div className="bg-white rounded-lg shadow-md p-6 mb-6">
-                  <h2 className="text-2xl font-semibold text-gray-900 mb-4">About</h2>
+                  <h2 className="text-2xl font-semibold text-black dark:text-white mb-4">About</h2>
                   <p className="text-gray-700 leading-relaxed">{agent.bio}</p>
                 </div>
               )}
 
               {/* Stats */}
               <div className="bg-white rounded-lg shadow-md p-6 mb-6">
-                <h2 className="text-2xl font-semibold text-gray-900 mb-4">Statistics</h2>
+                <h2 className="text-2xl font-semibold text-black dark:text-white mb-4">Statistics</h2>
                 <div className="grid grid-cols-3 gap-6">
                   <div className="text-center">
                     <div className="text-3xl font-bold text-primary-600 mb-2">{agent.years_experience}</div>
@@ -283,7 +283,7 @@ export default function AgentDetailPage() {
               {/* Specialties */}
               {agent.specialties && agent.specialties.length > 0 && (
                 <div className="bg-white rounded-lg shadow-md p-6">
-                  <h2 className="text-2xl font-semibold text-gray-900 mb-4">Specialties</h2>
+                  <h2 className="text-2xl font-semibold text-black dark:text-white mb-4">Specialties</h2>
                   <div className="flex flex-wrap gap-3">
                     {agent.specialties.map((specialty, index) => (
                       <span
@@ -302,7 +302,7 @@ export default function AgentDetailPage() {
             <div className="lg:col-span-1">
               {/* Contact Card */}
               <div className="bg-white rounded-lg shadow-md p-6 mb-6 sticky top-20">
-                <h3 className="text-lg font-semibold text-gray-900 mb-4">Contact Agent</h3>
+                <h3 className="text-lg font-semibold text-black dark:text-white mb-4">Contact Agent</h3>
                 
                 {agent.email && (
                   <div className="mb-4">
@@ -401,7 +401,7 @@ export default function AgentDetailPage() {
 
               {/* Agent Info Card */}
               <div className="bg-white rounded-lg shadow-md p-6">
-                <h3 className="text-lg font-semibold text-gray-900 mb-4">Agent Information</h3>
+                <h3 className="text-lg font-semibold text-black dark:text-white mb-4">Agent Information</h3>
                 <div className="space-y-3 text-sm">
                   {agent.license_number && (
                     <div>

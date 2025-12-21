@@ -364,7 +364,7 @@ export default function CreatePropertyPage() {
 
               {/* Basic Information */}
               <div>
-                <h2 className="text-2xl font-semibold text-gray-900 mb-4">Basic Information</h2>
+                <h2 className="text-2xl font-semibold text-black dark:text-white mb-4">Basic Information</h2>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div className="md:col-span-2">
                     <SecureInput
@@ -446,7 +446,7 @@ export default function CreatePropertyPage() {
 
               {/* Location */}
               <div>
-                <h2 className="text-2xl font-semibold text-gray-900 mb-4">Location</h2>
+                <h2 className="text-2xl font-semibold text-black dark:text-white mb-4">Location</h2>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
                     <SecureInput
@@ -556,7 +556,7 @@ export default function CreatePropertyPage() {
 
               {/* Property Details */}
               <div>
-                <h2 className="text-2xl font-semibold text-gray-900 mb-4">Property Details</h2>
+                <h2 className="text-2xl font-semibold text-black dark:text-white mb-4">Property Details</h2>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                   <div>
                     <SecureInput
@@ -617,7 +617,7 @@ export default function CreatePropertyPage() {
 
               {/* Images */}
               <div>
-                <h2 className="text-2xl font-semibold text-gray-900 mb-4">Property Images</h2>
+                <h2 className="text-2xl font-semibold text-black dark:text-white mb-4">Property Images</h2>
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
                     Upload Images (Max 10, JPG/PNG)
@@ -665,7 +665,7 @@ export default function CreatePropertyPage() {
 
               {/* Features & Amenities */}
               <div>
-                <h2 className="text-2xl font-semibold text-gray-900 mb-4">Features & Amenities</h2>
+                <h2 className="text-2xl font-semibold text-black dark:text-white mb-4">Features & Amenities</h2>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
                     <SecureInput
@@ -697,7 +697,7 @@ export default function CreatePropertyPage() {
               <div className="bg-gradient-to-r from-yellow-50 to-orange-50 border-2 border-yellow-200 rounded-lg p-6">
                 <div className="flex items-start justify-between">
                   <div className="flex-1">
-                    <h3 className="text-lg font-bold text-gray-900 mb-2 flex items-center">
+                    <h3 className="text-lg font-bold text-black dark:text-white mb-2 flex items-center">
                       ⭐ Featured Listing
                     </h3>
                     <p className="text-gray-700 mb-2">

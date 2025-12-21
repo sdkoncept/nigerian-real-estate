@@ -31,7 +31,7 @@ export default function ComparisonPage() {
                     <div className="inline-block px-4 py-2 bg-red-500 text-white rounded-full font-bold mb-4">
                       Unverified Agent
                     </div>
-                    <p className="text-gray-600 dark:text-gray-300">Anyone can claim to be an agent</p>
+                    <p className="text-black dark:text-gray-300">Anyone can claim to be an agent</p>
                   </div>
                   
                   <ul className="space-y-4">
@@ -39,37 +39,37 @@ export default function ComparisonPage() {
                       <svg className="w-6 h-6 text-red-500 mr-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                       </svg>
-                      <span className="text-gray-700 dark:text-gray-300">No ID verification - could be anyone</span>
+                      <span className="text-black dark:text-gray-300">No ID verification - could be anyone</span>
                     </li>
                     <li className="flex items-start">
                       <svg className="w-6 h-6 text-red-500 mr-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                       </svg>
-                      <span className="text-gray-700 dark:text-gray-300">No background check</span>
+                      <span className="text-black dark:text-gray-300">No background check</span>
                     </li>
                     <li className="flex items-start">
                       <svg className="w-6 h-6 text-red-500 mr-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                       </svg>
-                      <span className="text-gray-700 dark:text-gray-300">No track record visible</span>
+                      <span className="text-black dark:text-gray-300">No track record visible</span>
                     </li>
                     <li className="flex items-start">
                       <svg className="w-6 h-6 text-red-500 mr-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                       </svg>
-                      <span className="text-gray-700 dark:text-gray-300">Higher risk of scams</span>
+                      <span className="text-black dark:text-gray-300">Higher risk of scams</span>
                     </li>
                     <li className="flex items-start">
                       <svg className="w-6 h-6 text-red-500 mr-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                       </svg>
-                      <span className="text-gray-700 dark:text-gray-300">No accountability</span>
+                      <span className="text-black dark:text-gray-300">No accountability</span>
                     </li>
                     <li className="flex items-start">
                       <svg className="w-6 h-6 text-red-500 mr-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                       </svg>
-                      <span className="text-gray-700 dark:text-gray-300">Lower in search results</span>
+                      <span className="text-black dark:text-gray-300">Lower in search results</span>
                     </li>
                   </ul>
 
@@ -86,7 +86,7 @@ export default function ComparisonPage() {
                     <div className="mb-4">
                       <VerificationBadge status="verified" type="agent" tier="trusted" size="lg" />
                     </div>
-                    <p className="text-gray-600 dark:text-gray-300">ID-verified and trusted</p>
+                    <p className="text-black dark:text-gray-300">ID-verified and trusted</p>
                   </div>
                   
                   <ul className="space-y-4">
@@ -94,37 +94,37 @@ export default function ComparisonPage() {
                       <svg className="w-6 h-6 text-green-500 mr-3 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
                         <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                       </svg>
-                      <span className="text-gray-700 dark:text-gray-300">ID verified (National ID, Passport)</span>
+                      <span className="text-black dark:text-gray-300">ID verified (National ID, Passport)</span>
                     </li>
                     <li className="flex items-start">
                       <svg className="w-6 h-6 text-green-500 mr-3 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
                         <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                       </svg>
-                      <span className="text-gray-700 dark:text-gray-300">Phone & email verified</span>
+                      <span className="text-black dark:text-gray-300">Phone & email verified</span>
                     </li>
                     <li className="flex items-start">
                       <svg className="w-6 h-6 text-green-500 mr-3 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
                         <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                       </svg>
-                      <span className="text-gray-700 dark:text-gray-300">Track record visible (properties sold, reviews)</span>
+                      <span className="text-black dark:text-gray-300">Track record visible (properties sold, reviews)</span>
                     </li>
                     <li className="flex items-start">
                       <svg className="w-6 h-6 text-green-500 mr-3 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
                         <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                       </svg>
-                      <span className="text-gray-700 dark:text-gray-300">Lower risk - verified identity</span>
+                      <span className="text-black dark:text-gray-300">Lower risk - verified identity</span>
                     </li>
                     <li className="flex items-start">
                       <svg className="w-6 h-6 text-green-500 mr-3 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
                         <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                       </svg>
-                      <span className="text-gray-700 dark:text-gray-300">Accountable - can be reported</span>
+                      <span className="text-black dark:text-gray-300">Accountable - can be reported</span>
                     </li>
                     <li className="flex items-start">
                       <svg className="w-6 h-6 text-green-500 mr-3 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
                         <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                       </svg>
-                      <span className="text-gray-700 dark:text-gray-300">Priority in search results</span>
+                      <span className="text-black dark:text-gray-300">Priority in search results</span>
                     </li>
                   </ul>
 
@@ -164,7 +164,7 @@ export default function ComparisonPage() {
                     <div className="inline-block px-4 py-2 bg-red-500 text-white rounded-full font-bold mb-4">
                       Unverified Property
                     </div>
-                    <p className="text-gray-600 dark:text-gray-300">Could be fake or scam</p>
+                    <p className="text-black dark:text-gray-300">Could be fake or scam</p>
                   </div>
                   
                   <ul className="space-y-4">
@@ -172,37 +172,37 @@ export default function ComparisonPage() {
                       <svg className="w-6 h-6 text-red-500 mr-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                       </svg>
-                      <span className="text-gray-700 dark:text-gray-300">No ownership verification</span>
+                      <span className="text-black dark:text-gray-300">No ownership verification</span>
                     </li>
                     <li className="flex items-start">
                       <svg className="w-6 h-6 text-red-500 mr-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                       </svg>
-                      <span className="text-gray-700 dark:text-gray-300">Could be stock photos (fake images)</span>
+                      <span className="text-black dark:text-gray-300">Could be stock photos (fake images)</span>
                     </li>
                     <li className="flex items-start">
                       <svg className="w-6 h-6 text-red-500 mr-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                       </svg>
-                      <span className="text-gray-700 dark:text-gray-300">Location not verified</span>
+                      <span className="text-black dark:text-gray-300">Location not verified</span>
                     </li>
                     <li className="flex items-start">
                       <svg className="w-6 h-6 text-red-500 mr-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                       </svg>
-                      <span className="text-gray-700 dark:text-gray-300">Price could be fake</span>
+                      <span className="text-black dark:text-gray-300">Price could be fake</span>
                     </li>
                     <li className="flex items-start">
                       <svg className="w-6 h-6 text-red-500 mr-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                       </svg>
-                      <span className="text-gray-700 dark:text-gray-300">No seller verification</span>
+                      <span className="text-black dark:text-gray-300">No seller verification</span>
                     </li>
                     <li className="flex items-start">
                       <svg className="w-6 h-6 text-red-500 mr-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                       </svg>
-                      <span className="text-gray-700 dark:text-gray-300">Lower in search results</span>
+                      <span className="text-black dark:text-gray-300">Lower in search results</span>
                     </li>
                   </ul>
 
@@ -219,7 +219,7 @@ export default function ComparisonPage() {
                     <div className="mb-4">
                       <VerificationBadge status="verified" type="property" size="lg" />
                     </div>
-                    <p className="text-gray-600 dark:text-gray-300">Ownership verified and trusted</p>
+                    <p className="text-black dark:text-gray-300">Ownership verified and trusted</p>
                   </div>
                   
                   <ul className="space-y-4">
@@ -227,37 +227,37 @@ export default function ComparisonPage() {
                       <svg className="w-6 h-6 text-green-500 mr-3 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
                         <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                       </svg>
-                      <span className="text-gray-700 dark:text-gray-300">Ownership documents verified</span>
+                      <span className="text-black dark:text-gray-300">Ownership documents verified</span>
                     </li>
                     <li className="flex items-start">
                       <svg className="w-6 h-6 text-green-500 mr-3 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
                         <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                       </svg>
-                      <span className="text-gray-700 dark:text-gray-300">Real photos verified (not stock images)</span>
+                      <span className="text-black dark:text-gray-300">Real photos verified (not stock images)</span>
                     </li>
                     <li className="flex items-start">
                       <svg className="w-6 h-6 text-green-500 mr-3 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
                         <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                       </svg>
-                      <span className="text-gray-700 dark:text-gray-300">Location verified</span>
+                      <span className="text-black dark:text-gray-300">Location verified</span>
                     </li>
                     <li className="flex items-start">
                       <svg className="w-6 h-6 text-green-500 mr-3 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
                         <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                       </svg>
-                      <span className="text-gray-700 dark:text-gray-300">Price verified as realistic</span>
+                      <span className="text-black dark:text-gray-300">Price verified as realistic</span>
                     </li>
                     <li className="flex items-start">
                       <svg className="w-6 h-6 text-green-500 mr-3 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
                         <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                       </svg>
-                      <span className="text-gray-700 dark:text-gray-300">Seller ID verified</span>
+                      <span className="text-black dark:text-gray-300">Seller ID verified</span>
                     </li>
                     <li className="flex items-start">
                       <svg className="w-6 h-6 text-green-500 mr-3 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
                         <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                       </svg>
-                      <span className="text-gray-700 dark:text-gray-300">Priority in search results</span>
+                      <span className="text-black dark:text-gray-300">Priority in search results</span>
                     </li>
                   </ul>
 
@@ -289,15 +289,15 @@ export default function ComparisonPage() {
             <div className="grid md:grid-cols-3 gap-6">
               <div className="text-center">
                 <div className="text-4xl font-bold text-primary-600 mb-2">3x</div>
-                <div className="text-gray-700 dark:text-gray-300">More inquiries for verified agents</div>
+                <div className="text-black dark:text-gray-300">More inquiries for verified agents</div>
               </div>
               <div className="text-center">
                 <div className="text-4xl font-bold text-primary-600 mb-2">5x</div>
-                <div className="text-gray-700 dark:text-gray-300">More views for verified properties</div>
+                <div className="text-black dark:text-gray-300">More views for verified properties</div>
               </div>
               <div className="text-center">
                 <div className="text-4xl font-bold text-primary-600 mb-2">0</div>
-                <div className="text-gray-700 dark:text-gray-300">Scam reports from verified listings</div>
+                <div className="text-black dark:text-gray-300">Scam reports from verified listings</div>
               </div>
             </div>
           </section>
