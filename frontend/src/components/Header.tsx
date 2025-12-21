@@ -84,6 +84,9 @@ export default function Header() {
               Success Stories
             </Link>
 
+            {/* Theme Toggle */}
+            <ThemeToggle />
+
             {/* User Menu */}
             {user ? (
               <div className="relative">
