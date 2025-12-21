@@ -4,6 +4,7 @@ import Layout from '../components/Layout';
 import { useAuth } from '../contexts/AuthContext';
 import { useUserProfile } from '../hooks/useUserProfile';
 import { supabase } from '../lib/supabase';
+import { getVisitorStats } from '../utils/visitorTracking';
 
 interface DashboardStats {
   totalUsers: number;
@@ -14,6 +15,10 @@ interface DashboardStats {
   activeProperties: number;
   verifiedAgents: number;
   verifiedProperties: number;
+  visitorsLast24h: number;
+  visitorsLast7d: number;
+  visitorsLast30d: number;
+  totalPageViews: number;
 }
 
 export default function AdminDashboard() {
@@ -28,6 +33,10 @@ export default function AdminDashboard() {
     activeProperties: 0,
     verifiedAgents: 0,
     verifiedProperties: 0,
+    visitorsLast24h: 0,
+    visitorsLast7d: 0,
+    visitorsLast30d: 0,
+    totalPageViews: 0,
   });
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState<'overview' | 'users' | 'properties' | 'verifications' | 'reports' | 'settings' | 'subscriptions'>('overview');
@@ -49,12 +58,14 @@ export default function AdminDashboard() {
         agentsResult,
         verificationsResult,
         reportsResult,
+        visitorStats,
       ] = await Promise.all([
         supabase.from('profiles').select('id', { count: 'exact', head: true }),
         supabase.from('properties').select('id, is_active, verification_status', { count: 'exact' }),
         supabase.from('agents').select('id, verification_status', { count: 'exact' }),
         supabase.from('verifications').select('id').eq('status', 'pending'),
         supabase.from('reports').select('id').eq('status', 'new'),
+        getVisitorStats(),
       ]);
 
       const totalUsers = usersResult.count || 0;
@@ -76,6 +87,10 @@ export default function AdminDashboard() {
         activeProperties,
         verifiedAgents,
         verifiedProperties,
+        visitorsLast24h: visitorStats.visitorsLast24h,
+        visitorsLast7d: visitorStats.visitorsLast7d,
+        visitorsLast30d: visitorStats.visitorsLast30d,
+        totalPageViews: visitorStats.totalPageViews,
       });
     } catch (error) {
       console.error('Error loading stats:', error);
@@ -254,6 +269,46 @@ export default function AdminDashboard() {
                       <p className="text-3xl font-bold text-blue-600">{stats.verifiedProperties}</p>
                     </div>
                     <div className="text-4xl">✓</div>
+                  </div>
+                </div>
+
+                <div className="bg-white rounded-lg shadow-md p-6">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="text-sm text-gray-600 mb-1">Visitors (24h)</p>
+                      <p className="text-3xl font-bold text-purple-600">{stats.visitorsLast24h}</p>
+                    </div>
+                    <div className="text-4xl">👁️</div>
+                  </div>
+                </div>
+
+                <div className="bg-white rounded-lg shadow-md p-6">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="text-sm text-gray-600 mb-1">Visitors (7d)</p>
+                      <p className="text-3xl font-bold text-indigo-600">{stats.visitorsLast7d}</p>
+                    </div>
+                    <div className="text-4xl">📊</div>
+                  </div>
+                </div>
+
+                <div className="bg-white rounded-lg shadow-md p-6">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="text-sm text-gray-600 mb-1">Visitors (30d)</p>
+                      <p className="text-3xl font-bold text-teal-600">{stats.visitorsLast30d}</p>
+                    </div>
+                    <div className="text-4xl">📈</div>
+                  </div>
+                </div>
+
+                <div className="bg-white rounded-lg shadow-md p-6">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="text-sm text-gray-600 mb-1">Total Page Views</p>
+                      <p className="text-3xl font-bold text-cyan-600">{stats.totalPageViews}</p>
+                    </div>
+                    <div className="text-4xl">🔍</div>
                   </div>
                 </div>
               </div>
