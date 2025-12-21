@@ -4,7 +4,6 @@ import Layout from '../components/Layout';
 import { useAuth } from '../contexts/AuthContext';
 import { useUserProfile } from '../hooks/useUserProfile';
 import { supabase } from '../lib/supabase';
-import { getVisitorStats, getDailyVisitorStats } from '../utils/visitorTracking';
 
 interface VisitorRecord {
   id: string;
@@ -22,23 +21,11 @@ interface VisitorRecord {
   user_email?: string;
 }
 
-interface DailyStats {
-  date: string;
-  unique_visitors: number;
-  total_page_views: number;
-  logged_in_visitors: number;
-  new_visitors: number;
-  mobile_visitors: number;
-  desktop_visitors: number;
-}
-
 export default function AdminVisitorAnalyticsPage() {
   const { user } = useAuth();
   const { isAdmin } = useUserProfile();
   const [loading, setLoading] = useState(true);
   const [visitors, setVisitors] = useState<VisitorRecord[]>([]);
-  const [dailyStats, setDailyStats] = useState<DailyStats[]>([]);
-  const [summary, setSummary] = useState<any>({});
   
   // Filters
   const [dateRange, setDateRange] = useState<'today' | '7d' | '30d' | 'all'>('7d');
@@ -118,19 +105,6 @@ export default function AdminVisitorAnalyticsPage() {
 
       setVisitors(visitorsWithUsers);
 
-      // Load summary stats
-      const stats = await getVisitorStats();
-      setSummary(stats);
-
-      // Load daily stats
-      try {
-        const daily = await getDailyVisitorStats(30);
-        setDailyStats(daily as any);
-      } catch (error) {
-        console.error('Error loading daily stats:', error);
-        setDailyStats([]);
-      }
-
     } catch (error) {
       console.error('Error loading visitor data:', error);
     } finally {
@@ -165,12 +139,6 @@ export default function AdminVisitorAnalyticsPage() {
     tablet: visitors.filter(v => v.device_type === 'tablet').length,
   };
 
-  // Group by browser
-  const browserStats = visitors.reduce((acc: any, visitor) => {
-    const browser = visitor.browser || 'Unknown';
-    acc[browser] = (acc[browser] || 0) + 1;
-    return acc;
-  }, {});
 
   // Most visited pages
   const pageStats = visitors.reduce((acc: any, visitor) => {
