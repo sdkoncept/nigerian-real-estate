@@ -128,7 +128,7 @@ export default function MapViewPage() {
   if (loading) {
     return (
       <Layout>
-        <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600"></div>
         </div>
       </Layout>
@@ -137,7 +137,7 @@ export default function MapViewPage() {
 
   return (
     <Layout>
-      <div className="min-h-screen bg-gray-50">
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
         {/* Header */}
         <div className="bg-gradient-to-r from-primary-600 to-primary-800 text-white py-12">
           <div className="container mx-auto px-4">
@@ -148,7 +148,7 @@ export default function MapViewPage() {
 
         <div className="container mx-auto px-4 py-4 md:py-8">
           {/* Map Container */}
-          <div className="bg-white rounded-lg shadow-md overflow-hidden mb-4 md:mb-8" style={{ height: mapHeight, minHeight: '300px' }}>
+          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden mb-4 md:mb-8" style={{ height: mapHeight, minHeight: '300px' }}>
             <MapContainer
               center={mapCenter}
               zoom={mapZoom}
@@ -182,8 +182,8 @@ export default function MapViewPage() {
                           to={`/properties/${property.id}`}
                           className="block hover:underline"
                         >
-                          <h3 className="font-bold text-gray-900 mb-1">{property.title}</h3>
-                          <p className="text-sm text-gray-600 mb-2">
+                          <h3 className="font-bold text-gray-900 dark:text-white mb-1">{property.title}</h3>
+                          <p className="text-sm text-gray-600 dark:text-gray-300 mb-2">
                             {property.location}, {property.city}, {property.state}
                           </p>
                           <p className="text-lg font-bold text-primary-600 mb-2">
@@ -219,18 +219,18 @@ export default function MapViewPage() {
 
           {/* Selected Property Details */}
           {selectedProperty && (
-            <div className="bg-white rounded-lg shadow-md p-6 mb-6">
+            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 mb-6">
               <div className="flex items-start justify-between">
                 <div className="flex-1">
-                  <h3 className="text-2xl font-bold text-gray-900 mb-2">{selectedProperty.title}</h3>
-                  <p className="text-gray-600 mb-2">
+                  <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">{selectedProperty.title}</h3>
+                  <p className="text-gray-600 dark:text-gray-300 mb-2">
                     {selectedProperty.location}, {selectedProperty.city}, {selectedProperty.state}
                   </p>
                   <p className="text-2xl font-bold text-primary-600 mb-4">
                     {formatPrice(selectedProperty.price, selectedProperty.currency)}
                   </p>
                   {selectedProperty.bedrooms && (
-                    <p className="text-gray-600 mb-4">
+                    <p className="text-gray-600 dark:text-gray-300 mb-4">
                       {selectedProperty.bedrooms} bedrooms • {selectedProperty.bathrooms} bathrooms
                       {selectedProperty.sqm && ` • ${selectedProperty.sqm} m²`}
                     </p>
@@ -256,7 +256,7 @@ export default function MapViewPage() {
           {/* Property List (Properties without coordinates) */}
           {properties.filter(p => !p.coordinates).length > 0 && (
             <div className="mt-8">
-              <h3 className="text-2xl font-bold text-gray-900 mb-4">
+              <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">
                 Properties Without Map Location ({properties.filter(p => !p.coordinates).length})
               </h3>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -267,10 +267,10 @@ export default function MapViewPage() {
                     <Link
                       key={property.id}
                       to={`/properties/${property.id}`}
-                      className="bg-white rounded-lg shadow-md p-4 hover:shadow-lg transition-shadow cursor-pointer block"
+                      className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-4 hover:shadow-lg transition-shadow cursor-pointer block"
                     >
-                      <h4 className="font-semibold text-gray-900 mb-2">{property.title}</h4>
-                      <p className="text-sm text-gray-600 mb-2">
+                      <h4 className="font-semibold text-gray-900 dark:text-white mb-2">{property.title}</h4>
+                      <p className="text-sm text-gray-600 dark:text-gray-300 mb-2">
                         {property.location}, {property.city}, {property.state}
                       </p>
                       <p className="text-lg font-bold text-primary-600">

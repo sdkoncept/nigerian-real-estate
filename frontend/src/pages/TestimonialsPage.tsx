@@ -102,7 +102,7 @@ export default function TestimonialsPage() {
 
   return (
     <Layout>
-      <div className="min-h-screen bg-gray-50">
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
         {/* Header */}
         <div className="bg-gradient-to-r from-primary-600 to-primary-800 text-white py-12">
           <div className="container mx-auto px-4">
@@ -115,36 +115,36 @@ export default function TestimonialsPage() {
 
         <div className="container mx-auto px-4 py-12">
           {/* Stats */}
-          <div className="bg-white rounded-lg shadow-md p-8 mb-12 text-center">
+          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-8 mb-12 text-center">
             <div className="grid md:grid-cols-3 gap-6">
               <div>
                 <div className="text-4xl font-bold text-primary-600 mb-2">{testimonials.length}+</div>
-                <div className="text-gray-600">Success Stories</div>
+                <div className="text-gray-600 dark:text-gray-300">Success Stories</div>
               </div>
               <div>
                 <div className="text-4xl font-bold text-primary-600 mb-2">5.0</div>
-                <div className="text-gray-600">Average Rating</div>
+                <div className="text-gray-600 dark:text-gray-300">Average Rating</div>
               </div>
               <div>
                 <div className="text-4xl font-bold text-primary-600 mb-2">100%</div>
-                <div className="text-gray-600">Verified Transactions</div>
+                <div className="text-gray-600 dark:text-gray-300">Verified Transactions</div>
               </div>
             </div>
           </div>
 
           {/* Buyer Testimonials */}
           <section className="mb-12">
-            <h2 className="text-3xl font-bold text-gray-900 mb-6">Buyer Success Stories</h2>
+            <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-6">Buyer Success Stories</h2>
             <div className="grid md:grid-cols-2 gap-6">
               {buyerTestimonials.map((testimonial) => (
-                <div key={testimonial.id} className="bg-white rounded-lg shadow-md p-6">
+                <div key={testimonial.id} className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
                   <div className="flex items-center mb-4">
                     <div className="w-16 h-16 bg-primary-600 rounded-full flex items-center justify-center text-white font-bold text-xl mr-4">
                       {testimonial.name.split(' ').map(n => n[0]).join('')}
                     </div>
                     <div>
-                      <h3 className="font-bold text-gray-900 text-lg">{testimonial.name}</h3>
-                      <p className="text-sm text-gray-600">{testimonial.location} • Buyer</p>
+                      <h3 className="font-bold text-gray-900 dark:text-white text-lg">{testimonial.name}</h3>
+                      <p className="text-sm text-gray-600 dark:text-gray-300">{testimonial.location} • Buyer</p>
                     </div>
                   </div>
                   <div className="flex mb-3">
@@ -154,9 +154,9 @@ export default function TestimonialsPage() {
                       </svg>
                     ))}
                   </div>
-                  <p className="text-gray-700 mb-3 italic">"{testimonial.text}"</p>
+                  <p className="text-gray-700 dark:text-gray-300 mb-3 italic">"{testimonial.text}"</p>
                   {testimonial.outcome && (
-                    <div className="mt-4 pt-4 border-t border-gray-200">
+                    <div className="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700">
                       <span className="inline-block px-3 py-1 bg-green-100 text-green-800 rounded-full text-sm font-semibold">
                         ✓ {testimonial.outcome}
                       </span>
@@ -172,14 +172,14 @@ export default function TestimonialsPage() {
             <h2 className="text-3xl font-bold text-gray-900 mb-6">Seller Success Stories</h2>
             <div className="grid md:grid-cols-2 gap-6">
               {sellerTestimonials.map((testimonial) => (
-                <div key={testimonial.id} className="bg-white rounded-lg shadow-md p-6">
+                <div key={testimonial.id} className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
                   <div className="flex items-center mb-4">
                     <div className="w-16 h-16 bg-primary-600 rounded-full flex items-center justify-center text-white font-bold text-xl mr-4">
                       {testimonial.name.split(' ').map(n => n[0]).join('')}
                     </div>
                     <div>
-                      <h3 className="font-bold text-gray-900 text-lg">{testimonial.name}</h3>
-                      <p className="text-sm text-gray-600">{testimonial.location} • Seller</p>
+                      <h3 className="font-bold text-gray-900 dark:text-white text-lg">{testimonial.name}</h3>
+                      <p className="text-sm text-gray-600 dark:text-gray-300">{testimonial.location} • Seller</p>
                     </div>
                   </div>
                   <div className="flex mb-3">
@@ -189,9 +189,9 @@ export default function TestimonialsPage() {
                       </svg>
                     ))}
                   </div>
-                  <p className="text-gray-700 mb-3 italic">"{testimonial.text}"</p>
+                  <p className="text-gray-700 dark:text-gray-300 mb-3 italic">"{testimonial.text}"</p>
                   {testimonial.outcome && (
-                    <div className="mt-4 pt-4 border-t border-gray-200">
+                    <div className="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700">
                       <span className="inline-block px-3 py-1 bg-green-100 text-green-800 rounded-full text-sm font-semibold">
                         ✓ {testimonial.outcome}
                       </span>
@@ -207,14 +207,14 @@ export default function TestimonialsPage() {
             <h2 className="text-3xl font-bold text-gray-900 mb-6">Agent Success Stories</h2>
             <div className="grid md:grid-cols-2 gap-6">
               {agentTestimonials.map((testimonial) => (
-                <div key={testimonial.id} className="bg-white rounded-lg shadow-md p-6">
+                <div key={testimonial.id} className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
                   <div className="flex items-center mb-4">
                     <div className="w-16 h-16 bg-primary-600 rounded-full flex items-center justify-center text-white font-bold text-xl mr-4">
                       {testimonial.name.split(' ').map(n => n[0]).join('')}
                     </div>
                     <div>
-                      <h3 className="font-bold text-gray-900 text-lg">{testimonial.name}</h3>
-                      <p className="text-sm text-gray-600">{testimonial.location} • Agent</p>
+                      <h3 className="font-bold text-gray-900 dark:text-white text-lg">{testimonial.name}</h3>
+                      <p className="text-sm text-gray-600 dark:text-gray-300">{testimonial.location} • Agent</p>
                     </div>
                   </div>
                   <div className="flex mb-3">
@@ -224,9 +224,9 @@ export default function TestimonialsPage() {
                       </svg>
                     ))}
                   </div>
-                  <p className="text-gray-700 mb-3 italic">"{testimonial.text}"</p>
+                  <p className="text-gray-700 dark:text-gray-300 mb-3 italic">"{testimonial.text}"</p>
                   {testimonial.outcome && (
-                    <div className="mt-4 pt-4 border-t border-gray-200">
+                    <div className="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700">
                       <span className="inline-block px-3 py-1 bg-green-100 text-green-800 rounded-full text-sm font-semibold">
                         ✓ {testimonial.outcome}
                       </span>
@@ -246,7 +246,7 @@ export default function TestimonialsPage() {
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link
                 to="/signup"
-                className="px-8 py-4 bg-white text-primary-700 rounded-lg font-bold text-lg hover:bg-primary-50 transition-all shadow-xl"
+                className="px-8 py-4 bg-white dark:bg-gray-800 text-primary-700 dark:text-primary-400 rounded-lg font-bold text-lg hover:bg-primary-50 dark:hover:bg-primary-900 transition-all shadow-xl"
               >
                 Create Free Account
               </Link>
