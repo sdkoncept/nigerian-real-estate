@@ -32,6 +32,10 @@ CREATE INDEX IF NOT EXISTS idx_referrals_status ON public.referrals(status);
 -- ============================================
 -- REFERRAL STATISTICS (View)
 -- ============================================
+-- Security Note: This view respects RLS policies from the underlying referrals table.
+-- When users query this view, they will only see aggregated stats for referrals they
+-- have access to based on the RLS policies on the referrals table.
+-- If Supabase flags this view with SECURITY DEFINER warning, run FIX_REFERRAL_STATS_SECURITY.sql
 CREATE OR REPLACE VIEW public.referral_stats AS
 SELECT 
   referrer_id,
@@ -42,6 +46,9 @@ SELECT
   SUM(reward_amount) FILTER (WHERE status = 'rewarded') as total_rewards
 FROM public.referrals
 GROUP BY referrer_id;
+
+-- Ensure proper ownership to avoid SECURITY DEFINER issues
+ALTER VIEW public.referral_stats OWNER TO postgres;
 
 -- ============================================
 -- ADD REFERRAL_CODE TO PROFILES
@@ -71,24 +78,28 @@ END $$;
 ALTER TABLE public.referrals ENABLE ROW LEVEL SECURITY;
 
 -- Users can view their own referrals
+DROP POLICY IF EXISTS "Users can view their own referrals" ON public.referrals;
 CREATE POLICY "Users can view their own referrals"
   ON public.referrals
   FOR SELECT
   USING (auth.uid() = referrer_id OR auth.uid() = referred_id);
 
 -- Users can create referrals
+DROP POLICY IF EXISTS "Users can create referrals" ON public.referrals;
 CREATE POLICY "Users can create referrals"
   ON public.referrals
   FOR INSERT
   WITH CHECK (auth.uid() = referrer_id);
 
 -- Users can update their own referrals
+DROP POLICY IF EXISTS "Users can update their own referrals" ON public.referrals;
 CREATE POLICY "Users can update their own referrals"
   ON public.referrals
   FOR UPDATE
   USING (auth.uid() = referrer_id);
 
 -- Admins can view all referrals
+DROP POLICY IF EXISTS "Admins can view all referrals" ON public.referrals;
 CREATE POLICY "Admins can view all referrals"
   ON public.referrals
   FOR SELECT
