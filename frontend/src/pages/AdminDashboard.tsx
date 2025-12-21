@@ -343,6 +343,15 @@ export default function AdminDashboard() {
                     <div className="font-semibold text-gray-900">Dispute Resolution</div>
                     <div className="text-sm text-gray-600">{stats.pendingReports} new</div>
                   </Link>
+
+                  <Link
+                    to="/admin/analytics"
+                    className="p-4 border-2 border-gray-200 rounded-lg hover:border-purple-600 hover:bg-purple-50 transition-colors"
+                  >
+                    <div className="text-2xl mb-2">📊</div>
+                    <div className="font-semibold text-gray-900">Visitor Analytics</div>
+                    <div className="text-sm text-gray-600">Deep dive into visitor data</div>
+                  </Link>
                 </div>
               </div>
             </div>

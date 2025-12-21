@@ -22,6 +22,7 @@ import AdminVerificationsPage from './pages/AdminVerificationsPage'
 import AdminReportsPage from './pages/AdminReportsPage'
 import AdminSettingsPage from './pages/AdminSettingsPage'
 import AdminPropertiesPage from './pages/AdminPropertiesPage'
+import AdminVisitorAnalyticsPage from './pages/AdminVisitorAnalyticsPage'
 import PricingPage from './pages/PricingPage'
 import SubscriptionPage from './pages/SubscriptionPage'
 import PaymentHistoryPage from './pages/PaymentHistoryPage'
@@ -181,6 +182,14 @@ function App() {
         element={
           <ProtectedRoute>
             <AdminSettingsPage />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/admin/analytics"
+        element={
+          <ProtectedRoute>
+            <AdminVisitorAnalyticsPage />
           </ProtectedRoute>
         }
       />
