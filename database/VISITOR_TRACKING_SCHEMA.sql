@@ -28,7 +28,6 @@ CREATE INDEX IF NOT EXISTS idx_visitor_tracking_session ON public.visitor_tracki
 CREATE INDEX IF NOT EXISTS idx_visitor_tracking_user ON public.visitor_tracking(user_id);
 CREATE INDEX IF NOT EXISTS idx_visitor_tracking_created ON public.visitor_tracking(created_at);
 CREATE INDEX IF NOT EXISTS idx_visitor_tracking_path ON public.visitor_tracking(page_path);
-CREATE INDEX IF NOT EXISTS idx_visitor_tracking_date ON public.visitor_tracking(DATE(created_at));
 
 -- ============================================
 -- VIEW FOR DAILY VISITOR STATS
