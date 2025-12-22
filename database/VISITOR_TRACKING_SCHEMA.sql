@@ -65,6 +65,7 @@ FROM public.visitor_tracking;
 ALTER TABLE public.visitor_tracking ENABLE ROW LEVEL SECURITY;
 
 -- Allow anyone to insert visitor tracking (for anonymous visitors)
+DROP POLICY IF EXISTS "Allow anonymous visitor tracking" ON public.visitor_tracking;
 CREATE POLICY "Allow anonymous visitor tracking"
   ON public.visitor_tracking
   FOR INSERT
@@ -72,6 +73,7 @@ CREATE POLICY "Allow anonymous visitor tracking"
   WITH CHECK (true);
 
 -- Allow authenticated users to view their own tracking
+DROP POLICY IF EXISTS "Users can view their own tracking" ON public.visitor_tracking;
 CREATE POLICY "Users can view their own tracking"
   ON public.visitor_tracking
   FOR SELECT
@@ -79,6 +81,7 @@ CREATE POLICY "Users can view their own tracking"
   USING (auth.uid() = user_id);
 
 -- Allow admins to view all tracking
+DROP POLICY IF EXISTS "Admins can view all visitor tracking" ON public.visitor_tracking;
 CREATE POLICY "Admins can view all visitor tracking"
   ON public.visitor_tracking
   FOR SELECT
