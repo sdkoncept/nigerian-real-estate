@@ -116,6 +116,7 @@ END;
 $$ LANGUAGE plpgsql;
 
 -- Trigger to update last_contact_at when activity is created
+DROP TRIGGER IF EXISTS trigger_update_lead_last_contact ON public.lead_activities;
 CREATE TRIGGER trigger_update_lead_last_contact
   AFTER INSERT ON public.lead_activities
   FOR EACH ROW
@@ -132,16 +133,19 @@ END;
 $$ LANGUAGE plpgsql;
 
 -- Triggers for updated_at
+DROP TRIGGER IF EXISTS update_leads_updated_at ON public.leads;
 CREATE TRIGGER update_leads_updated_at
   BEFORE UPDATE ON public.leads
   FOR EACH ROW
   EXECUTE FUNCTION update_updated_at_column();
 
+DROP TRIGGER IF EXISTS update_lead_activities_updated_at ON public.lead_activities;
 CREATE TRIGGER update_lead_activities_updated_at
   BEFORE UPDATE ON public.lead_activities
   FOR EACH ROW
   EXECUTE FUNCTION update_updated_at_column();
 
+DROP TRIGGER IF EXISTS update_lead_notes_updated_at ON public.lead_notes;
 CREATE TRIGGER update_lead_notes_updated_at
   BEFORE UPDATE ON public.lead_notes
   FOR EACH ROW
@@ -157,6 +161,7 @@ ALTER TABLE public.lead_activities ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.lead_notes ENABLE ROW LEVEL SECURITY;
 
 -- Leads Policies
+DROP POLICY IF EXISTS "Agents can view their own leads" ON public.leads;
 CREATE POLICY "Agents can view their own leads"
   ON public.leads FOR SELECT
   USING (
@@ -165,6 +170,7 @@ CREATE POLICY "Agents can view their own leads"
     )
   );
 
+DROP POLICY IF EXISTS "Agents can insert their own leads" ON public.leads;
 CREATE POLICY "Agents can insert their own leads"
   ON public.leads FOR INSERT
   WITH CHECK (
@@ -173,6 +179,7 @@ CREATE POLICY "Agents can insert their own leads"
     )
   );
 
+DROP POLICY IF EXISTS "Agents can update their own leads" ON public.leads;
 CREATE POLICY "Agents can update their own leads"
   ON public.leads FOR UPDATE
   USING (
@@ -181,6 +188,7 @@ CREATE POLICY "Agents can update their own leads"
     )
   );
 
+DROP POLICY IF EXISTS "Admins can view all leads" ON public.leads;
 CREATE POLICY "Admins can view all leads"
   ON public.leads FOR SELECT
   USING (
@@ -191,6 +199,7 @@ CREATE POLICY "Admins can view all leads"
   );
 
 -- Lead Activities Policies
+DROP POLICY IF EXISTS "Agents can view activities for their leads" ON public.lead_activities;
 CREATE POLICY "Agents can view activities for their leads"
   ON public.lead_activities FOR SELECT
   USING (
@@ -199,6 +208,7 @@ CREATE POLICY "Agents can view activities for their leads"
     )
   );
 
+DROP POLICY IF EXISTS "Agents can insert activities for their leads" ON public.lead_activities;
 CREATE POLICY "Agents can insert activities for their leads"
   ON public.lead_activities FOR INSERT
   WITH CHECK (
@@ -207,6 +217,7 @@ CREATE POLICY "Agents can insert activities for their leads"
     )
   );
 
+DROP POLICY IF EXISTS "Agents can update activities for their leads" ON public.lead_activities;
 CREATE POLICY "Agents can update activities for their leads"
   ON public.lead_activities FOR UPDATE
   USING (
@@ -216,6 +227,7 @@ CREATE POLICY "Agents can update activities for their leads"
   );
 
 -- Lead Notes Policies
+DROP POLICY IF EXISTS "Agents can view notes for their leads" ON public.lead_notes;
 CREATE POLICY "Agents can view notes for their leads"
   ON public.lead_notes FOR SELECT
   USING (
@@ -224,6 +236,7 @@ CREATE POLICY "Agents can view notes for their leads"
     )
   );
 
+DROP POLICY IF EXISTS "Agents can insert notes for their leads" ON public.lead_notes;
 CREATE POLICY "Agents can insert notes for their leads"
   ON public.lead_notes FOR INSERT
   WITH CHECK (
@@ -232,6 +245,7 @@ CREATE POLICY "Agents can insert notes for their leads"
     )
   );
 
+DROP POLICY IF EXISTS "Agents can update notes for their leads" ON public.lead_notes;
 CREATE POLICY "Agents can update notes for their leads"
   ON public.lead_notes FOR UPDATE
   USING (
