@@ -24,6 +24,7 @@ import AdminReportsPage from './pages/AdminReportsPage'
 import AdminSettingsPage from './pages/AdminSettingsPage'
 import AdminPropertiesPage from './pages/AdminPropertiesPage'
 import AdminVisitorAnalyticsPage from './pages/AdminVisitorAnalyticsPage'
+import LeadManagementPage from './pages/LeadManagementPage'
 import PricingPage from './pages/PricingPage'
 import SubscriptionPage from './pages/SubscriptionPage'
 import PaymentHistoryPage from './pages/PaymentHistoryPage'
@@ -95,6 +96,14 @@ function App() {
         element={
           <ProtectedRoute>
             <AgentDashboard />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/agent/leads"
+        element={
+          <ProtectedRoute>
+            <LeadManagementPage />
           </ProtectedRoute>
         }
       />

@@ -17,6 +17,7 @@ import { trackPropertyView as trackViewLimit } from '../utils/propertyViewLimit'
 import PropertyViewLimitBlocker from '../components/PropertyViewLimitBlocker';
 import SoftSignupModal from '../components/SoftSignupModal';
 import { useSignupTriggers } from '../hooks/useSignupTriggers';
+import { createLeadFromMessage, getAgentIdFromProperty } from '../utils/leadManagement';
 
 interface Property {
   id: string;
@@ -317,16 +318,44 @@ export default function PropertyDetailPage() {
         }
       }
 
-      const { error } = await supabase.from('messages').insert({
+      const { data: messageData, error } = await supabase.from('messages').insert({
         sender_id: user.id,
         recipient_id: recipientId,
         property_id: isValidUUID(property.id) ? property.id : null,
         subject: `Inquiry about ${property.title}`,
         message: contactForm.message,
-      });
+      }).select().single();
 
       if (error) {
         throw error;
+      }
+
+      // Automatically create lead if property has an agent
+      if (isValidUUID(property.id) && messageData) {
+        try {
+          const agentId = await getAgentIdFromProperty(property.id);
+          if (agentId) {
+            // Get sender profile for name
+            const { data: senderProfile } = await supabase
+              .from('profiles')
+              .select('full_name, phone')
+              .eq('id', user.id)
+              .single();
+
+            await createLeadFromMessage(
+              messageData.id,
+              property.id,
+              user.id,
+              senderProfile?.full_name || contactForm.name,
+              contactForm.email,
+              senderProfile?.phone || contactForm.phone || null,
+              agentId
+            );
+          }
+        } catch (leadError) {
+          // Don't fail the message send if lead creation fails
+          console.error('Error creating lead from message:', leadError);
+        }
       }
 
       trackContactForm(property.id);

@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import Layout from '../components/Layout';
 import { useAuth } from '../contexts/AuthContext';
 import VerificationBadge from '../components/VerificationBadge';
@@ -35,6 +36,12 @@ export default function AgentDashboard() {
   const [uploading, setUploading] = useState(false);
   const [uploadError, setUploadError] = useState<string | null>(null);
   const [uploadSuccess, setUploadSuccess] = useState<string | null>(null);
+  const [leadStats, setLeadStats] = useState({
+    total: 0,
+    new: 0,
+    contacted: 0,
+    closed_won: 0,
+  });
 
   const [uploadForm, setUploadForm] = useState({
     document_type: 'license' as 'license' | 'id' | 'credentials',
@@ -47,6 +54,35 @@ export default function AgentDashboard() {
   useEffect(() => {
     loadUserData();
   }, [user]);
+
+  useEffect(() => {
+    if (agentProfile?.id) {
+      loadLeadStats();
+    }
+  }, [agentProfile]);
+
+  const loadLeadStats = async () => {
+    if (!agentProfile?.id) return;
+    try {
+      const { data, error } = await supabase
+        .from('leads')
+        .select('status')
+        .eq('agent_id', agentProfile.id);
+
+      if (error) throw error;
+
+      const stats = {
+        total: data?.length || 0,
+        new: data?.filter(l => l.status === 'new').length || 0,
+        contacted: data?.filter(l => l.status === 'contacted').length || 0,
+        closed_won: data?.filter(l => l.status === 'closed_won').length || 0,
+      };
+
+      setLeadStats(stats);
+    } catch (error) {
+      console.error('Error loading lead stats:', error);
+    }
+  };
 
   const loadUserData = async () => {
     if (!user) return;
@@ -592,9 +628,38 @@ export default function AgentDashboard() {
                 </div>
               </div>
 
+              {/* CRM/Leads Section */}
+              <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+                <h3 className="text-lg font-semibold text-black dark:text-white mb-4">Lead Management</h3>
+                <div className="space-y-3 mb-4">
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm text-black dark:text-gray-300">Total Leads</span>
+                    <span className="font-semibold text-black dark:text-white">{leadStats.total}</span>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm text-black dark:text-gray-300">New Leads</span>
+                    <span className="font-semibold text-blue-600">{leadStats.new}</span>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm text-black dark:text-gray-300">Contacted</span>
+                    <span className="font-semibold text-yellow-600">{leadStats.contacted}</span>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm text-black dark:text-gray-300">Closed Won</span>
+                    <span className="font-semibold text-green-600">{leadStats.closed_won}</span>
+                  </div>
+                </div>
+                <Link
+                  to="/agent/leads"
+                  className="block w-full px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors font-semibold text-center"
+                >
+                  Manage Leads →
+                </Link>
+              </div>
+
               {/* Requirements Info */}
-              <div className="bg-blue-50 border border-blue-200 rounded-lg p-6">
-                <h3 className="text-lg font-semibold text-blue-900 mb-3">Verification Requirements</h3>
+              <div className="bg-blue-50 dark:bg-blue-900 border border-blue-200 dark:border-blue-700 rounded-lg p-6">
+                <h3 className="text-lg font-semibold text-blue-900 dark:text-blue-100 mb-3">Verification Requirements</h3>
                 <ul className="space-y-2 text-sm text-blue-800">
                   <li className="flex items-start">
                     <span className="mr-2">✓</span>
